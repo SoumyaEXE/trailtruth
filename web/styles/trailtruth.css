@@ -238,6 +238,12 @@
   .tt-print-card .tt-print-plain {
     background: transparent !important;
   }
+  .tt-print-card .tt-print-invert .tt-print-pill {
+    background: #fff !important;
+  }
+  .tt-print-card .tt-print-invert .tt-print-pill * {
+    color: #000 !important;
+  }
   .tt-print-card .tt-topo {
     display: none !important;
   }
@@ -301,4 +307,15 @@
 .dark {
   --color-text-tertiary: #8d8478;
   --color-text-placeholder: #8d8478;
+}
+
+/* ?clean=1 — screenshot mode */
+.tt-clean .tt-source-chip {
+  display: none !important;
+}
+.tt-clean ::-webkit-scrollbar {
+  display: none;
+}
+.tt-clean * {
+  scrollbar-width: none;
 }

@@ -1,0 +1,92 @@
+/* TrailTruth blog visuals: shared tokens (mirror web/styles/trailtruth.css, light theme). */
+:root {
+  --paper: #fbfaf6;
+  --frame-border: #e2ddd3;
+  --ink: #1e1c19;
+  --ink-2: #5b544b;
+  --ink-3: #786f64;
+  --grid: #e7e3db;
+  --granite-100: #f4f2ed;
+  --granite-200: #e7e3db;
+  --granite-300: #d5cfc4;
+  --granite-400: #a8a094;
+  --granite-500: #786f64;
+  --pine: #2f7f56;
+  --pine-600: #236747;
+  --pine-700: #1c5239;
+  --pine-50: #eef6f1;
+  --pine-100: #d6eadd;
+  --overbar: #1f3d2c;
+  --sky: #3f7fb0;
+  --sky-surface: #e3eef7;
+  --clay: #b0603a;
+  --sandstone: #c49a6c;
+  --sandstone-surface: #f6ece0;
+  --go: #22804f;
+  --go-surface: #e4f2e8;
+  --go-text: #145233;
+  --go-border: #a9d4b8;
+  --caution: #c27c00;
+  --caution-surface: #fcf0d4;
+  --caution-text: #74470a;
+  --caution-border: #ecca7f;
+  --nogo: #b42318;
+  --nogo-surface: #fbe6e2;
+  --nogo-text: #7a1c14;
+  --nogo-border: #f0b5ab;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --slab: "Zilla Slab", Rockwell, "Roboto Slab", Georgia, serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { background: var(--paper); }
+body {
+  font-family: var(--sans);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11", "ss01";
+}
+#frame {
+  width: 800px;
+  background: var(--paper);
+  border: 1px solid var(--frame-border);
+  padding: 34px 40px 22px;
+}
+.kicker {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pine-600);
+  margin-bottom: 8px;
+}
+h1 {
+  font-size: 23px;
+  line-height: 1.25;
+  font-weight: 650;
+  letter-spacing: -0.012em;
+  color: var(--ink);
+}
+.sub {
+  margin-top: 6px;
+  font-size: 14.5px;
+  line-height: 1.45;
+  color: var(--ink-2);
+  max-width: 680px;
+}
+.src {
+  margin-top: 18px;
+  padding-top: 10px;
+  border-top: 1px solid var(--grid);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--ink-3);
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+.src .brand { color: var(--pine-600); font-weight: 600; white-space: nowrap; }
+svg { font-family: var(--sans); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }

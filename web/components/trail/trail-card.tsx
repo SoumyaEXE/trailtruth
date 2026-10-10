@@ -124,16 +124,16 @@ function ParkRowPhone({ park }: { park: CardPark }) {
             {DECISION_LABEL[park.decision]}
           </span>
         </div>
-        <p className="text-[13px] leading-[18px] font-semibold text-ink-2">{park.headline}</p>
+        <p className="line-clamp-2 text-[13px] leading-[18px] font-semibold text-ink-2">{park.headline}</p>
         {park.closed_trails.length > 0 && (
-          <p className="text-[12px] leading-[17px] text-ink-2">
+          <p className="line-clamp-2 text-[12px] leading-[17px] text-ink-2">
             <span className="font-bold text-nogo-text">Closed: </span>
             {park.closed_trails.slice(0, 3).join(" · ")}
             {park.closed_trails.length > 3 ? ` +${park.closed_trails.length - 3}` : ""}
           </p>
         )}
         {park.watch_for.length > 0 && (
-          <p className="text-[12px] leading-[17px] text-ink-3">
+          <p className="line-clamp-2 text-[12px] leading-[17px] text-ink-3">
             <span className="font-bold text-ink-2">Watch: </span>
             {park.watch_for.slice(0, 2).join(" · ")}
           </p>
@@ -171,7 +171,7 @@ export function TrailCardView({
         )}
       >
         {/* Clock-safe zone */}
-        <div className="relative h-[34%] shrink-0 overflow-hidden bg-overbar text-overbar-text">
+        <div className="relative h-[30%] shrink-0 overflow-hidden bg-overbar text-overbar-text">
           <Topo variant="card" opacity={0.22} className="text-sandstone" />
           <div className="absolute inset-x-0 bottom-0 flex flex-col gap-2 p-5">
             <div className="flex items-center gap-2">
@@ -190,7 +190,7 @@ export function TrailCardView({
         </div>
         <div className="flex min-h-0 flex-1 flex-col px-5">
           <div className="min-h-0 flex-1 divide-y divide-rule overflow-hidden">
-            {card.parks.slice(0, 4).map((p) => (
+            {card.parks.slice(0, card.parks.length > 4 ? 3 : 4).map((p) => (
               <ParkRowPhone key={p.park_code} park={p} />
             ))}
           </div>
@@ -225,7 +225,7 @@ export function TrailCardView({
             </p>
             <p className="text-[14px] leading-5 opacity-80">{OVERALL_LINE[card.overall]}</p>
           </div>
-          <div className="flex items-center gap-3 self-start rounded-2xl bg-white/95 py-2 ps-2.5 pe-4 text-ink shadow-sm sm:self-auto tt-print-plain">
+          <div className="flex items-center gap-3 self-start rounded-2xl bg-white/95 py-2 ps-2.5 pe-4 text-ink shadow-sm sm:self-auto tt-print-pill">
             <DecisionGlyph decision={card.overall} className="size-9" />
             <div className="flex flex-col">
               <span className="text-[10px] leading-3.5 font-bold tracking-[0.12em] text-ink-3 uppercase">Overall</span>

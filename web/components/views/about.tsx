@@ -12,7 +12,7 @@ import { useLoad } from "@/lib/use-load";
 const PIPELINE = [
   { icon: RiDatabase2Line, title: "NPS alerts", body: "~600 live alerts from developer.nps.gov" },
   { icon: RiRobot2Line, title: "Teacher labels", body: "A large open model writes strict-JSON verdicts" },
-  { icon: RiFlaskLine, title: "Distill on Tinker", body: "LoRA-tune a 1B open student on those labels" },
+  { icon: RiFlaskLine, title: "Distill on Tinker", body: "LoRA-tune a small open student on those labels" },
   { icon: RiNodeTree, title: "Temporal, weekly", body: "Fetch → classify → compose, with retries" },
   { icon: RiPrinterLine, title: "One card", body: "Print it, pocket it, close the app" },
 ];
@@ -29,7 +29,7 @@ export function AboutView() {
     {
       icon: RiSignalWifiOffLine,
       title: "Offline at the trailhead",
-      body: "There's no signal at most trailheads. TrailTruth's answer is paper: one printed card, plus a lock-screen image that needs no network. A 1B model is small enough to run on a laptop the night before, with no cloud round-trip.",
+      body: "There's no signal at most trailheads. TrailTruth's answer is paper: one printed card, plus a lock-screen image that needs no network. A small open model can run on a laptop the night before, with no cloud round-trip.",
     },
     {
       icon: RiLockLine,
@@ -42,7 +42,7 @@ export function AboutView() {
       body:
         lora?.cost_per_1k_alerts_usd != null && teacher?.cost_per_1k_alerts_usd != null
           ? `The small student classifies 1,000 alerts for about ${usd(lora.cost_per_1k_alerts_usd)}, versus ${usd(teacher.cost_per_1k_alerts_usd)} for the teacher. That cost is low enough for a volunteer, a ranger station or a school group to run every week, indefinitely.`
-          : "A distilled 1B student costs a few cents per thousand alerts, versus dollars for a frontier model. That's low enough for anyone to run every week, indefinitely.",
+          : "A distilled small student costs a few cents per thousand alerts, versus dollars for a frontier model. That's low enough for anyone to run every week, indefinitely.",
     },
   ];
 

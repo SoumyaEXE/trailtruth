@@ -18,6 +18,13 @@ try:  # repo-root .env (gitignored) holds NPS_API_KEY etc. Never log its values.
 except ImportError:
     pass
 
+# tinker_cookbook pulls in transformers; the Temporal sandbox pokes its lazy aliases on every workflow run and
+# transformers logs a warning per alias. Keep worker logs readable.
+os.environ.setdefault("TRANSFORMERS_VERBOSITY", "error")
+os.environ.setdefault("TRANSFORMERS_NO_ADVISORY_WARNINGS", "1")
+os.environ.setdefault("HF_HUB_VERBOSITY", "error")
+os.environ.setdefault("HF_HUB_DISABLE_PROGRESS_BARS", "1")
+
 CACHE_DIR = AGENT_DIR / "cache"            # raw NPS responses (disk cache, DEMO_KEY is rate limited)
 STATE_DIR = AGENT_DIR / "state"            # runtime output (git-ignored)
 CARDS_DIR = STATE_DIR / "cards"            # published TrailCards

@@ -1,0 +1,26 @@
+13:25:31.869 [worker] warming up Tinker sampling client for qwen3.5-4b-trailtruth-lora ...
+13:25:37.085 [worker] ServiceClient initialized for session 0495336d-81d0-503f-aa4a-b0c246ea403b
+13:25:51.240 [worker] Tinker ready in 19.4s
+13:25:55.313 [worker] worker pid=6212 up: temporal=localhost:7233 queue=trailtruth provider=tinker chaos=ON sentry=off
+13:25:57.068 [worker] [fetch_alerts] park=havo attempt=1
+13:25:57.072 [worker] [fetch_alerts] park=chch attempt=1
+13:25:57.074 [worker] [fetch_alerts] park=yell attempt=1
+13:25:57.078 [worker] [fetch_alerts] park=chch OK: 2 alerts (source=cache, attempt 1)
+13:25:57.081 [worker] [fetch_alerts] park=yell OK: 7 alerts (source=cache, attempt 1)
+13:25:57.094 [worker] [fetch_alerts] park=zion attempt=1
+13:25:57.280 [worker] [fetch_alerts] park=havo attempt=1 FAILED: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> Temporal will retry with backoff
+13:25:57.285 [worker] [fetch_alerts] park=zion attempt=1 FAILED: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> Temporal will retry with backoff
+13:25:58.298 [worker] [fetch_alerts] park=zion attempt=2
+13:25:58.300 [worker] [fetch_alerts] park=zion OK: 5 alerts (source=cache, attempt 2)
+13:25:58.315 [worker] [fetch_alerts] park=havo attempt=2
+13:25:58.518 [worker] [fetch_alerts] park=havo attempt=2 FAILED: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> Temporal will retry with backoff
+13:26:00.571 [worker] [fetch_alerts] park=havo attempt=3
+13:26:00.573 [worker] [fetch_alerts] park=havo OK: 9 alerts (source=cache, attempt 3)
+13:26:00.630 [worker] [classify_alert] E6380F1D attempt=1 FAILED: InvalidModelJSON: model returned invalid JSON: '{"hazard_type": "wildlife", "sev' (chaos) -> retry
+13:26:00.632 [worker] [classify_alert] C8F694F3 attempt=1 model hung (chaos) - no heartbeat -> heartbeat timeout
+13:26:04.067 [worker] [classify_alert] E6380F1D OK on attempt 2 -> no_go (geologic)
+13:26:09.081 [worker] [classify_alert] 00D47802 attempt=1 model hung (chaos) - no heartbeat -> heartbeat timeout
+13:26:09.720 [worker] [classify_alert] C8F694F3 OK on attempt 2 -> no_go (geologic)
+13:26:17.905 [worker] [classify_alert] 00D47802 OK on attempt 2 -> no_go (construction)
+13:26:22.625 [worker] [compose_card] card_2026-10-10_havo-chch-yell-zion overall=no_go parks=havo:no_go, chch:caution, yell:no_go, zion:no_go
+13:26:22.659 [worker] [publish_card] wrote agent/state/cards/card_2026-10-10_havo-chch-yell-zion.json

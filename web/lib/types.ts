@@ -122,6 +122,11 @@ export interface WorkflowRun {
   card_id?: string | null;
   retries?: number;
   fixture?: boolean;
+  /** Temporal worker identities that executed activities for this run. */
+  workers?: string[];
+  /** True when the run survived a worker crash and resumed from event history. */
+  resumed_after_crash?: boolean;
+  history_events?: number;
 }
 
 export type ModelRole = "teacher" | "base" | "base_guided" | "lora" | "heuristic" | (string & {});

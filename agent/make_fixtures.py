@@ -16,7 +16,7 @@ from datetime import datetime, timedelta, timezone
 
 from agent.config import CACHE_DIR, FIXTURES_DIR, WEB_FIXTURES_DIR
 from agent import heuristic, nps
-from agent.compose import compose_card, worst
+from agent.compose import _hiker_decision, compose_card, worst
 from agent.model import to_processed
 from shared.schema import TrailCard
 
@@ -59,7 +59,7 @@ def build_park_index() -> dict[str, dict]:
 def parks_summary(idx: dict[str, dict], processed) -> list[dict]:
     by = defaultdict(list)
     for a in processed:
-        by[a.park_code].append(a.verdict.decision)
+        by[a.park_code].append(_hiker_decision(a))
     out = []
     for code, info in sorted(idx.items(), key=lambda kv: (-len(by.get(kv[0], [])), kv[1]["park_name"])):
         out.append({
@@ -160,7 +160,9 @@ def real_runs() -> tuple[list[dict], dict | None, dict | None]:
             runs.append(r)
     if not runs:
         return [], None, None
-    runs.sort(key=lambda r: r.get("started_at") or "", reverse=True)
+    # prefer runs where the real LoRA model answered, then newest
+    runs.sort(key=lambda r: ("lora" in ((r.get("card") or {}).get("model") or ""), r.get("started_at") or ""),
+              reverse=True)
 
     def retries(r):
         return sum(max(0, s["attempt"] - 1) for s in r["steps"]) + sum(len(s.get("attempt_errors", []))
@@ -169,7 +171,7 @@ def real_runs() -> tuple[list[dict], dict | None, dict | None]:
     picked: list[tuple[str, dict]] = []
     chaos = max((r for r in runs if any(s.get("attempt_errors") for s in r["steps"]) and
                  any(s["name"].startswith("fetch_alerts") and s["attempt"] > 1 for s in r["steps"])),
-                key=retries, default=None)
+                key=lambda r: ("lora" in ((r.get("card") or {}).get("model") or ""), retries(r)), default=None)
     if chaos:
         picked.append(("chaos: NPS 503s + model timeouts/invalid JSON, retried by Temporal", chaos))
     crash = next((r for r in runs if r.get("resumed_after_crash") and
@@ -191,7 +193,8 @@ def real_runs() -> tuple[list[dict], dict | None, dict | None]:
     for label, r in picked:
         r = dict(r)
         card = r.pop("card", None)
-        r.update(label=label, fixture=True, source="captured from a real Temporal dev-server run")
+        r.update(label=label, fixture=True, source="captured from a real Temporal dev-server run",
+                 model=(card or {}).get("model"))
         r.pop("workers", None)
         out.append(r)
     chaos_status = None
@@ -205,19 +208,30 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--card", nargs="+", default=["havo", "chch", "yell"])
     ap.add_argument("--real-runs", action="store_true", help="use captured runs from agent/state/runs")
+    ap.add_argument("--heuristic", action="store_true", help="re-classify with the heuristic instead of using "
+                                                             "agent/state/processed (refresh output)")
     args = ap.parse_args()
 
     raw = load_alerts()
     idx = build_park_index()
     names = {k: v["park_name"] for k, v in idx.items()}
     processed = []
-    for r in raw:
-        v, ms, model = heuristic.classify(r.get("title", ""), r.get("description", ""))
-        processed.append(to_processed(r, v, ms, model, names))
+    from agent.config import ML_EVAL, PROCESSED_DIR
+    from shared.schema import ProcessedAlert
+
+    pf = PROCESSED_DIR / "alerts.json"
+    if not args.heuristic and pf.exists():
+        processed = [ProcessedAlert.model_validate(a) for a in json.loads(pf.read_text(encoding="utf-8"))]
+        print(f"alerts <- agent/state/processed/alerts.json (agent.refresh), models="
+              f"{dict(Counter(a.model for a in processed))}")
+    else:
+        for r in raw:
+            v, ms, model = heuristic.classify(r.get("title", ""), r.get("description", ""))
+            processed.append(to_processed(r, v, ms, model, names))
     processed.sort(key=lambda a: (a.park_code, -a.verdict.severity, a.title))
     print(f"{len(processed)} alerts, decisions={Counter(a.verdict.decision for a in processed)}")
     agree = Counter((a.nps_category, a.verdict.decision) for a in processed)
-    print("category x heuristic decision:", dict(agree))
+    print("category x decision:", dict(agree))
 
     now = datetime.now(timezone.utc).replace(microsecond=0)
     card = compose_card(args.card, names, [a for a in processed if a.park_code in args.card],
@@ -232,12 +246,23 @@ def main():
             print(f"runs.json <- {len(rr)} real Temporal runs: " + "; ".join(r["label"] for r in rr))
         if chaos_status:
             card_status = chaos_status
+            old = card_status.get("card")
+            if old:  # re-aggregate with the current compose.py rules (deterministic) from the same alerts
+                ids = {i for p_ in old["parks"] for i in p_["alert_ids"]}
+                fresh = compose_card(old["parks"] and [p_["park_code"] for p_ in old["parks"]], names,
+                                     [a for a in processed if a.id in ids], old["workflow_id"], old["generated_at"])
+                if fresh.model_dump() != old:
+                    card_status["card"] = fresh.model_dump()
+                    card_status["card_note"] = ("card re-aggregated with the current compose.py rules from the "
+                                                "same alert ids (LoRA verdicts from agent.refresh)")
         from agent.config import RUNS_DIR
 
         for p in sorted(RUNS_DIR.glob("*.json"), key=lambda p: p.stat().st_mtime, reverse=True):
             r = json.loads(p.read_text(encoding="utf-8"))
             c = r.get("card")
-            if c and [x["park_code"] for x in c["parks"]] == args.card and not r.get("mode"):
+            if c and [x["park_code"] for x in c["parks"]] == args.card and not r.get("mode") and                     ("lora" in c.get("model", "") or not any("lora" in (json.loads(q.read_text(encoding="utf-8"))
+                                                                         .get("card") or {}).get("model", "")
+                                                             for q in RUNS_DIR.glob("*.json"))):
                 card = TrailCard.model_validate(c)
                 print(f"card.json <- real run {r['workflow_id']}")
                 break
@@ -250,7 +275,7 @@ def main():
         "card.json": card.model_dump(),
         "card_status.json": card_status,
         "runs.json": runs,
-        "eval.json": ev,
+        "eval.json": json.loads(ML_EVAL.read_text(encoding="utf-8")) if ML_EVAL.exists() else ev,
     }
     WEB_FIXTURES_DIR.mkdir(parents=True, exist_ok=True)
     for fn, data in out.items():

@@ -19,7 +19,7 @@ function runFlags(run: WorkflowRun) {
   const flags = run.steps.map(stepFlag);
   return {
     retries: run.retries ?? run.steps.filter((s) => s.attempt > 1).length,
-    resumed: flags.includes("resumed"),
+    resumed: !!run.resumed_after_crash || flags.includes("resumed"),
   };
 }
 
@@ -199,12 +199,28 @@ export function RunsView() {
               }
             >
               <div className="flex flex-col gap-6">
-                <dl className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                {runFlags(selected).resumed && (
+                  <div className="flex items-start gap-3 rounded-xl border border-sky bg-sky-surface px-3 py-2.5">
+                    <RiRestartLine className="mt-0.5 size-4 shrink-0 text-sky" aria-hidden />
+                    <div className="flex min-w-0 flex-col gap-0.5">
+                      <p className="text-body-2-semibold text-text-primary">Resumed after worker crash</p>
+                      <p className="text-caption-1-regular break-words text-text-secondary">
+                        A worker died mid-run. Temporal replayed the event history on a fresh worker and continued; completed activities were not re-run.
+                        {selected.workers?.length ? (
+                          <span className="font-mono"> {selected.workers.join(" → ")}</span>
+                        ) : null}
+                      </p>
+                    </div>
+                  </div>
+                )}
+                <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
                   {[
                     { k: "Status", v: selected.status },
                     { k: "Duration", v: formatDuration(durationMs(selected.started_at, selected.ended_at)) },
                     { k: "Activities", v: String(selected.steps.length) },
                     { k: "Total attempts", v: String(selected.steps.reduce((n, s) => n + Math.max(1, s.attempt), 0)) },
+                    ...(selected.history_events != null ? [{ k: "History events", v: String(selected.history_events) }] : []),
+                    ...(selected.workers?.length ? [{ k: selected.workers.length > 1 ? "Workers" : "Worker", v: String(selected.workers.length) }] : []),
                   ].map((x) => (
                     <div key={x.k} className="rounded-xl bg-background-secondary-default px-3 py-2">
                       <dt className="text-caption-1-medium text-text-tertiary">{x.k}</dt>

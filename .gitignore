@@ -10,3 +10,5 @@ out/
 agent/state/
 data/raw/cache/
 .DS_Store
+*.tsbuildinfo
+next-env.d.ts

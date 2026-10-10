@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Before and after fine-tuning</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500;600;700&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<style>
+  .alert { margin-top: 20px; border: 1px solid var(--grid); background: #fff; border-radius: 10px; overflow: hidden; }
+  .alert .bar { display: flex; justify-content: space-between; align-items: center; background: var(--overbar); color: #f1ede4; padding: 8px 16px; font-family: var(--mono); font-size: 11.5px; letter-spacing: .05em; text-transform: uppercase; }
+  .alert .body { padding: 14px 16px 15px; }
+  .alert h2 { font-size: 16px; font-weight: 650; color: var(--ink); }
+  .alert p { margin-top: 6px; font-size: 14px; line-height: 1.55; color: var(--ink-2); }
+  .gold { display: flex; gap: 10px; align-items: center; margin-top: 12px; padding-top: 11px; border-top: 1px dashed var(--granite-300); font-size: 12.5px; color: var(--ink-2); }
+  .gold b { color: var(--ink); font-weight: 600; }
+  .flow { display: flex; justify-content: center; gap: 0; margin: 8px 0 6px; font-size: 12px; color: var(--ink-3); }
+  .flow span { display: inline-flex; align-items: center; gap: 6px; }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .col { border: 1px solid var(--grid); border-radius: 10px; background: #fff; overflow: hidden; display: flex; flex-direction: column; }
+  .col pre { flex: 1; }
+  .col .head { padding: 11px 14px 10px; border-bottom: 1px solid var(--grid); }
+  .col .name { font-size: 14px; font-weight: 650; color: var(--ink); }
+  .col .meta { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+  .verdict { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; font-weight: 650; font-size: 13px; }
+  .pill { display: inline-flex; align-items: center; gap: 7px; padding: 4px 10px 4px 8px; border-radius: 999px; font-family: var(--mono); font-size: 12.5px; font-weight: 700; letter-spacing: .04em; }
+  .pill.caution { background: var(--caution-surface); color: var(--caution-text); border: 1px solid var(--caution-border); }
+  .pill.no_go { background: var(--nogo-surface); color: var(--nogo-text); border: 1px solid var(--nogo-border); }
+  .judge { font-size: 12.5px; font-weight: 600; }
+  .judge.bad { color: var(--nogo-text); }
+  .judge.good { color: var(--go-text); }
+  pre { font-family: var(--mono); font-size: 12px; line-height: 1.6; color: var(--ink-2); padding: 12px 14px 14px; white-space: pre-wrap; background: #fdfcf9; border-top: 1px solid var(--grid); }
+  pre .k { color: #5b544b; }
+  pre .s { color: #1c5239; }
+  pre .n { color: #3f7fb0; }
+  pre .hl { display: inline; border-radius: 3px; padding: 1px 3px; margin: 0 -3px; }
+  pre .hl.caution { background: var(--caution-surface); color: var(--caution-text); font-weight: 700; box-shadow: inset 0 0 0 1px var(--caution-border); }
+  pre .hl.no_go { background: var(--nogo-surface); color: var(--nogo-text); font-weight: 700; box-shadow: inset 0 0 0 1px var(--nogo-border); }
+  pre .diff { font-weight: 700; color: var(--ink); }
+  .foot { margin-top: 12px; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
+</style>
+</head>
+<body>
+<div id="frame">
+  <div class="kicker">One held-out test alert · same model, same prompt, temperature 0</div>
+  <h1>The base model read every word correctly and still sent you to a trail you can't reach</h1>
+  <div class="alert">
+    <div class="bar"><span id="park"></span><span>NPS alert · raw text</span></div>
+    <div class="body">
+      <h2 id="atitle"></h2>
+      <p id="adesc"></p>
+      <div class="gold" id="gold"></div>
+    </div>
+  </div>
+  <div class="flow"><span>title + description only <svg width="12" height="14" viewBox="0 0 12 14"><path d="M6 1v11M1.5 7.5 6 12l4.5-4.5" fill="none" stroke="#786f64" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> each model returns strict JSON</span></div>
+  <div class="cols" id="cols"></div>
+  <p class="foot" id="foot"></p>
+  <div class="src"><span>Source: ml/results/predictions.jsonl (roles base, lora, teacher) · data/raw/alerts.json</span><span class="brand">TrailTruth</span></div>
+</div>
+<script src="data.js"></script>
+<script src="common.js"></script>
+<script>
+(function () {
+  const E = TT.example;
+  const esc = s => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;");
+  document.getElementById("park").textContent = E.park_name;
+  document.getElementById("atitle").textContent = E.title;
+  document.getElementById("adesc").textContent = E.description;
+  const nice = { go: "GO", caution: "CAUTION", no_go: "NO-GO" };
+  document.getElementById("gold").innerHTML =
+    `<span>Ranger filed it as <b>${E.category}</b> → answer key <b>${TTV.icon(E.expected, 12)} ${nice[E.expected].toLowerCase()}</b>. The model never sees the category.</span>`;
+  const other = { base: E.lora, lora: E.base };
+  function json(v, role) {
+    const o = other[role];
+    const kv = (k, valHtml, diff) => `  <span class="k">"${k}"</span>: ${diff ? `<span class="diff">${valHtml}</span>` : valHtml}`;
+    const str = x => `<span class="s">"${esc(x)}"</span>`;
+    const lines = [];
+    lines.push(kv("hazard_type", str(v.hazard_type), v.hazard_type !== o.hazard_type));
+    lines.push(kv("severity", `<span class="n">${v.severity}</span>`, v.severity !== o.severity));
+    lines.push(`  <span class="k">"trails_affected"</span>: [\n` + v.trails_affected.map(t => "    " + str(t)).join(",\n") + `\n  ]`);
+    lines.push(kv("is_closed", `<span class="n">${v.is_closed}</span>`, v.is_closed !== o.is_closed));
+    lines.push(`  <span class="k">"decision"</span>: <span class="hl ${v.decision}">"${v.decision}"</span>`);
+    lines.push(`  <span class="k">"reason"</span>: ${str(v.reason)}`);
+    return "{\n" + lines.join(",\n") + "\n}";
+  }
+  const col = (role, name, meta) => {
+    const v = E[role], ok = v.decision === E.expected;
+    return `<div class="col"><div class="head"><div class="name">${name}</div><div class="meta">${meta}</div></div>
+      <div class="verdict"><span class="pill ${v.decision}">${TTV.icon(v.decision, 12)} ${nice[v.decision]}</span>
+      <span class="judge ${ok ? "good" : "bad"}">${ok ? "✓ matches the ranger" : "✗ ranger says " + nice[E.expected].toLowerCase()}</span></div>
+      <pre>${json(v, role)}</pre></div>`;
+  };
+  document.getElementById("cols").innerHTML =
+    col("base", "Qwen3.5-4B base", "before fine-tuning") +
+    col("lora", "Qwen3.5-4B + TrailTruth LoRA", "after $0.41 of training on Tinker");
+  const same = JSON.stringify(E.teacher) === JSON.stringify(E.lora);
+  document.getElementById("foot").innerHTML =
+    `Bold marks the fields that differ. ${same ? "The LoRA's answer is identical, field for field, to the 397B teacher's on this alert." : `The 397B teacher said ${E.teacher.decision}.`} ` +
+    `Both models agree the trail is closed (<span class="mono">is_closed: true</span>). Only the fine-tuned one turns that into the decision a hiker needs.`;
+})();
+</script>
+</body>
+</html>

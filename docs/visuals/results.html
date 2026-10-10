@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Decision accuracy by model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500;600;700&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<style>
+  .chart { margin-top: 22px; }
+  .foot { margin-top: 10px; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
+</style>
+</head>
+<body>
+<div id="frame">
+  <div class="kicker">Held-out test · 126 NPS alerts · graded by rangers' labels</div>
+  <h1>Fine-tuning moved the 4B model from 0.643 to 0.746, at the same $0.13 per 1,000 alerts</h1>
+  <p class="sub">Decision accuracy (go / caution / no-go) against the category a ranger filed each alert under. One attempt per alert, temperature 0.</p>
+  <div class="chart" id="chart"></div>
+  <p class="foot" id="foot"></p>
+  <div class="src"><span>Source: ml/results/eval.json · cost = measured tokens × Tinker list prices</span><span class="brand">TrailTruth</span></div>
+</div>
+<script src="data.js"></script>
+<script src="common.js"></script>
+<script>
+const M = TT.models;
+const rows = [
+  { r: "lora", name: "Qwen3.5-4B + TrailTruth LoRA", sub: "fine-tuned on Tinker to copy the teacher" },
+  { r: "base_guided", name: "Qwen3.5-4B base + long prompt", sub: "given the teacher's full rules prompt" },
+  { r: "teacher", name: "Teacher: Qwen3.5-397B-A17B", sub: "labelled the training data; not fine-tuned" },
+  { r: "base", name: "Qwen3.5-4B base", sub: "same short prompt as the LoRA" },
+  { r: "heuristic", name: "Keyword heuristic", sub: "no model" },
+].map(d => ({ ...d, acc: M[d.r].decision_acc, cost: M[d.r].cost_per_1k_alerts_usd }));
+rows.sort((a, b) => b.acc - a.acc);
+
+const W = 718, labelW = 250, x0 = labelW, xMax = 0.8, barW = 330, costX = W;
+const top0 = 30;
+const rowH = 56, barH = 22, H = top0 + rows.length * rowH + 28;
+const sx = v => x0 + (v / xMax) * barW;
+let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Decision accuracy: ${rows.map(r => r.name + ' ' + r.acc.toFixed(3)).join(', ')}">`;
+// column heads
+s += `<text x="${x0}" y="12" font-size="11.5" font-weight="600" fill="#786f64" letter-spacing="0.04em">DECISION ACCURACY</text>`;
+s += `<text x="${costX}" y="12" text-anchor="end" font-size="11.5" font-weight="600" fill="#786f64" letter-spacing="0.04em">$ / 1K ALERTS</text>`;
+// grid
+for (let v = 0; v <= xMax + 1e-9; v += 0.2) {
+  const x = sx(v);
+  s += `<line x1="${x}" y1="${top0 - 6}" x2="${x}" y2="${top0 + rows.length * rowH - 6}" stroke="${v === 0 ? '#a8a094' : '#e7e3db'}" stroke-width="1"/>`;
+  s += `<text x="${x}" y="${top0 + rows.length * rowH + 12}" text-anchor="middle" font-size="11" fill="#786f64" class="mono" font-family="JetBrains Mono, monospace">${v.toFixed(1)}</text>`;
+}
+const base = M.base.decision_acc;
+rows.forEach((d, i) => {
+  const yMid = top0 + i * rowH + rowH / 2 - 6;
+  const hi = d.r === "lora";
+  s += `<text x="0" y="${yMid - 3}" font-size="14" font-weight="${hi ? 650 : 500}" fill="#1e1c19">${d.name}</text>`;
+  s += `<text x="0" y="${yMid + 14}" font-size="12" fill="#786f64">${d.sub}</text>`;
+  const x1 = sx(d.acc), y = yMid - barH / 2, r = 4;
+  const col = hi ? "#2f7f56" : "#c4bdb1";
+  s += `<path d="M${x0},${y} H${x1 - r} Q${x1},${y} ${x1},${y + r} V${y + barH - r} Q${x1},${y + barH} ${x1 - r},${y + barH} H${x0} Z" fill="${col}"/>`;
+  s += `<text x="${x1 + 8}" y="${yMid + 5}" font-size="14" font-weight="${hi ? 700 : 500}" fill="${hi ? '#1e1c19' : '#5b544b'}" font-family="JetBrains Mono, monospace">${d.acc.toFixed(3)}</text>`;
+  if (hi) {
+    const delta = (d.acc - base).toFixed(3);
+    s += `<text x="${x1 + 8}" y="${yMid + 22}" font-size="11.5" font-weight="600" fill="#236747">+${delta} vs. base</text>`;
+  }
+  s += `<text x="${costX}" y="${yMid + 5}" text-anchor="end" font-size="14" font-weight="${hi ? 700 : 500}" fill="${hi ? '#1e1c19' : '#5b544b'}" font-family="JetBrains Mono, monospace">${TTV.money(d.cost)}</text>`;
+  if (i < rows.length - 1) s += `<line x1="0" x2="${W}" y1="${top0 + (i + 1) * rowH - 6}" y2="${top0 + (i + 1) * rowH - 6}" stroke="#efece6"/>`;
+});
+s += `</svg>`;
+document.getElementById("chart").innerHTML = s;
+const ratio = (M.teacher.cost_per_1k_alerts_usd / M.lora.cost_per_1k_alerts_usd).toFixed(0);
+document.getElementById("foot").innerHTML =
+  `Read with care: the LoRA was trained toward the rangers' labels and the teacher never was, so beating the teacher is mostly calibration to how NPS files alerts. The fair comparison is the LoRA against its own base. Against the teacher, it's most of the reading at about 1/${ratio} of the price.`;
+</script>
+</body>
+</html>

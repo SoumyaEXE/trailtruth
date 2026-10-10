@@ -23,7 +23,7 @@ import { NavButton } from "@/components/trail/nav-button";
 import { DECISION_STYLES, DecisionBadge, DecisionGlyph } from "@/components/trail/decision";
 import { StepTimeline } from "@/components/trail/step-timeline";
 import { Topo } from "@/components/trail/topo";
-import { getAlerts, getParks } from "@/lib/api";
+import { getAlerts, getLatestCard, getParks } from "@/lib/api";
 import { DECISION_RANK } from "@/lib/compose";
 import { DECISION_LABEL, DECISION_LONG, formatDate, shortParkName, stepLabel } from "@/lib/format";
 import { useWatchlist } from "@/lib/store";
@@ -58,10 +58,14 @@ function CountTile({ decision, count, total }: { decision: Decision; count: numb
 function ParkRow({
   park,
   alerts,
+  decision,
+  headline,
   onRemove,
 }: {
   park: Park;
   alerts: ProcessedAlert[];
+  decision: Decision;
+  headline?: string;
   onRemove: () => void;
 }) {
   const sorted = [...alerts].sort(
@@ -69,7 +73,6 @@ function ParkRow({
   );
   const top = sorted[0];
   const closures = alerts.filter((a) => a.verdict.is_closed).length;
-  const decision: Decision = park.worst_decision ?? "go";
   return (
     <li className="group relative flex items-start gap-3 rounded-2xl border border-border-button-default bg-background-primary-default p-3.5 transition-colors hover:border-border-button-hover sm:p-4">
       <DecisionGlyph decision={decision} className="mt-0.5 size-7" title={DECISION_LABEL[decision]} />
@@ -81,7 +84,7 @@ function ParkRow({
           </span>
         </div>
         <p className="line-clamp-2 text-body-2-regular text-text-secondary">
-          {top ? top.verdict.reason || top.title : "No active alerts — nothing between you and the trail."}
+          {headline ?? (top ? top.verdict.reason || top.title : "No active alerts — nothing between you and the trail.")}
         </p>
         <div className="mt-1 flex flex-wrap items-center gap-2">
           <DecisionBadge decision={decision} size="sm" />
@@ -170,7 +173,7 @@ function GenerationPanel({ gen, parkCount }: { gen: ReturnType<typeof useCardGen
           )}
           {gen.error && <p className="text-body-2-medium text-nogo-text">{gen.error}</p>}
         </div>
-        <aside className="flex flex-col gap-3 rounded-2xl bg-background-secondary-default p-4">
+        <aside className="flex flex-col gap-3 self-start rounded-2xl bg-background-secondary-default p-4">
           <p className="tt-eyebrow text-text-tertiary">Durable by design</p>
           <p className="text-body-2-regular text-text-secondary">
             Each step is a Temporal activity. If the NPS API flakes or a worker dies, the workflow retries or resumes from history. It never starts over and never double-classifies.
@@ -200,6 +203,10 @@ export function OverviewView() {
   const alerts = useLoad(() => getAlerts(), "alerts");
   const { list, add, remove } = useWatchlist();
   const gen = useCardGeneration();
+  const latest = useLoad(getLatestCard, gen.phase === "done" ? `latest-${gen.workflowId}` : "latest");
+  // The card's per-park call (which weighs closures against what's still open) wins over the raw worst alert.
+  const cardPark = (code: string) => (gen.status?.card ?? latest.data?.card)?.parks.find((p) => p.park_code === code);
+  const decisionFor = (p: Park): Decision => cardPark(p.park_code)?.decision ?? p.worst_decision ?? "go";
 
   const parkByCode = useMemo(() => new Map((parks.data ?? []).map((p) => [p.park_code, p])), [parks.data]);
   const watched = list.map((c) => parkByCode.get(c)).filter((p): p is Park => !!p);
@@ -220,11 +227,8 @@ export function OverviewView() {
   }, [alerts.data]);
 
   const counts = { go: 0, caution: 0, no_go: 0 } as Record<Decision, number>;
-  watched.forEach((p) => (counts[p.worst_decision ?? "go"] += 1));
-  const overall: Decision = watched.reduce<Decision>(
-    (w, p) => (DECISION_RANK[p.worst_decision ?? "go"] > DECISION_RANK[w] ? (p.worst_decision ?? "go") : w),
-    "go",
-  );
+  watched.forEach((p) => (counts[decisionFor(p)] += 1));
+  const overall: Decision = watched.reduce<Decision>((w, p) => (DECISION_RANK[decisionFor(p)] > DECISION_RANK[w] ? decisionFor(p) : w), "go");
   const totalAlerts = watched.reduce((n, p) => n + p.alert_count, 0);
   const running = gen.phase === "starting" || gen.phase === "running";
   const loading = parks.loading;
@@ -335,7 +339,14 @@ export function OverviewView() {
         ) : watched.length ? (
           <ul className="grid gap-3 md:grid-cols-2">
             {watched.map((p) => (
-              <ParkRow key={p.park_code} park={p} alerts={alertsByPark.get(p.park_code) ?? []} onRemove={() => remove(p.park_code)} />
+              <ParkRow
+                key={p.park_code}
+                park={p}
+                alerts={alertsByPark.get(p.park_code) ?? []}
+                decision={decisionFor(p)}
+                headline={cardPark(p.park_code)?.headline}
+                onRemove={() => remove(p.park_code)}
+              />
             ))}
           </ul>
         ) : (

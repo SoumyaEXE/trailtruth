@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ML pipeline spend</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500;600;700&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<style>
+  .wrap { display: grid; grid-template-columns: 170px 1fr; gap: 28px; margin-top: 22px; align-items: start; }
+  .hero b { display: block; font-size: 52px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; color: var(--ink); }
+  .hero span { display: block; margin-top: 8px; font-size: 13px; line-height: 1.45; color: var(--ink-2); }
+  .hero .then { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--grid); }
+  .hero .then b { font-size: 26px; }
+  .group { font-size: 11px; font-weight: 600; letter-spacing: .06em; color: var(--ink-3); text-transform: uppercase; margin: 4px 0 6px; display: flex; justify-content: space-between; }
+  .group + .row { border-top: none; }
+  .row { display: grid; grid-template-columns: 1fr 150px 64px; gap: 14px; align-items: center; padding: 9px 0; border-top: 1px solid #efece6; }
+  .row .l b { display: block; font-size: 13.5px; font-weight: 600; color: var(--ink); }
+  .row .l span { display: block; font-size: 11.5px; color: var(--ink-3); margin-top: 1px; font-family: var(--mono); }
+  .track { height: 12px; border-radius: 0 4px 4px 0; position: relative; }
+  .fill { height: 12px; border-radius: 0 4px 4px 0; min-width: 2px; }
+  .amt { font-family: var(--mono); font-variant-numeric: tabular-nums; text-align: right; font-size: 13.5px; color: var(--ink); }
+  .total { display: grid; grid-template-columns: 1fr 64px; gap: 14px; padding: 10px 0 0; margin-top: 4px; border-top: 1.5px solid var(--ink); font-weight: 700; font-size: 14px; }
+  .total .amt { font-weight: 700; font-size: 14px; }
+  .sp { height: 12px; }
+</style>
+</head>
+<body>
+<div id="frame">
+  <div class="kicker">Spend · teacher labelling, training and evaluation on Tinker</div>
+  <h1 id="title"></h1>
+  <p class="sub">Labelling once with the big model was the biggest line. After that, the fine-tuned 4B reads alerts at the base model's price.</p>
+  <div class="wrap">
+    <div class="hero" id="hero"></div>
+    <div id="list"></div>
+  </div>
+  <div class="src"><span id="note"></span><span class="brand">TrailTruth</span></div>
+</div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const S = TT.spend.stages, tot = TT.spend.total;
+  const pct = v => Math.round((v / tot) * 100);
+  document.getElementById("title").textContent =
+    `The whole ML pipeline cost $${tot.toFixed(2)}, and ${pct(S.teacher_label.usd)}% of it was the teacher labelling ${TT.spend.teacher_rows} alerts`;
+  const build = [
+    ["teacher_label", "Teacher labels every alert", `Qwen3.5-397B-A17B · ${TT.spend.teacher_rows} alerts`],
+    ["train_tinker", "LoRA fine-tune on Tinker", `Qwen3.5-4B · ${TT.train.epochs} epochs · ${TT.train.steps} steps`],
+  ];
+  const meas = [
+    ["eval_teacher", "Eval: teacher", `${TT.test_size} test alerts`],
+    ["eval_base_guided", "Eval: base + long prompt", `${TT.test_size} test alerts`],
+    ["eval_lora", "Eval: 4B + LoRA", `${TT.test_size} test alerts`],
+    ["eval_base", "Eval: 4B base", `${TT.test_size} test alerts`],
+  ];
+  const max = S.teacher_label.usd;
+  const row = ([k, l, sub], col) => `<div class="row"><div class="l"><b>${l}</b><span>${sub}</span></div>
+     <div class="track"><div class="fill" style="width:${(S[k].usd / max) * 100}%;background:${col}"></div></div>
+     <div class="amt">$${S[k].usd.toFixed(4)}</div></div>`;
+  const sum = arr => arr.reduce((a, [k]) => a + S[k].usd, 0);
+  document.getElementById("list").innerHTML =
+    `<div class="group"><span>Build the student</span><span class="mono">$${sum(build).toFixed(2)}</span></div>` + build.map(r => row(r, "#2f7f56")).join("") +
+    `<div class="sp"></div><div class="group"><span>Measure it (126-alert test, four models)</span><span class="mono">$${sum(meas).toFixed(2)}</span></div>` + meas.map(r => row(r, "#a8a094")).join("") +
+    `<div class="total"><span>Total</span><span class="amt">$${tot.toFixed(4)}</span></div>`;
+  const lora = TT.models.lora.cost_per_1k_alerts_usd, teach = TT.models.teacher.cost_per_1k_alerts_usd;
+  document.getElementById("hero").innerHTML =
+    `<b>$${tot.toFixed(2)}</b><span>one-time, teacher labels + training + evaluation</span>` +
+    `<div class="then"><b>$${lora.toFixed(2)}</b><span>per 1,000 alerts after that, with the LoRA (teacher: $${teach.toFixed(2)})</span></div>`;
+  document.getElementById("note").textContent = "Source: ml/results/spend.json, eval.json · " + TT.spend.note;
+})();
+</script>
+</body>
+</html>

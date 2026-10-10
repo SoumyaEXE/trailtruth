@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Crash and resume</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500;600;700&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<style>
+  .chart { margin-top: 22px; }
+  .tiles { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-top: 18px; }
+  .tile { border: 1px solid var(--grid); background: #fff; border-radius: 8px; padding: 10px 12px 11px; }
+  .tile b { display: block; font-size: 24px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink); line-height: 1.1; }
+  .tile span { display: block; margin-top: 4px; font-size: 12px; line-height: 1.35; color: var(--ink-2); }
+  .tile.key { border-color: var(--pine-100); background: var(--pine-50); }
+  .foot { margin-top: 12px; font-size: 12px; line-height: 1.5; color: var(--ink-3); }
+</style>
+</head>
+<body>
+<div id="frame">
+  <div class="kicker" id="kicker"></div>
+  <h1>We hard-killed the worker mid-run. A fresh process picked up exactly where it died.</h1>
+  <p class="sub" id="sub"></p>
+  <div class="chart" id="chart"></div>
+  <div class="tiles" id="tiles"></div>
+  <p class="foot" id="foot"></p>
+  <div class="src"><span>Source: agent/demo_logs/04_crash_resume.txt (python -m agent.demo_crash)</span><span class="brand">TrailTruth</span></div>
+</div>
+<script src="data.js"></script>
+<script>
+(function () {
+  const K = TT.crash;
+  const ev = K.worker_events;
+  const find = re => ev.find(e => re.test(e.msg));
+  const retries = ev.filter(e => /OK on attempt 2/.test(e.msg));
+  const w2up = ev.find(e => e.w === 2 && /worker pid=/.test(e.msg));
+  const compose = find(/\[compose_card\]/), publish = find(/\[publish_card\]/);
+  const parks = K.parks.map(p => `${p} ${K.alerts_per_park[p]}`).join(" · ");
+  document.getElementById("kicker").textContent = `Temporal crash test · ${K.workflow_id}`;
+  document.getElementById("sub").textContent =
+    `${K.parks.length} parks (${parks} alerts), ${K.total_alerts} classify_alert activities. Worker #1 was killed with no graceful shutdown after ${K.done_before_crash} of ${K.total_alerts}. Temporal kept the workflow RUNNING; worker #2 replayed the event history.`;
+
+  const W = 718, LW = 150, x0 = LW, x1 = W - 8, tMax = 18.5;
+  const sx = t => x0 + (t / tMax) * (x1 - x0);
+  const lanes = ["Worker #1", "Worker #2", "Workflow", "fetch_alerts ×3", "classify_alert ×" + K.total_alerts, "compose → publish"];
+  const subs = [`pid ${K.worker1_pid}`, `pid ${K.worker2_pid}, fresh process`, "Temporal server", "", "one activity per alert", ""];
+  const top0 = 18, LH = 48, H = top0 + lanes.length * LH + 40;
+  const ly = i => top0 + i * LH + LH / 2;
+  let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="Timeline: worker 1 killed at t+${K.t_kill}s, worker 2 started at t+${K.t_worker2_start}s, ${K.retried} activities retried, workflow completed by t+${K.t_done}s">`;
+  s += `<defs><pattern id="hatch" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="7" stroke="#b42318" stroke-opacity="0.22" stroke-width="2.5"/></pattern></defs>`;
+  // axis grid
+  for (let t = 0; t <= 18; t += 2) {
+    s += `<line x1="${sx(t)}" x2="${sx(t)}" y1="${top0}" y2="${top0 + lanes.length * LH}" stroke="#efece6"/>`;
+    s += `<text x="${sx(t)}" y="${top0 + lanes.length * LH + 16}" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="11" fill="#786f64">${t}s</text>`;
+  }
+  s += `<text x="${x1}" y="${top0 + lanes.length * LH + 33}" text-anchor="end" font-size="11.5" fill="#786f64">seconds since the demo started (t+)</text>`;
+  // downtime band
+  s += `<rect x="${sx(K.t_kill)}" y="${top0}" width="${sx(K.t_worker2_start) - sx(K.t_kill)}" height="${lanes.length * LH}" fill="url(#hatch)"/>`;
+  s += `<rect x="${sx(K.t_kill)}" y="${top0}" width="${sx(K.t_worker2_start) - sx(K.t_kill)}" height="${lanes.length * LH}" fill="#b42318" fill-opacity="0.035"/>`;
+  // lane labels + separators
+  lanes.forEach((l, i) => {
+    const y = ly(i);
+    s += `<text x="0" y="${subs[i] ? y - 2 : y + 4.5}" font-size="13" font-weight="600" fill="#1e1c19" ${i >= 3 ? 'font-family="JetBrains Mono, monospace" font-size="12.5"' : ""}>${l}</text>`;
+    if (subs[i]) s += `<text x="0" y="${y + 14}" font-size="11.5" fill="#786f64">${subs[i]}</text>`;
+    if (i) s += `<line x1="0" x2="${W}" y1="${top0 + i * LH}" y2="${top0 + i * LH}" stroke="#e7e3db"/>`;
+  });
+  const bar = (i, a, b, fill, label, txt = "#ffffff", h = 18) => {
+    const y = ly(i) - h / 2;
+    let o = `<rect x="${sx(a)}" y="${y}" width="${Math.max(2, sx(b) - sx(a))}" height="${h}" rx="4" fill="${fill}"/>`;
+    if (label) o += `<text x="${sx(a) + 8}" y="${ly(i) + 4.5}" font-size="12" font-weight="600" fill="${txt}">${label}</text>`;
+    return o;
+  };
+  // worker 1
+  s += bar(0, K.t_worker1_start, K.t_kill, "#2f7f56", "running");
+  const kx = sx(K.t_kill), ky = ly(0);
+  s += `<g stroke="#b42318" stroke-width="3" stroke-linecap="round"><line x1="${kx - 7}" y1="${ky - 7}" x2="${kx + 7}" y2="${ky + 7}"/><line x1="${kx - 7}" y1="${ky + 7}" x2="${kx + 7}" y2="${ky - 7}"/></g>`;
+  s += `<text x="${kx + 13}" y="${ky + 4.5}" font-size="12" font-weight="650" fill="#7a1c14">killed at t+${K.t_kill.toFixed(1)}s (taskkill /F)</text>`;
+  // worker 2
+  s += bar(1, K.t_worker2_start, K.t_done, "#2f7f56", "started t+" + K.t_worker2_start + "s, replays history");
+  // workflow
+  s += bar(2, K.t_wf_start, publish.t, "#3f7fb0", "RUNNING");
+  s += `<text x="${(sx(K.t_kill) + sx(K.t_worker2_start)) / 2}" y="${ly(2) + 4.5}" text-anchor="middle" font-size="11.5" font-weight="650" fill="#ffffff">still RUNNING</text>`;
+  s += `<text x="${sx(publish.t) - 8}" y="${ly(2) + 4.5}" text-anchor="end" font-size="12" font-weight="650" fill="#ffffff">COMPLETED ✓</text>`;
+  // fetch
+  s += `<rect x="${sx(K.t_wf_start) - 2}" y="${ly(3) - 9}" width="6" height="18" rx="2" fill="#2f7f56"/>`;
+  s += `<text x="${sx(K.t_wf_start) + 10}" y="${ly(3) + 4.5}" font-size="12" fill="#1e1c19"><tspan font-weight="600">${K.total_alerts} alerts</tspan> fetched on attempt 1 (cache)</text>`;
+  // classify
+  s += bar(4, K.t_wf_start + 0.15, K.t_kill, "#2f7f56", `${K.kept} done`, "#ffffff");
+  s += `<text x="${sx(K.t_kill) + 6}" y="${ly(4) - 12}" font-size="11.5" font-weight="600" fill="#7a1c14">${K.in_flight} orphaned in flight</text>`;
+  const lastR = retries[retries.length - 1];
+  s += bar(4, w2up.t, compose.t, "#d6eadd", "", "#1e1c19");
+  retries.forEach((r, j) => {
+    const near = j > 0 && r.t - retries[j - 1].t < 0.3;
+    const nearNext = j < retries.length - 1 && retries[j + 1].t - r.t < 0.3;
+    const x = sx(r.t), y = ly(4) + (near ? 7 : nearNext ? -7 : 0);
+    s += `<polygon points="${x},${y - 8} ${x + 8},${y} ${x},${y + 8} ${x - 8},${y}" fill="#b0603a" stroke="#fbfaf6" stroke-width="2"/>`;
+  });
+  s += `<text x="${(sx(retries[0].t) + sx(lastR.t)) / 2}" y="${ly(4) + 23}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#8f3f1f">${K.retried} retried, attempt 2</text>`;
+  s += `<text x="${sx(lastR.t) + 14}" y="${ly(4) + 4.5}" font-size="11.5" fill="#1c5239" font-weight="600">+${K.after_restart - K.retried} new</text>`;
+  // compose/publish
+  s += `<rect x="${sx(compose.t) - 3}" y="${ly(5) - 9}" width="6" height="18" rx="2" fill="#2f7f56"/>`;
+  s += `<text x="${sx(compose.t) - 10}" y="${ly(5) + 4.5}" text-anchor="end" font-size="12" fill="#1e1c19">card published at t+${publish.t.toFixed(1)}s</text>`;
+  s += `<text x="${(sx(K.t_kill) + sx(K.t_worker2_start)) / 2}" y="${ly(5) + 4.5}" text-anchor="middle" font-size="11.5" font-weight="600" fill="#7a1c14">no worker</text>`;
+  s += `</svg>`;
+  document.getElementById("chart").innerHTML = s;
+
+  const tiles = [
+    [K.scheduled, "classify_alert activities scheduled, one per alert", false],
+    [0, "scheduled twice", true],
+    [K.kept, "finished before the kill: kept, not re‑run", true],
+    [K.retried, "in flight at the kill: retried after heartbeat timeout", false],
+    [K.history_events, "events in the workflow's history", false],
+  ];
+  document.getElementById("tiles").innerHTML = tiles.map(([v, l, k]) => `<div class="tile${k ? " key" : ""}"><b>${v}</b><span>${l}</span></div>`).join("");
+  document.getElementById("foot").innerHTML =
+    `Retries finished at worker-clock ${retries.map(r => r.clock).join(", ")}; card composed ${compose.clock}, published ${publish.clock}. Worker clock is aligned to t+ at the workflow start (first fetch_alerts = t+${K.t_wf_start}s). For this demo the classifier is the keyword heuristic with a simulated 1.2 s per alert, so the kill reliably lands mid-run.`;
+})();
+</script>
+</body>
+</html>

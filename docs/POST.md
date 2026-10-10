@@ -3,7 +3,7 @@ title: '627 park alerts, one printed card: distilling a 397B model into a 4B one
 published: false
 description: A 4B open model, fine-tuned on Tinker to copy a 397B teacher and graded against the rangers' own labels, reads every National Park Service alert for your parks once a week and prints one go/no-go trail card. Then it stops talking.
 tags: devchallenge, hf26challenge, ai, opensource
-cover_image: {{COVER_IMAGE_URL}}
+cover_image: https://raw.githubusercontent.com/SoumyaEXE/trailtruth/main/docs/images/cover.png
 ---
 
 *This is a submission for the [Hacktoberfest Open-Source AI Challenge Week 1: Touch Grass](https://dev.to/challenges/hacktoberfest-week1-2026-10-05)*
@@ -16,6 +16,8 @@ It's one of **627** alerts open right now across more than 270 parks. Together t
 
 If you're hiking this weekend, you need maybe three of those alerts. So we built something that finds those three, prints them on one card, and then stops talking to you.
 
+![A TrailTruth trail card for the week of October 10, overall caution: Hawaiʻi Volcanoes, go but skip Halemaʻumaʻu and Byron Ledge trails; Chickamauga & Chattanooga, go with care on the Bluff Trail on Lookout Mountain; Yellowstone, go but skip Biscuit Basin and the West Thumb boardwalk](https://raw.githubusercontent.com/SoumyaEXE/trailtruth/main/docs/images/ui-card.png)
+
 ![{{HERO_GIF_ALT}}]({{HERO_GIF_URL}})
 
 > **TL;DR.** TrailTruth reads every NPS alert for the parks you care about, once a week, and gives you one printable card: **GO**, **CAUTION** or **NO-GO**, plus the trails to skip. The reader is **Qwen3.5-4B** with a LoRA we trained on Tinker to copy **Qwen3.5-397B-A17B**. On 126 held-out alerts graded by the rangers' own labels, fine-tuning took it from catching **17 of 33** no-go alerts to **28 of 33**, at **$0.13 per 1,000 alerts**. The whole ML pipeline cost **$1.60**. A Temporal workflow keeps the weekly run alive through a killed worker, flaky APIs, and a demo key that told us to come back in 16 hours.
@@ -27,12 +29,31 @@ If you're hiking this weekend, you need maybe three of those alerts. So we built
 You pick your parks once, say Hawaiʻi Volcanoes and Chickamauga & Chattanooga. Every Friday at 7 a.m. a workflow pulls their alerts, runs each one through the fine-tuned 4B model, and builds a **trail card**:
 
 ```text
-{{CARD_TEXT}}
+TRAILTRUTH · week of 2026-10-10 · overall CAUTION
+
+HAWAIʻI VOLCANOES NATIONAL PARK  [CAUTION]
+  Go, but skip Halemaʻumaʻu Trail & Byron Ledge Trail
+  Trails closed: Halemaʻumaʻu Trail, Byron Ledge Trail, Crater Rim Trail, Kīpukapuaulu Trail, Sulphur Banks Trail
+  Watch for: Protect Yourself from Volcanic Tephra
+  Also closed: old Crater Rim Drive, Mauna Loa Road, Sulphur Banks Bridge
+
+CHICKAMAUGA & CHATTANOOGA NATIONAL MILITARY PARK  [CAUTION]
+  Go with care — Use Caution When Hiking Bluff Trail on Lookout Mountain
+  Watch for: Use Caution When Hiking Bluff Trail on Lookout Mountain
+  Also closed: East Brotherton Road
+
+YELLOWSTONE NATIONAL PARK  [CAUTION]
+  Go, but skip Biscuit Basin & West Thumb Geyser Basin Boardwalk
+  Trails closed: Biscuit Basin, West Thumb Geyser Basin Boardwalk
+  Watch for: Stay Away From Bull Elk
+  Also closed: Beartooth Highway, Dunraven Pass
+
+model: qwen3.5-4b-trailtruth-lora · workflow: trailcard-2026-10-10-havo-chch-yell-fc09
 ```
 
-<!-- Paste the real card text from the LoRA run (GET /api/cards/{id}) exactly. Do not hand-edit it. -->
-
 You print it or screenshot it, and you go. That's the whole experience. There's no feed, no streak, and no notification asking how your hike was. The number we care about is minutes *not* spent in the app.
+
+![The trail card at phone width: overall caution, with Hawaiʻi Volcanoes, Chickamauga & Chattanooga and Yellowstone each marked caution and their closed trails listed](https://raw.githubusercontent.com/SoumyaEXE/trailtruth/main/docs/images/ui-mobile-card.png)
 
 It's for people who hike national parks and have, at least once, driven two hours to a trailhead with a closure sign on it. It's also for anyone who opened a park's alerts page, saw 14 items, and decided to wing it.
 
@@ -44,13 +65,17 @@ A lot of entries this week want you to close the app. Same here. What we wanted 
 
 {% embed {{DEMO_VIDEO_URL}} %}
 
-![{{DASHBOARD_SCREENSHOT_ALT}}]({{DASHBOARD_SCREENSHOT_URL}})
+![TrailTruth overview: this week's overall verdict (caution), go / caution / no-go counts, and the three watched parks with their alert and closure counts](https://raw.githubusercontent.com/SoumyaEXE/trailtruth/main/docs/images/ui-overview.png)
+
+![Alerts table filtered to Hawaiʻi Volcanoes with the Halemaʻumaʻu Trail closure expanded: the original NPS alert beside the LoRA's JSON verdict (no_go), its latency, and agreement with the NPS label](https://raw.githubusercontent.com/SoumyaEXE/trailtruth/main/docs/images/ui-alerts-expanded.png)
+
+![Model Lab: accuracy, closure F1, hazard agreement and macro-F1 for all five models on 126 held-out alerts, plus latency, cost, the training loss, a confusion matrix and side-by-side outputs](https://raw.githubusercontent.com/SoumyaEXE/trailtruth/main/docs/images/ui-lab.png)
 
 ![{{PRINTED_CARD_PHOTO_ALT}}]({{PRINTED_CARD_PHOTO_URL}})
 
 ## Code
 
-{% github {{GITHUB_REPO}} %}
+{% github SoumyaEXE/trailtruth %}
 
 `ml/` has the data pipeline, teacher labelling, Tinker training and eval. `agent/` has the Temporal worker and API, and `web/` the dashboard. Every number in this post comes from `ml/results/eval.json`, `ml/results/spend.json` or the transcripts in `agent/demo_logs/`.
 
@@ -59,12 +84,14 @@ A lot of entries this week want you to close the app. Same here. What we wanted 
 ```text
 NPS alerts API ──▶ Temporal: TrailCardWorkflow  (Temporal Schedule: Fridays 07:00 America/Los_Angeles)
                      ├─ fetch_alerts(park)    × N  parallel · backoff 1s→20s, 6 attempts · 429 → cache/snapshot
-                     ├─ classify_alert(alert) × M  4 at a time · 5s heartbeats · retry on hang / bad JSON
+                     ├─ classify_alert(alert) × M  6 at a time · 5s heartbeats · retry on hang / bad JSON
                      │     └─ Qwen3.5-4B + TrailTruth LoRA (Tinker)  · or any OpenAI-compatible local server
                      ├─ compose_card               deterministic: worst decision per park, closed trails
                      └─ publish_card               atomic write
 FastAPI ──▶ Next.js + BoardUI dashboard (parks, alerts, workflow runs, eval)
 ```
+
+![Architecture: once, offline, NPS alerts are labelled by the Qwen3.5-397B teacher on Tinker, ranger categories fix 235 decisions, and a LoRA is trained on Qwen3.5-4B. Every Friday a Temporal workflow runs fetch_alerts, classify_alert (calling the LoRA), compose_card and publish_card, with per-step retries, and prints one card](https://raw.githubusercontent.com/SoumyaEXE/trailtruth/main/docs/images/architecture.png)
 
 The rule behind all of it: **the big model teaches, the small model works, and the rangers grade.**
 
@@ -94,7 +121,11 @@ The teacher, **Qwen3.5-397B-A17B**, reads alerts well. You just don't want to pa
 3. **Student.** We LoRA-fine-tuned **Qwen3.5-4B** on 501 alerts with Tinker's cookbook: rank 32, learning rate 4.9e-4, batch 16, 3 epochs (96 steps), with loss on the JSON only. It took 6 minutes 46 seconds and **$0.41**. The student also learned to work from a prompt 340 tokens shorter than the teacher's.
 4. **Test.** We held out 126 alerts, stratified by category, with duplicate notices kept in the same split. Each model got one attempt per alert, at temperature 0.
 
+![Spend breakdown: teacher labelling $0.9455, LoRA training $0.4058, evaluation of four models $0.25, total $1.6033; the LoRA then costs $0.13 per 1,000 alerts versus $1.50 for the teacher](https://raw.githubusercontent.com/SoumyaEXE/trailtruth/main/docs/images/cost.png)
+
 Why a 4B and not a 1B? We planned on Llama-3.2-1B, then found that Tinker retired it (along with Qwen3-4B-Instruct) on 2026-06-12. Qwen3.5-4B was the smallest instruct model we could LoRA-train, and it shares the teacher's tokenizer.
+
+![Bar chart of decision accuracy on 126 held-out alerts: Qwen3.5-4B + TrailTruth LoRA 0.746, base + long prompt 0.675, teacher 0.651, base 0.643, keyword heuristic 0.579, with cost per 1,000 alerts of $0.13, $0.24, $1.50, $0.13 and $0](https://raw.githubusercontent.com/SoumyaEXE/trailtruth/main/docs/images/results.png)
 
 | Model | Decision accuracy | Macro-F1 | **No-go caught** | Hazard agreement w/ teacher | $ / 1k alerts |
 |---|---|---|---|---|---|
@@ -108,7 +139,9 @@ Why a 4B and not a 1B? We planned on Llama-3.2-1B, then found that Tinker retire
 
 Look at the no-go column. **The base 4B missed almost half the alerts that should stop you, 16 of 33. The fine-tuned one misses 5.** Same model, same prompt, same $0.13 per thousand alerts. The only difference is $0.41 of training on a teacher's homework that the rangers had corrected.
 
-![{{CONFUSION_MATRIX_ALT}}]({{CONFUSION_MATRIX_URL}})
+![Unit chart of the 33 held-out no-go alerts: the base 4B caught 17 and called the other 16 caution; the LoRA caught 28, calling 3 caution and 2 go](https://raw.githubusercontent.com/SoumyaEXE/trailtruth/main/docs/images/nogo-recall.png)
+
+![Confusion matrices for the base 4B and the LoRA 4B. No-go row: base 0 go, 16 caution, 17 no-go; LoRA 2 go, 3 caution, 28 no-go. The LoRA also calls 11 go alerts no-go, up from 9](https://raw.githubusercontent.com/SoumyaEXE/trailtruth/main/docs/images/confusion.png)
 
 A test alert from Ocmulgee Mounds shows the difference:
 
@@ -121,6 +154,8 @@ LoRA  decision: no_go    "Boardwalk and river access are closed due to structura
 
 The base model read every word correctly and still told you to go with care to a trail you can't reach.
 
+![The Ocmulgee Mounds boardwalk-closure alert, then the base model's JSON (is_closed true, decision caution) next to the LoRA's JSON (is_closed true, decision no_go, matching the ranger's Park Closure label)](https://raw.githubusercontent.com/SoumyaEXE/trailtruth/main/docs/images/before-after.png)
+
 **Read the rest of the table with these in mind:**
 
 - **The LoRA "beats" the teacher partly because we trained it toward the rangers' labels and never trained the teacher.** So 0.746 vs 0.651 is mostly calibration to how NPS files alerts, not a smaller model being smarter. The honest headline is the student against its own base. Against the teacher, the headline is "most of its reading at an eleventh of the price".
@@ -129,13 +164,15 @@ The base model read every word correctly and still told you to go with care to a
 - **No latency win, yet.** Through Tinker's hosted sampler, every model takes about 2.4 s at p50, because per-request overhead swamps model size. The 4B's speed advantage only shows up if you host it yourself. `ml/download_adapter.py --peft` exports the adapter for vLLM, SGLang or llama.cpp, but we haven't timed that.
 - **Test loss went up in the last epoch**, from 0.223 after epoch 2 to 0.286 after epoch 3. That's mild overfitting. We shipped the epoch-3 weights anyway, because we had no separate validation set, and picking a checkpoint by its test-set score would make the table above a lie.
 
+![Training loss falls over 96 steps; test loss goes 0.338 before training, 0.223 after epochs 1 and 2, then rises to 0.286 after epoch 3](https://raw.githubusercontent.com/SoumyaEXE/trailtruth/main/docs/images/loss-curve.png)
+
 ### Making the weekly run survive with Temporal
 
 The NPS API has a free `DEMO_KEY`, and its headers are honest about it: `X-Ratelimit-Limit: 10`. When we ran out on October 10, the reply was `429 Too Many Requests` with **`Retry-After: 60076`**. That's the server telling you to come back in sixteen and a half hours. Meanwhile the model calls go over the network and sometimes hang. A weekly batch is going to hit both.
 
 **Each step is a Temporal activity with its own policy:**
 - **NPS fetches** retry with exponential backoff (1 s up to 20 s, 6 attempts).
-- **Model calls** run four at a time. They heartbeat every few seconds, so a hung call is detected after 5 s and retried. Invalid JSON gets retried too, and on the fifth attempt the step falls back to the keyword heuristic, labelled as such.
+- **Model calls** run six at a time. They heartbeat every few seconds, so a hung call is detected after 5 s and retried. Invalid JSON gets retried too, and on the fifth attempt the step falls back to the keyword heuristic, labelled as such.
 - **A `429` is not retried.** Hammering a server that just asked for 16 hours of quiet is pointless. The fetch falls back to the last cached copy or the bundled snapshot, and says so on the step: `source=snapshot (NPS 429, Retry-After 16.4h)`. That's from a real run against the real `DEMO_KEY`.
 - **The schedule lives in Temporal**, not in a cron job on a laptop that might be asleep on Friday morning. If no worker is up at 7:00, it catches up within a day.
 
@@ -153,9 +190,13 @@ The NPS API has a free `DEMO_KEY`, and its headers are honest about it: `X-Ratel
 
 From the event history afterwards: **21** `classify_alert` activities were scheduled, and none was scheduled twice. The **8** finished before the crash were kept, not re-run. Only the **4** that were in flight needed a second attempt, once their heartbeat timed out.
 
+![Timeline of the crash run: worker 1 killed at t+6.0 s after 8 of 21 alerts, no worker for 3 s while the workflow stays RUNNING, worker 2 starts at t+9.1 s, 4 orphaned activities retried on attempt 2, card published at t+17.1 s; 21 scheduled, none twice](https://raw.githubusercontent.com/SoumyaEXE/trailtruth/main/docs/images/crash-resume.png)
+
 ![{{TEMPORAL_UI_SCREENSHOT_ALT}}]({{TEMPORAL_UI_SCREENSHOT_URL}})
 
 The dashboard (Next.js with BoardUI) is for setup and for the curious: pick parks, see every verdict, every run's attempt counts, and the eval table above. On a normal week you shouldn't need it.
+
+![Workflow runs page: recent TrailCardWorkflow runs with retry and resumed badges, and a run that resumed after a worker crash shown as a step waterfall and event timeline](https://raw.githubusercontent.com/SoumyaEXE/trailtruth/main/docs/images/ui-runs.png)
 
 ## What went wrong
 
@@ -218,9 +259,7 @@ Entire checkpoints: {{ENTIRE_CHECKPOINTS_URL}}
 - **Best Use of Temporal:** a Temporal Schedule and a workflow with per-step retries, heartbeats for hung model calls, and a labelled fallback for a real 16-hour `429`. We hard-killed the worker mid-run: 21 activities scheduled, none twice, 8 kept, 4 retried.
 - **Best Use of Entire:** the agent sessions behind the build are checkpointed and linked, and we use them to explain why specific code exists.
 <!-- Keep ONLY if the live URL is actually served from Render: -->
-- **Best Use of Render:** one web service from a `render.yaml` Blueprint runs the Temporal dev server, worker and API, with the NPS key kept out of the repo (`sync: false`). It survives worker crashes but not container restarts. For real durability you point it at Temporal Cloud, and the file says so.
-<!-- Keep ONLY if Sentry was actually enabled and a trace screenshot is added: -->
-- **Best Use of Sentry Agent Tracing:** each classify attempt is a `gen_ai.invoke_agent` transaction with a `gen_ai.chat` span that carries model, tokens, latency and cost. NPS fetches are `execute_tool` spans. ![{{SENTRY_TRACE_SCREENSHOT_ALT}}]({{SENTRY_TRACE_SCREENSHOT_URL}})
+- **Best Use of Render:** a one-click `render.yaml` Blueprint deploys two services: the agent runtime (Temporal dev server, worker and FastAPI in one Python web service, classifying with the Tinker LoRA) and the static BoardUI dashboard, wired together with `fromService`. Keys stay out of the repo (`sync: false`). It survives worker crashes but not container restarts; for real durability you point it at Temporal Cloud with three env vars.
 
 {{TEAM_CREDITS}}
 
@@ -238,10 +277,29 @@ Media / links
 [ ] {{PRINTED_CARD_PHOTO_URL}} {{PRINTED_CARD_PHOTO_ALT}}
 [ ] {{CONFUSION_MATRIX_URL}} {{CONFUSION_MATRIX_ALT}}   chart of eval.json confusion.base vs confusion.lora
 [ ] {{TEMPORAL_UI_SCREENSHOT_URL}} {{TEMPORAL_UI_SCREENSHOT_ALT}}   Temporal UI (localhost:8233) for trailcard-2026-10-10-havo-yell-zion-16cf
-[ ] {{GITHUB_REPO}}                    owner/repo (also add a LICENSE file and mention it in the Code section)
+[ ] SoumyaEXE/trailtruth                    owner/repo (also add a LICENSE file and mention it in the Code section)
 
 Card
-[ ] {{CARD_TEXT}}                      exact text of a card from the LoRA provider run (backend regenerating).
+[ ] TRAILTRUTH · week of 2026-10-10 · overall CAUTION
+
+HAWAIʻI VOLCANOES NATIONAL PARK  [CAUTION]
+  Go, but skip Halemaʻumaʻu Trail & Byron Ledge Trail
+  Trails closed: Halemaʻumaʻu Trail, Byron Ledge Trail, Crater Rim Trail, Kīpukapuaulu Trail, Sulphur Banks Trail
+  Watch for: Protect Yourself from Volcanic Tephra
+  Also closed: old Crater Rim Drive, Mauna Loa Road, Sulphur Banks Bridge
+
+CHICKAMAUGA & CHATTANOOGA NATIONAL MILITARY PARK  [CAUTION]
+  Go with care — Use Caution When Hiking Bluff Trail on Lookout Mountain
+  Watch for: Use Caution When Hiking Bluff Trail on Lookout Mountain
+  Also closed: East Brotherton Road
+
+YELLOWSTONE NATIONAL PARK  [CAUTION]
+  Go, but skip Biscuit Basin & West Thumb Geyser Basin Boardwalk
+  Trails closed: Biscuit Basin, West Thumb Geyser Basin Boardwalk
+  Watch for: Stay Away From Bull Elk
+  Also closed: Beartooth Highway, Dunraven Pass
+
+model: qwen3.5-4b-trailtruth-lora · workflow: trailcard-2026-10-10-havo-chch-yell-fc09                      exact text of a card from the LoRA provider run (backend regenerating).
                                        Check the card's model line says the LoRA, not heuristic-keywords-v1.
 
 Field test (bonus). If nobody went outside, delete the whole "Taking it outside" section.
@@ -254,7 +312,7 @@ Agent session
 [ ] {{TEAM_CREDITS}}                   "Built by @user1 and @user2" (team rule: list DEV usernames in body)
 
 Optional categories
-[ ] Render bullet: keep only if LIVE_URL is on Render. NOTE render.yaml sets TRAILTRUTH_MODEL_PROVIDER=heuristic;
+[ ] Render bullet: keep only if LIVE_URL is on Render. (render.yaml now sets TRAILTRUTH_MODEL_PROVIDER=tinker.)
     switch it to tinker for the live demo or say in Demo that the live site runs the heuristic.
 [ ] Sentry bullet: all demo logs show sentry=off. Keep only with a real trace screenshot:
     {{SENTRY_TRACE_SCREENSHOT_URL}} {{SENTRY_TRACE_SCREENSHOT_ALT}}. Otherwise delete the bullet.

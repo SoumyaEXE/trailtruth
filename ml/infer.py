@@ -158,14 +158,14 @@ def classify_batch(items: list[tuple[str, str]], max_workers: int = 16) -> list[
     _load_env()
     if _provider() == "tinker":
         st = _tinker()
-        out = []
         t0 = time.perf_counter()
         futures = [_tinker_submit(t, d) for t, d in items]
-        for (t, d), f in zip(items, futures):
-            v, _ = _parse(_tinker_text(f))
-            ms = int((time.perf_counter() - t0) * 1000)
-            out.append((v, ms, st["name"]) if v is not None else classify(t, d))
-        return out
+        parsed = [_parse(_tinker_text(f))[0] for f in futures]
+        # Requests are pipelined, so per-item latency isn't observable; report the amortized
+        # per-alert wall time instead of time-since-batch-start (which grew with list position).
+        ms = int((time.perf_counter() - t0) * 1000 / max(len(items), 1))
+        return [(v, ms, st["name"]) if v is not None else classify(t, d)
+                for (t, d), v in zip(items, parsed)]
     from concurrent.futures import ThreadPoolExecutor
 
     with ThreadPoolExecutor(max_workers=max_workers) as ex:

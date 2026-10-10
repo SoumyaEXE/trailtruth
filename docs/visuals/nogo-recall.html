@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>No-go recall</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400..700&family=JetBrains+Mono:wght@400;500;600;700&display=block" rel="stylesheet">
+<link rel="stylesheet" href="base.css">
+<style>
+  .legend { display: flex; gap: 22px; margin-top: 18px; font-size: 13px; color: var(--ink-2); }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .chart { margin-top: 14px; }
+  .foot { margin-top: 6px; font-size: 12.5px; line-height: 1.5; color: var(--ink-2); }
+</style>
+</head>
+<body>
+<div id="frame">
+  <div class="kicker">The whole project in one row · no-go recall</div>
+  <h1 id="title"></h1>
+  <p class="sub" id="sub"></p>
+  <div class="legend" id="legend"></div>
+  <div class="chart" id="chart"></div>
+  <p class="foot" id="foot"></p>
+  <div class="src"><span>Source: ml/results/eval.json → confusion[model].matrix, gold no-go row</span><span class="brand">TrailTruth</span></div>
+</div>
+<script src="data.js"></script>
+<script src="common.js"></script>
+<script>
+(function () {
+  const R = TT.nogo_row, N = TT.nogo_total.base;
+  const lab = ["go", "caution", "no_go"];
+  const t = TT.test_by_category;
+  document.getElementById("title").textContent =
+    `Of ${N} alerts that should stop you, the base 4B missed ${R.base[0] + R.base[1]}. The fine-tuned one misses ${R.lora[0] + R.lora[1]}.`;
+  document.getElementById("sub").textContent =
+    `Each mark is one held-out alert a ranger filed as Danger or as a trail/area closure, so the right answer is no-go. The shape shows what the model said instead.`;
+  document.getElementById("legend").innerHTML =
+    `<span>${TTV.icon("no_go", 14)} said no-go (caught)</span>` +
+    `<span>${TTV.icon("caution", 14, "outline")} said caution (missed)</span>` +
+    `<span>${TTV.icon("go", 14, "outline")} said go (missed)</span>`;
+
+  const rows = [
+    { r: "base", name: "Qwen3.5-4B base", sub: "short prompt, no fine-tuning" },
+    { r: "lora", name: "Qwen3.5-4B + TrailTruth LoRA", sub: "same model, same prompt, $0.41 of training" },
+  ];
+  const W = 718, pitch = W / N, rad = Math.min(8.2, pitch * 0.38);
+  const rowH = 128;
+  const H = rows.length * rowH - 6;
+  let s = `<svg width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="img" aria-label="No-go alerts caught out of ${N}: base ${R.base[2]}, LoRA ${R.lora[2]}">`;
+  rows.forEach((row, i) => {
+    const y0 = i * rowH;
+    const m = R[row.r];
+    const caught = m[2], missC = m[1], missG = m[0];
+    const hi = row.r === "lora";
+    s += `<text x="0" y="${y0 + 18}" font-size="15" font-weight="650" fill="#1e1c19">${row.name}</text>`;
+    s += `<text x="0" y="${y0 + 36}" font-size="12.5" fill="#786f64">${row.sub}</text>`;
+    s += `<text x="${W}" y="${y0 + 22}" text-anchor="end" font-size="24" font-weight="700" fill="#1e1c19" letter-spacing="-0.01em">${caught}<tspan font-size="15" font-weight="500" fill="#786f64"> / ${N} caught</tspan></text>`;
+    // marks
+    const seq = [].concat(Array(caught).fill("no_go"), Array(missC).fill("caution"), Array(missG).fill("go"));
+    const cy = y0 + 64;
+    seq.forEach((k, j) => {
+      const cx = pitch * j + pitch / 2;
+      s += TTV.shape(k, +cx.toFixed(2), cy, k === "no_go" ? rad : rad * 0.92, k === "no_go" ? "fill" : "outline");
+    });
+    // bracket under the missed group
+    const a = pitch * caught + 3, b = W - 3, by = cy + rad + 9;
+    s += `<path d="M${a},${by - 4} V${by} H${b} V${by - 4}" fill="none" stroke="#5b544b" stroke-width="1.2"/>`;
+    const parts = [];
+    if (missC) parts.push(`${missC} said caution`);
+    if (missG) parts.push(`${missG} said go`);
+    const missText = parts.length === 1 ? `${missC + missG} missed, all said ${missC ? "caution" : "go"}` : `${missC + missG} missed: ${parts.join(", ")}`;
+    const mid = (a + b) / 2;
+    const anchor = mid > W - 90 ? "end" : "middle";
+    s += `<text x="${anchor === "end" ? b : mid}" y="${by + 17}" text-anchor="${anchor}" font-size="13" font-weight="600" fill="${hi ? '#1e1c19' : '#7a1c14'}">${missText}</text>`;
+    if (i < rows.length - 1) s += `<line x1="0" x2="${W}" y1="${y0 + rowH - 12}" y2="${y0 + rowH - 12}" stroke="#e7e3db"/>`;
+  });
+  s += `</svg>`;
+  document.getElementById("chart").innerHTML = s;
+  document.getElementById("foot").innerHTML =
+    `For reference, on the same ${N}: teacher (397B) ${R.teacher[2]} caught, base + teacher's long prompt ${R.base_guided[2]}, keyword heuristic ${R.heuristic[2]}. ` +
+    `The price of the LoRA's caution: it also flags more harmless alerts as no-go (${TT.confusion.lora[0][2]} go alerts vs. the base's ${TT.confusion.base[0][2]}).`;
+})();
+</script>
+</body>
+</html>

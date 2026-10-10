@@ -13,6 +13,8 @@ from shared.schema import CardPark, ProcessedAlert, TrailCard
 RANK = {"go": 0, "caution": 1, "no_go": 2}
 _TRAILISH = ("Trail", "Trails", "Trailhead", "Boardwalk", "Basin", "Area", "Zone", "Canyon", "Beach", "Loop",
              "Overlook", "Falls", "Cave", "Lake")
+_ROADISH = ("Road", "Roads", "Highway", "Drive", "Pass", "Bridge", "Route", "Parkway", "Campground", "Lot",
+            "Entrance")
 _WATCH_PRIORITY = ["wildlife", "geologic", "fire", "water", "air_quality", "weather", "closure", "other",
                    "construction", "road", "facility"]
 
@@ -34,26 +36,48 @@ def _short(text: str, n: int = 9) -> str:
     return " ".join(words[:n]) + ("…" if len(words) > n else "")
 
 
+def _hiker_decision(a: ProcessedAlert) -> str:
+    """Worst-decision rule, from a hiker's point of view: a no_go that is only a road/facility closure
+    (no trail or area named) makes the park 'caution', not 'no_go' - you can still hike, just drive around."""
+    v = a.verdict
+    if v.decision == "no_go" and v.is_closed and v.hazard_type in ("road", "construction", "facility") and \
+            not any(t.split()[-1] in _TRAILISH for t in v.trails_affected if t):
+        return "caution"
+    return v.decision
+
+
 def compose_park(park_code: str, park_name: str, alerts: list[ProcessedAlert]) -> CardPark:
     alerts = sorted(alerts, key=lambda a: (-RANK[a.verdict.decision], -a.verdict.severity, a.title))
-    decision = worst(a.verdict.decision for a in alerts)
+    decision = worst(_hiker_decision(a) for a in alerts)
 
     closed: list[str] = []
     roads: list[str] = []
+
+    def add(lst: list[str], name: str) -> None:
+        if name.lower() not in (x.lower() for x in lst + closed + roads):
+            lst.append(name)
+
     for a in alerts:
         if not a.verdict.is_closed:
             continue
-        trailish = [t for t in a.verdict.trails_affected if t.split()[-1] in _TRAILISH]
+        names = [t for t in a.verdict.trails_affected
+                 if t and "/" not in t and not any(w in t for w in ("Closures", "Updates", "Alerts"))]
+        trail_names = [t for t in names if t.split()[-1] in _TRAILISH]
+        road_names = [t for t in names if t.split()[-1] in _ROADISH]
+        other = [t for t in names if t not in trail_names and t not in road_names and len(t.split()) <= 5]
         if a.verdict.decision == "no_go":
-            for t in trailish or a.verdict.trails_affected[:1] or [_short(a.title, 6)]:
-                if "/" in t or any(w in t for w in ("Closures", "Updates", "Alerts")):
-                    continue  # heading-like phrases, not places
-                if t.lower() not in (c.lower() for c in closed):
-                    closed.append(t)
-        elif a.verdict.hazard_type in ("road", "construction", "facility") and a.verdict.trails_affected:
-            r = a.verdict.trails_affected[0]
-            if r.lower() not in (x.lower() for x in roads):
-                roads.append(r)
+            for t in trail_names:
+                add(closed, t)
+            if a.verdict.hazard_type in ("road", "construction", "facility") and not trail_names:
+                for t in road_names or other[:1]:
+                    add(roads, t)
+            else:
+                for t in road_names:
+                    add(roads, t)
+                if not trail_names and other and a.verdict.hazard_type not in ("road", "facility"):
+                    add(closed, other[0])  # e.g. "Keanakākoʻi area"
+        elif a.verdict.hazard_type in ("road", "construction", "facility") and (road_names or names):
+            add(roads, (road_names or names)[0])
 
     def prio(a: ProcessedAlert) -> int:
         return _WATCH_PRIORITY.index(a.verdict.hazard_type) if a.verdict.hazard_type in _WATCH_PRIORITY else 99
@@ -76,11 +100,23 @@ def compose_park(park_code: str, park_name: str, alerts: list[ProcessedAlert]) -
     elif decision == "go":
         headline = "Go — nothing trail-relevant this week"
     elif decision == "caution":
-        headline = f"Go with care — {watch[0] if watch else 'check conditions'}"
+        first = next((w for w in watch if not w.startswith("Closed: ")), None)
+        if first:
+            headline = f"Go with care — {first}"
+        elif roads:
+            headline = "Go — trails open; closed: " + " & ".join(roads[:2])
+        else:
+            headline = "Go with care — check conditions"
     else:
         open_alerts = [a for a in alerts if a.verdict.decision != "no_go"]
+        # A park with a few closed trails is still visitable: the park-level call is
+        # caution, and the no_go applies to the named trails (listed in closed_trails).
         if closed and (open_alerts or len(closed) <= 2):
-            headline = "Go — but skip " + " & ".join(closed[:2])
+            decision = "caution"
+            headline = "Go, but skip " + " & ".join(closed[:2])
+        elif roads and not closed:
+            decision = "caution"
+            headline = "Go — trails open; closed: " + " & ".join(roads[:2])
         else:
             nogo = next(a for a in alerts if a.verdict.decision == "no_go")
             headline = "No-go — " + _short(nogo.title, 8)

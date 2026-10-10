@@ -1,51 +1,183 @@
 {
- "fixture": true,
- "note": "PLACEHOLDER NUMBERS - replaced by ml/results/eval.json once the ML pipeline runs",
- "test_size": 120,
- "generated_at": "2026-10-10T07:42:17Z",
+ "test_size": 126,
+ "generated_at": "2026-10-10T07:42:58.989812+00:00",
+ "label_source": "teacher",
+ "teacher_model": "Qwen/Qwen3.5-397B-A17B",
+ "student_model": "Qwen/Qwen3.5-4B",
  "models": [
   {
-   "name": "teacher (Qwen3-235B) [placeholder]",
+   "name": "teacher (Qwen3.5-397B-A17B)",
    "role": "teacher",
-   "json_valid": 0.99,
-   "decision_acc": 0.88,
-   "closure_f1": 0.9,
-   "hazard_acc": 0.81,
-   "p50_latency_ms": 1800,
-   "cost_per_1k_alerts_usd": 0.9
-  },
-  {
-   "name": "Llama-3.2-1B base [placeholder]",
-   "role": "base",
-   "json_valid": 0.55,
-   "decision_acc": 0.41,
-   "closure_f1": 0.38,
-   "hazard_acc": 0.3,
-   "p50_latency_ms": 240,
-   "cost_per_1k_alerts_usd": 0.02
-  },
-  {
-   "name": "Llama-3.2-1B + TrailTruth LoRA [placeholder]",
-   "role": "lora",
-   "json_valid": 0.98,
-   "decision_acc": 0.8,
-   "closure_f1": 0.84,
-   "hazard_acc": 0.72,
-   "p50_latency_ms": 250,
-   "cost_per_1k_alerts_usd": 0.02
-  },
-  {
-   "name": "heuristic-keywords-v1",
-   "role": "heuristic",
+   "model": "Qwen/Qwen3.5-397B-A17B",
+   "n": 126,
    "json_valid": 1.0,
-   "decision_acc": 0.5,
-   "closure_f1": 0.6,
-   "hazard_acc": 0.5,
-   "p50_latency_ms": 1,
-   "cost_per_1k_alerts_usd": 0.0
+   "decision_acc": 0.6508,
+   "decision_acc_raw": 0.6349,
+   "decision_macro_f1": 0.6415,
+   "closure_f1": 0.9231,
+   "hazard_acc": 0.9841,
+   "decision_agree_teacher": 0.9762,
+   "p50_latency_ms": 2405.15,
+   "p95_latency_ms": 3073.88,
+   "avg_prompt_tokens": 550.8,
+   "avg_completion_tokens": 78.6,
+   "cost_per_1k_alerts_usd": 1.4982,
+   "pending": false
+  },
+  {
+   "name": "Qwen3.5-4B base",
+   "role": "base",
+   "model": "Qwen/Qwen3.5-4B",
+   "n": 126,
+   "json_valid": 1.0,
+   "decision_acc": 0.6429,
+   "decision_acc_raw": 0.627,
+   "decision_macro_f1": 0.6307,
+   "closure_f1": 0.8889,
+   "hazard_acc": 0.6111,
+   "decision_agree_teacher": 0.8016,
+   "p50_latency_ms": 2354.15,
+   "p95_latency_ms": 2701.38,
+   "avg_prompt_tokens": 212.8,
+   "avg_completion_tokens": 57.7,
+   "cost_per_1k_alerts_usd": 0.1282,
+   "pending": false
+  },
+  {
+   "name": "Qwen3.5-4B base + teacher's long prompt",
+   "role": "base_guided",
+   "model": "Qwen/Qwen3.5-4B",
+   "n": 126,
+   "json_valid": 1.0,
+   "decision_acc": 0.6746,
+   "decision_acc_raw": 0.6746,
+   "decision_macro_f1": 0.6481,
+   "closure_f1": 0.8444,
+   "hazard_acc": 0.7063,
+   "decision_agree_teacher": 0.746,
+   "p50_latency_ms": 2433.15,
+   "p95_latency_ms": 2905.92,
+   "avg_prompt_tokens": 550.8,
+   "avg_completion_tokens": 58.9,
+   "cost_per_1k_alerts_usd": 0.2409,
+   "pending": false
+  },
+  {
+   "name": "Qwen3.5-4B + TrailTruth LoRA",
+   "role": "lora",
+   "model": "Qwen/Qwen3.5-4B",
+   "n": 126,
+   "json_valid": 1.0,
+   "decision_acc": 0.746,
+   "decision_acc_raw": 0.754,
+   "decision_macro_f1": 0.7422,
+   "closure_f1": 0.8842,
+   "hazard_acc": 0.8333,
+   "decision_agree_teacher": 0.7302,
+   "p50_latency_ms": 2371.1,
+   "p95_latency_ms": 3289.9,
+   "avg_prompt_tokens": 212.8,
+   "avg_completion_tokens": 60.8,
+   "cost_per_1k_alerts_usd": 0.1314,
+   "pending": false,
+   "model_path": "tinker://10ec237f-5b66-554f-b988-8688b24e04ff:train:0/sampler_weights/trailtruth-qwen3.5-4b-lora"
+  },
+  {
+   "name": "keyword heuristic (no model)",
+   "role": "heuristic",
+   "model": "heuristic",
+   "n": 126,
+   "json_valid": 1.0,
+   "decision_acc": 0.5794,
+   "decision_acc_raw": 0.5556,
+   "decision_macro_f1": 0.5859,
+   "closure_f1": 0.8738,
+   "hazard_acc": 0.627,
+   "decision_agree_teacher": 0.5794,
+   "p50_latency_ms": 0.07,
+   "p95_latency_ms": 0.2,
+   "avg_prompt_tokens": 0.0,
+   "avg_completion_tokens": 0.0,
+   "cost_per_1k_alerts_usd": 0.0,
+   "pending": false
   }
  ],
  "confusion": {
+  "teacher": {
+   "labels": [
+    "go",
+    "caution",
+    "no_go"
+   ],
+   "matrix": [
+    [
+     39,
+     15,
+     7
+    ],
+    [
+     7,
+     25,
+     0
+    ],
+    [
+     2,
+     13,
+     18
+    ]
+   ],
+   "invalid": 0
+  },
+  "base": {
+   "labels": [
+    "go",
+    "caution",
+    "no_go"
+   ],
+   "matrix": [
+    [
+     37,
+     15,
+     9
+    ],
+    [
+     4,
+     27,
+     1
+    ],
+    [
+     0,
+     16,
+     17
+    ]
+   ],
+   "invalid": 0
+  },
+  "base_guided": {
+   "labels": [
+    "go",
+    "caution",
+    "no_go"
+   ],
+   "matrix": [
+    [
+     47,
+     7,
+     7
+    ],
+    [
+     10,
+     21,
+     1
+    ],
+    [
+     6,
+     10,
+     17
+    ]
+   ],
+   "invalid": 0
+  },
   "lora": {
    "labels": [
     "go",
@@ -54,100 +186,547 @@
    ],
    "matrix": [
     [
-     50,
-     6,
-     2
+     42,
+     8,
+     11
     ],
     [
      5,
-     20,
-     4
+     24,
+     3
     ],
     [
-     1,
-     4,
+     2,
+     3,
      28
     ]
-   ]
+   ],
+   "invalid": 0
+  },
+  "heuristic": {
+   "labels": [
+    "go",
+    "caution",
+    "no_go"
+   ],
+   "matrix": [
+    [
+     29,
+     25,
+     7
+    ],
+    [
+     8,
+     19,
+     5
+    ],
+    [
+     2,
+     6,
+     25
+    ]
+   ],
+   "invalid": 0
   }
  },
  "training": {
-  "steps": 300,
+  "steps": 96,
   "epochs": 3,
   "lora_rank": 32,
   "loss_curve": [
    [
-    0,
-    2.45
+    1,
+    0.3726
+   ],
+   [
+    2,
+    0.55826
+   ],
+   [
+    3,
+    0.43726
+   ],
+   [
+    4,
+    0.3334
+   ],
+   [
+    5,
+    0.3191
+   ],
+   [
+    6,
+    0.27818
+   ],
+   [
+    7,
+    0.23545
+   ],
+   [
+    8,
+    0.30771
+   ],
+   [
+    9,
+    0.19543
+   ],
+   [
+    10,
+    0.28861
+   ],
+   [
+    11,
+    0.26124
+   ],
+   [
+    12,
+    0.25187
+   ],
+   [
+    13,
+    0.2584
+   ],
+   [
+    14,
+    0.25517
+   ],
+   [
+    15,
+    0.25865
+   ],
+   [
+    16,
+    0.28308
+   ],
+   [
+    17,
+    0.21892
+   ],
+   [
+    18,
+    0.20905
+   ],
+   [
+    19,
+    0.27822
    ],
    [
     20,
-    1.876
+    0.23732
+   ],
+   [
+    21,
+    0.21947
+   ],
+   [
+    22,
+    0.24998
+   ],
+   [
+    23,
+    0.22269
+   ],
+   [
+    24,
+    0.26441
+   ],
+   [
+    25,
+    0.22342
+   ],
+   [
+    26,
+    0.1885
+   ],
+   [
+    27,
+    0.23531
+   ],
+   [
+    28,
+    0.22838
+   ],
+   [
+    29,
+    0.21697
+   ],
+   [
+    30,
+    0.22034
+   ],
+   [
+    31,
+    0.18553
+   ],
+   [
+    32,
+    0.19452
+   ],
+   [
+    33,
+    0.09721
+   ],
+   [
+    34,
+    0.1542
+   ],
+   [
+    35,
+    0.10661
+   ],
+   [
+    36,
+    0.09372
+   ],
+   [
+    37,
+    0.09608
+   ],
+   [
+    38,
+    0.09324
+   ],
+   [
+    39,
+    0.07448
    ],
    [
     40,
-    1.452
+    0.07522
+   ],
+   [
+    41,
+    0.10787
+   ],
+   [
+    42,
+    0.10711
+   ],
+   [
+    43,
+    0.11003
+   ],
+   [
+    44,
+    0.07501
+   ],
+   [
+    45,
+    0.08124
+   ],
+   [
+    46,
+    0.08193
+   ],
+   [
+    47,
+    0.06914
+   ],
+   [
+    48,
+    0.0975
+   ],
+   [
+    49,
+    0.08122
+   ],
+   [
+    50,
+    0.09136
+   ],
+   [
+    51,
+    0.09517
+   ],
+   [
+    52,
+    0.06534
+   ],
+   [
+    53,
+    0.07258
+   ],
+   [
+    54,
+    0.09907
+   ],
+   [
+    55,
+    0.09052
+   ],
+   [
+    56,
+    0.09243
+   ],
+   [
+    57,
+    0.07242
+   ],
+   [
+    58,
+    0.06865
+   ],
+   [
+    59,
+    0.11437
    ],
    [
     60,
-    1.138
+    0.07515
+   ],
+   [
+    61,
+    0.09213
+   ],
+   [
+    62,
+    0.08662
+   ],
+   [
+    63,
+    0.1047
+   ],
+   [
+    64,
+    0.09132
+   ],
+   [
+    65,
+    0.05045
+   ],
+   [
+    66,
+    0.03233
+   ],
+   [
+    67,
+    0.04879
+   ],
+   [
+    68,
+    0.04238
+   ],
+   [
+    69,
+    0.03938
+   ],
+   [
+    70,
+    0.04434
+   ],
+   [
+    71,
+    0.04861
+   ],
+   [
+    72,
+    0.03351
+   ],
+   [
+    73,
+    0.02988
+   ],
+   [
+    74,
+    0.03149
+   ],
+   [
+    75,
+    0.0261
+   ],
+   [
+    76,
+    0.02529
+   ],
+   [
+    77,
+    0.02725
+   ],
+   [
+    78,
+    0.05681
+   ],
+   [
+    79,
+    0.04091
    ],
    [
     80,
-    0.907
+    0.03568
    ],
    [
-    100,
-    0.735
+    81,
+    0.04947
    ],
    [
-    120,
-    0.609
+    82,
+    0.02379
    ],
    [
-    140,
-    0.515
+    83,
+    0.03401
    ],
    [
-    160,
-    0.446
+    84,
+    0.02465
    ],
    [
-    180,
-    0.395
+    85,
+    0.02848
    ],
    [
-    200,
-    0.357
+    86,
+    0.0315
    ],
    [
-    220,
-    0.329
+    87,
+    0.02354
    ],
    [
-    240,
-    0.308
+    88,
+    0.02457
    ],
    [
-    260,
-    0.293
+    89,
+    0.03152
    ],
    [
-    280,
-    0.282
+    90,
+    0.01874
    ],
    [
-    300,
-    0.274
+    91,
+    0.01993
+   ],
+   [
+    92,
+    0.03724
+   ],
+   [
+    93,
+    0.02791
+   ],
+   [
+    94,
+    0.03101
+   ],
+   [
+    95,
+    0.02018
+   ],
+   [
+    96,
+    0.01941
    ]
-  ]
+  ],
+  "test_loss": [
+   [
+    0,
+    0.33809
+   ],
+   [
+    32,
+    0.22326
+   ],
+   [
+    64,
+    0.22321
+   ],
+   [
+    96,
+    0.2864
+   ]
+  ],
+  "learning_rate": 0.0004905250962784578,
+  "batch_size": 16,
+  "base_model": "Qwen/Qwen3.5-4B",
+  "model_path": "tinker://10ec237f-5b66-554f-b988-8688b24e04ff:train:0/sampler_weights/trailtruth-qwen3.5-4b-lora"
  },
  "examples": [
   {
-   "title": "Use Caution When Hiking Bluff Trail on Lookout Mountain",
-   "base_output": "Sure! Here is the JSON: {hazard: owl, decision: maybe}",
-   "lora_output": "{\"hazard_type\":\"wildlife\",\"severity\":2,\"trails_affected\":[\"Bluff Trail\"],\"is_closed\":false,\"decision\":\"caution\",\"reason\":\"Territorial barred owl on Bluff Trail section; stay alert.\"}",
-   "expected_decision": "caution"
+   "id": "9833006C-EB4D-472D-A232-B9DE5D72D462",
+   "title": "Road Closure: Sunset Crater Volcano September 21 through October 21",
+   "park_code": "sucr",
+   "description": "Beginning September 21, Forest Road 545 will close to all vehicle traffic starting near the intersection with Highway 89A to the Sunset Crater Volcano entrance kiosk for culvert work. Sunset Crater Volcano National Monument remains OPEN and accessible via Forest Road 545 through Wupatki National Monument. Plan for extra travel time—the drive between visitor centers is about 19 miles/30 minutes. The road is expected to reopen October 22.",
+   "nps_category": "Park Closure",
+   "expected_decision": "no_go",
+   "base_output": "{\"hazard_type\": \"road\", \"severity\": 2, \"trails_affected\": [], \"is_closed\": true, \"decision\": \"caution\", \"reason\": \"Road closure affects vehicle access; hike via alternative route if possible.\"}",
+   "lora_output": "{\"hazard_type\": \"road\", \"severity\": 3, \"trails_affected\": [\"Forest Road 545\"], \"is_closed\": true, \"decision\": \"no_go\", \"reason\": \"Forest Road 545 is closed to vehicles for culvert work until October 22.\"}",
+   "teacher_output": "{\n  \"hazard_type\": \"road\",\n  \"severity\": 2,\n  \"trails_affected\": [\n    \"Forest Road 545\"\n  ],\n  \"is_closed\": true,\n  \"decision\": \"caution\",\n  \"reason\": \"Road closed for construction; use alternate route with extra travel time.\"\n}",
+   "heuristic_output": "{\"hazard_type\": \"geologic\", \"severity\": 3, \"trails_affected\": [\"Forest Road\"], \"is_closed\": true, \"decision\": \"no_go\", \"reason\": \"Avoid - Forest Road: Road Closure: Sunset Crater Volcano September 21 through October 21\"}"
+  },
+  {
+   "id": "F8AFCEAD-7E34-4C99-8AF6-C0B7C376C8FB",
+   "title": "Eastern Section of Beech Mountain Loop Trail Closed for Repairs",
+   "park_code": "acad",
+   "description": "Starting Sept 21, the eastern section of the Beech Mountain Loop Trail will be closed for repairs from a junction just beyond the parking lot to just below the summit at the fire tower. Three alternate routes to the summit are available: the outer loop of the Beech Mountain Loop Trail, Beech South Ridge Trail and Beech West Ridge Trail.",
+   "nps_category": "Park Closure",
+   "expected_decision": "no_go",
+   "base_output": "{\"hazard_type\": \"construction\", \"severity\": 2, \"trails_affected\": [\"Beech Mountain Loop Trail\"], \"is_closed\": true, \"decision\": \"caution\", \"reason\": \"Partial trail closure for repairs; use alternate routes to summit.\"}",
+   "lora_output": "{\"hazard_type\": \"closure\", \"severity\": 3, \"trails_affected\": [\"Beech Mountain Loop Trail\"], \"is_closed\": true, \"decision\": \"no_go\", \"reason\": \"Eastern section of Beech Mountain Loop Trail is closed for repairs.\"}",
+   "teacher_output": "{\n  \"hazard_type\": \"construction\",\n  \"severity\": 3,\n  \"trails_affected\": [\n    \"Beech Mountain Loop Trail\"\n  ],\n  \"is_closed\": true,\n  \"decision\": \"no_go\",\n  \"reason\": \"The eastern section of Beech Mountain Loop Trail is closed for repairs.\"\n}",
+   "heuristic_output": "{\"hazard_type\": \"construction\", \"severity\": 2, \"trails_affected\": [\"Beech Mountain Loop Trail\", \"Beech South Ridge Trail\", \"Beech West Ridge Trail\"], \"is_closed\": true, \"decision\": \"caution\", \"reason\": \"Use caution - Beech Mountain Loop Trail: Eastern Section of Beech Mountain Loop Trail Closed for Repairs\"}"
+  },
+  {
+   "id": "722D0156-2EBF-4D07-8DC8-598AF1035041",
+   "title": "Canine distemper is believed to be present in the park.",
+   "park_code": "pais",
+   "description": "Contact with saliva from wild animals can transmit distemper to pets, including from but not limited to water bowls, food bowls, trash etc. Distemper is not a threat to humans but can be deadly to pets. Ensure your pets are vaccinated or keep them home.",
+   "nps_category": "Caution",
+   "expected_decision": "caution",
+   "base_output": "{\"hazard_type\": \"wildlife\", \"severity\": 2, \"trails_affected\": [], \"is_closed\": false, \"decision\": \"caution\", \"reason\": \"Keep pets vaccinated or at home to avoid contact with infected wild animals.\"}",
+   "lora_output": "{\"hazard_type\": \"wildlife\", \"severity\": 2, \"trails_affected\": [], \"is_closed\": false, \"decision\": \"caution\", \"reason\": \"Distemper is present in wild animals; keep pets vaccinated or home to avoid transmission.\"}",
+   "teacher_output": "{\n  \"hazard_type\": \"wildlife\",\n  \"severity\": 2,\n  \"trails_affected\": [],\n  \"is_closed\": false,\n  \"decision\": \"caution\",\n  \"reason\": \"Canine distemper threatens pets; ensure vaccinations or leave pets at home.\"\n}",
+   "heuristic_output": "{\"hazard_type\": \"wildlife\", \"severity\": 3, \"trails_affected\": [], \"is_closed\": false, \"decision\": \"no_go\", \"reason\": \"Avoid: Canine distemper is believed to be present in the park.\"}"
+  },
+  {
+   "id": "7AC60BAF-D4C0-4CDD-A83A-F5FA059FA1AC",
+   "title": "Fall Hunting Seasons",
+   "park_code": "slbe",
+   "description": "Michigan has many designated hunting seasons for different animals. Several of these hunting seasons overlap and begin mid-September. Hunting is permitted within Sleeping Bear Dunes National Lakeshore in accordance with Michigan state laws and regulations. Hunting is not permitted within 450 feet of popular sites within the park, which are listed in the Superintendent's Compendium. Wearing brightly colored clothing is recommended for visitors.",
+   "nps_category": "Information",
+   "expected_decision": "go",
+   "base_output": "{\"hazard_type\": \"wildlife\", \"severity\": 2, \"trails_affected\": [\"Sleeping Bear Dunes National Lakeshore\"], \"is_closed\": false, \"decision\": \"caution\", \"reason\": \"Hunting occurs; wear bright clothing and stay 450 feet from popular sites.\"}",
+   "lora_output": "{\"hazard_type\": \"other\", \"severity\": 2, \"trails_affected\": [], \"is_closed\": false, \"decision\": \"caution\", \"reason\": \"Hunting is active; wear bright clothing and stay away from designated hunting zones.\"}",
+   "teacher_output": "{\n  \"hazard_type\": \"other\",\n  \"severity\": 2,\n  \"trails_affected\": [],\n  \"is_closed\": false,\n  \"decision\": \"caution\",\n  \"reason\": \"Hunting is active; wear bright clothing and stay 450 feet from popular sites.\"\n}",
+   "heuristic_output": "{\"hazard_type\": \"wildlife\", \"severity\": 2, \"trails_affected\": [], \"is_closed\": false, \"decision\": \"caution\", \"reason\": \"Use caution: Fall Hunting Seasons\"}"
+  },
+  {
+   "id": "4F273C49-CEB7-4492-852E-3CCC4A5D354B",
+   "title": "Toxic Algae Found – Blue Mesa Water Quality Advisory",
+   "park_code": "cure",
+   "description": "Cyanotoxins are currently present in the Iola Basin. Until further notice, the park recommends that no person or pet swims in, or drinks from, reservoir waters in the Iola Basin. Cyanotoxins may also be present in the Cebolla and Sapinero Basins. Use caution when fishing, boating, or recreating in Blue Mesa Reservoir.",
+   "nps_category": "Danger",
+   "expected_decision": "no_go",
+   "base_output": "{\"hazard_type\": \"water\", \"severity\": 2, \"trails_affected\": [\"Iola Basin\", \"Cebolla Basin\", \"Sapinero Basin\"], \"is_closed\": false, \"decision\": \"caution\", \"reason\": \"Do not swim or drink water; use caution when fishing or boating due to cyanotoxins.\"}",
+   "lora_output": "{\"hazard_type\": \"water\", \"severity\": 2, \"trails_affected\": [\"Iola Basin\", \"Cebolla Basin\", \"Sapinero Basin\"], \"is_closed\": false, \"decision\": \"caution\", \"reason\": \"Avoid swimming or drinking reservoir water due to toxic algae; use caution while boating or fishing.\"}",
+   "teacher_output": "{\n  \"hazard_type\": \"water\",\n  \"severity\": 2,\n  \"trails_affected\": [\n    \"Iola Basin\",\n    \"Cebolla Basin\",\n    \"Sapinero Basin\",\n    \"Blue Mesa Reservoir\"\n  ],\n  \"is_closed\": false,\n  \"decision\": \"caution\",\n  \"reason\": \"Avoid swimming or drinking reservoir water due to toxic algae; other activities require caution.\"\n}",
+   "heuristic_output": "{\"hazard_type\": \"water\", \"severity\": 3, \"trails_affected\": [], \"is_closed\": false, \"decision\": \"no_go\", \"reason\": \"Avoid: Toxic Algae Found – Blue Mesa Water Quality Advisory\"}"
+  },
+  {
+   "id": "660FD693-2370-4C15-BF70-DCE12CB5975C",
+   "title": "Hurricane Isaias Closures Florida",
+   "park_code": "guis",
+   "description": "Severe weather conditions are possible in Florida and Mississippi. All of the areas are closed until further notice. Highway 399 will close at 8 a.m. Oct 9. Fort Pickens Area and Fort Pickens Campground Okaloosa Area and Crab Island Santa Rosa Area (Opal Beach) Perdido Key Area (Johnson Beach) Fort Barrancas Area Naval Live Oaks Area",
+   "nps_category": "Park Closure",
+   "expected_decision": "no_go",
+   "base_output": "{\"hazard_type\": \"weather\", \"severity\": 3, \"trails_affected\": [\"Fort Pickens Area\", \"Fort Pickens Campground\", \"Okaloosa Area\", \"Crab Island Santa Rosa Area\", \"Opal Beach\", \"Perdido Key Area\", \"Johnson Beach\", \"Fort Barrancas Area\", \"Naval Live Oaks Area\"], \"is_closed\": true, \"decision\": \"no_go\", \"reason\": \"Severe weather conditions and official closures prevent safe visitation until further notice.\"}",
+   "lora_output": "{\"hazard_type\": \"weather\", \"severity\": 3, \"trails_affected\": [\"Fort Pickens Area\", \"Fort Pickens Campground Okaloosa Area\", \"Crab Island Santa Rosa Area (Opal Beach)\", \"Perdido Key Area (Johnson Beach)\", \"Fort Barrancas Area\", \"Naval Live Oaks Area\"], \"is_closed\": true, \"decision\": \"no_go\", \"reason\": \"All listed areas are closed due to severe weather from Hurricane Isaias.\"}",
+   "teacher_output": "{\n  \"hazard_type\": \"weather\",\n  \"severity\": 3,\n  \"trails_affected\": [\n    \"Highway 399\",\n    \"Fort Pickens Area\",\n    \"Fort Pickens Campground\",\n    \"Okaloosa Area\",\n    \"Crab Island\",\n    \"Santa Rosa Area\",\n    \"Opal Beach\",\n    \"Perdido Key Area\",\n    \"Johnson Beach\",\n    \"Fort Barrancas Area\",\n    \"Naval Live Oaks Area\"\n  ],\n  \"is_closed\": true,\n  \"decision\": \"no_go\",\n  \"reason\": \"All listed areas and roads are closed due to severe weather conditions from Hurricane Isaias.\"\n}",
+   "heuristic_output": "{\"hazard_type\": \"weather\", \"severity\": 3, \"trails_affected\": [\"Fort Pickens Campground\"], \"is_closed\": true, \"decision\": \"no_go\", \"reason\": \"Avoid - Fort Pickens Campground: Hurricane Isaias Closures Florida\"}"
   }
+ ],
+ "test_by_category": {
+  "Information": 61,
+  "Park Closure": 34,
+  "Danger": 3,
+  "Caution": 28
+ },
+ "notes": [
+  "Gold decision = NPS category (Information->go, Caution->caution, Danger/Park Closure->no_go), except Park Closure alerts whose title is facility-only (parking/visitor center/campground...) -> caution. decision_acc_raw uses the unadjusted mapping.",
+  "closure gold = category=='Park Closure' OR teacher is_closed; hazard_acc is agreement with teacher labels.",
+  "Teacher row uses the long teacher prompt it labeled with; base/lora use the short production SYSTEM_PROMPT.",
+  "Single attempt, temperature 0, no retries. Latency = wall-clock per Tinker sampling request (incl. network/queue).",
+  "Cost = measured tokens x Tinker list prices (models.json, 2026-10-10)."
  ]
 }

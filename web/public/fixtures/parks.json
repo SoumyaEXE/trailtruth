@@ -123,7 +123,7 @@
   "park_name": "George Washington Memorial Parkway",
   "states": "DC,MD,VA",
   "alert_count": 5,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "grsa",
@@ -186,14 +186,14 @@
   "park_name": "Big South Fork National River & Recreation Area",
   "states": "KY,TN",
   "alert_count": 4,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "cana",
   "park_name": "Canaveral National Seashore",
   "states": "FL",
   "alert_count": 4,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "choh",
@@ -214,7 +214,7 @@
   "park_name": "Fort McHenry National Monument and Historic Shrine",
   "states": "MD",
   "alert_count": 4,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "fopu",
@@ -242,21 +242,21 @@
   "park_name": "Great Basin National Park",
   "states": "NV",
   "alert_count": 4,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "grsm",
   "park_name": "Great Smoky Mountains National Park",
   "states": "NC,TN",
   "alert_count": 4,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "hale",
   "park_name": "Haleakalā National Park",
   "states": "HI",
   "alert_count": 4,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "hamp",
@@ -270,7 +270,7 @@
   "park_name": "Kalaupapa National Historical Park",
   "states": "HI",
   "alert_count": 4,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "lake",
@@ -284,7 +284,7 @@
   "park_name": "Lake Meredith National Recreation Area",
   "states": "TX",
   "alert_count": 4,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "maca",
@@ -305,7 +305,7 @@
   "park_name": "Natchez National Historical Park",
   "states": "MS",
   "alert_count": 4,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "neri",
@@ -375,7 +375,7 @@
   "park_name": "Big Bend National Park",
   "states": "TX",
   "alert_count": 3,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "bisc",
@@ -431,14 +431,14 @@
   "park_name": "Everglades National Park",
   "states": "FL",
   "alert_count": 3,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "flfo",
   "park_name": "Florissant Fossil Beds National Monument",
   "states": "CO",
   "alert_count": 3,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "fopo",
@@ -452,21 +452,21 @@
   "park_name": "Frederick Law Olmsted National Historic Site",
   "states": "MA",
   "alert_count": 3,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "gicl",
   "park_name": "Gila Cliff Dwellings National Monument",
   "states": "NM",
   "alert_count": 3,
-  "worst_decision": "go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "glca",
   "park_name": "Glen Canyon National Recreation Area",
   "states": "AZ,UT",
   "alert_count": 3,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "grte",
@@ -487,7 +487,7 @@
   "park_name": "Lake Roosevelt National Recreation Area",
   "states": "WA",
   "alert_count": 3,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "lavo",
@@ -515,21 +515,21 @@
   "park_name": "Ninety Six National Historic Site",
   "states": "SC",
   "alert_count": 3,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "orpi",
   "park_name": "Organ Pipe Cactus National Monument",
   "states": "AZ",
   "alert_count": 3,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "pagr",
   "park_name": "Paterson Great Falls National Historical Park",
   "states": "NJ",
   "alert_count": 3,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "petr",
@@ -543,7 +543,7 @@
   "park_name": "Pipestone National Monument",
   "states": "MN",
   "alert_count": 3,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "prsf",
@@ -585,35 +585,35 @@
   "park_name": "Vicksburg National Military Park",
   "states": "MS,LA",
   "alert_count": 3,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "wica",
   "park_name": "Wind Cave National Park",
   "states": "SD",
   "alert_count": 3,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "agfo",
   "park_name": "Agate Fossil Beds National Monument",
   "states": "NE",
   "alert_count": 2,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "alfl",
   "park_name": "Alibates Flint Quarries National Monument",
   "states": "TX",
   "alert_count": 2,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "anjo",
   "park_name": "Andrew Johnson National Historic Site",
   "states": "TN",
   "alert_count": 2,
-  "worst_decision": "go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "appa",
@@ -627,7 +627,7 @@
   "park_name": "Assateague Island National Seashore",
   "states": "MD,VA",
   "alert_count": 2,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "badl",
@@ -655,7 +655,7 @@
   "park_name": "Big Cypress National Preserve",
   "states": "FL",
   "alert_count": 2,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "bith",
@@ -697,7 +697,7 @@
   "park_name": "Cane River Creole National Historical Park",
   "states": "LA",
   "alert_count": 2,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "cach",
@@ -711,7 +711,7 @@
   "park_name": "Capitol Reef National Park",
   "states": "UT",
   "alert_count": 2,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "carl",
@@ -746,7 +746,7 @@
   "park_name": "Coltsville National Historical Park",
   "states": "CT",
   "alert_count": 2,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "coro",
@@ -760,7 +760,7 @@
   "park_name": "Craters Of The Moon National Monument & Preserve",
   "states": "ID",
   "alert_count": 2,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "deso",
@@ -774,28 +774,28 @@
   "park_name": "Dinosaur National Monument",
   "states": "CO,UT",
   "alert_count": 2,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "fiis",
   "park_name": "Fire Island National Seashore",
   "states": "NY",
   "alert_count": 2,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "frst",
   "park_name": "First State National Historical Park",
   "states": "DE,PA",
   "alert_count": 2,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "fobo",
   "park_name": "Fort Bowie National Historic Site",
   "states": "AZ",
   "alert_count": 2,
-  "worst_decision": "no_go"
+  "worst_decision": "go"
  },
  {
   "park_code": "foda",
@@ -816,7 +816,7 @@
   "park_name": "Fort Necessity National Battlefield",
   "states": "PA",
   "alert_count": 2,
-  "worst_decision": "no_go"
+  "worst_decision": "go"
  },
  {
   "park_code": "foun",
@@ -844,7 +844,7 @@
   "park_name": "Gettysburg National Military Park",
   "states": "PA",
   "alert_count": 2,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "para",
@@ -865,7 +865,7 @@
   "park_name": "Guadalupe Mountains National Park",
   "states": "TX",
   "alert_count": 2,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "hafe",
@@ -893,7 +893,7 @@
   "park_name": "Jean Lafitte National Historical Park and Preserve",
   "states": "LA",
   "alert_count": 2,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "jeca",
@@ -907,7 +907,7 @@
   "park_name": "John Fitzgerald Kennedy National Historic Site",
   "states": "MA",
   "alert_count": 2,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "jotr",
@@ -921,7 +921,7 @@
   "park_name": "Katahdin Woods and Waters National Monument",
   "states": "ME",
   "alert_count": 2,
-  "worst_decision": "go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "kimo",
@@ -942,7 +942,7 @@
   "park_name": "Montezuma Castle National Monument",
   "states": "AZ",
   "alert_count": 2,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "natt",
@@ -956,7 +956,7 @@
   "park_name": "Natchez Trace Parkway",
   "states": "AL,MS,TN",
   "alert_count": 2,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "ocmu",
@@ -998,14 +998,14 @@
   "park_name": "Russell Cave National Monument",
   "states": "AL",
   "alert_count": 2,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "sahi",
   "park_name": "Sagamore Hill National Historic Site",
   "states": "NY",
   "alert_count": 2,
-  "worst_decision": "no_go"
+  "worst_decision": "go"
  },
  {
   "park_code": "sacn",
@@ -1019,7 +1019,7 @@
   "park_name": "Sand Creek Massacre National Historic Site",
   "states": "CO",
   "alert_count": 2,
-  "worst_decision": "go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "seki",
@@ -1040,14 +1040,14 @@
   "park_name": "Tonto National Monument",
   "states": "AZ",
   "alert_count": 2,
-  "worst_decision": "go"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "tuzi",
   "park_name": "Tuzigoot National Monument",
   "states": "AZ",
   "alert_count": 2,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "vall",
@@ -1061,7 +1061,7 @@
   "park_name": "Wilson's Creek National Battlefield",
   "states": "MO",
   "alert_count": 2,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "wupa",
@@ -1103,21 +1103,21 @@
   "park_name": "Arches National Park",
   "states": "UT",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "arho",
   "park_name": "Arlington House, The Robert E. Lee Memorial",
   "states": "VA",
   "alert_count": 1,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "azru",
   "park_name": "Aztec Ruins National Monument",
   "states": "NM",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "bicr",
@@ -1145,28 +1145,28 @@
   "park_name": "Boston National Historical Park",
   "states": "MA",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "cany",
   "park_name": "Canyonlands National Park",
   "states": "UT",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "calo",
   "park_name": "Cape Lookout National Seashore",
   "states": "NC",
   "alert_count": 1,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "cibs",
   "park_name": "Carlisle Federal Indian Boarding School National Monument",
   "states": "PA",
   "alert_count": 1,
-  "worst_decision": "go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "cawo",
@@ -1180,28 +1180,28 @@
   "park_name": "Chaco Culture National Historical Park",
   "states": "NM",
   "alert_count": 1,
-  "worst_decision": "go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "chic",
   "park_name": "Chickasaw National Recreation Area",
   "states": "OK",
   "alert_count": 1,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "chir",
   "park_name": "Chiricahua National Monument",
   "states": "AZ",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "chri",
   "park_name": "Christiansted National Historic Site",
   "states": "VI",
   "alert_count": 1,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "cwdw",
@@ -1215,7 +1215,7 @@
   "park_name": "Clara Barton National Historic Site",
   "states": "MD",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "colo",
@@ -1236,7 +1236,7 @@
   "park_name": "Cowpens National Battlefield",
   "states": "SC",
   "alert_count": 1,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "crla",
@@ -1250,7 +1250,7 @@
   "park_name": "Cumberland Gap National Historical Park",
   "states": "KY,TN,VA",
   "alert_count": 1,
-  "worst_decision": "go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "cure",
@@ -1264,14 +1264,14 @@
   "park_name": "Death Valley National Park",
   "states": "CA,NV",
   "alert_count": 1,
-  "worst_decision": "no_go"
+  "worst_decision": "go"
  },
  {
   "park_code": "dena",
   "park_name": "Denali National Park & Preserve",
   "states": "AK",
   "alert_count": 1,
-  "worst_decision": "go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "depo",
@@ -1306,7 +1306,7 @@
   "park_name": "Federal Hall National Memorial",
   "states": "NY",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "flni",
@@ -1327,14 +1327,14 @@
   "park_name": "Fort Foote Park",
   "states": "MD",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "foma",
   "park_name": "Fort Matanzas National Monument",
   "states": "FL",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "fobu",
@@ -1355,7 +1355,7 @@
   "park_name": "Fredericksburg & Spotsylvania National Military Park",
   "states": "VA",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "gaar",
@@ -1369,7 +1369,7 @@
   "park_name": "General Grant National Memorial",
   "states": "NY",
   "alert_count": 1,
-  "worst_decision": "go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "gero",
@@ -1418,21 +1418,21 @@
   "park_name": "Home Of Franklin D Roosevelt National Historic Site",
   "states": "NY",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "hofu",
   "park_name": "Hopewell Furnace National Historic Site",
   "states": "PA",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "hobe",
   "park_name": "Horseshoe Bend National Military Park",
   "states": "AL",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "hosp",
@@ -1453,7 +1453,7 @@
   "park_name": "Independence National Historical Park",
   "states": "PA",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "joda",
@@ -1467,7 +1467,7 @@
   "park_name": "John Muir National Historic Site",
   "states": "CA",
   "alert_count": 1,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "kaho",
@@ -1481,7 +1481,7 @@
   "park_name": "Kenilworth Park & Aquatic Gardens",
   "states": "DC",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "kemo",
@@ -1523,7 +1523,7 @@
   "park_name": "Manzanar National Historic Site",
   "states": "CA",
   "alert_count": 1,
-  "worst_decision": "go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "mabi",
@@ -1537,7 +1537,7 @@
   "park_name": "Martin Luther King, Jr. National Historical Park",
   "states": "GA",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "mava",
@@ -1579,14 +1579,14 @@
   "park_name": "National Mall and Memorial Parks",
   "states": "DC",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "npsa",
   "park_name": "National Park of American Samoa",
   "states": "AS",
   "alert_count": 1,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "nabr",
@@ -1614,21 +1614,21 @@
   "park_name": "Niobrara National Scenic River",
   "states": "NE",
   "alert_count": 1,
-  "worst_decision": "go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "noco",
   "park_name": "North Country National Scenic Trail",
   "states": "MI,MN,ND,NY,OH,PA,VT,WI",
   "alert_count": 1,
-  "worst_decision": "go"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "obed",
   "park_name": "Obed Wild & Scenic River",
   "states": "TN",
   "alert_count": 1,
-  "worst_decision": "no_go"
+  "worst_decision": "go"
  },
  {
   "park_code": "okci",
@@ -1656,14 +1656,14 @@
   "park_name": "Pecos National Historical Park",
   "states": "NM",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "pevi",
   "park_name": "Perry's Victory & International Peace Memorial",
   "states": "OH",
   "alert_count": 1,
-  "worst_decision": "go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "pisc",
@@ -1677,14 +1677,14 @@
   "park_name": "Poverty Point National Monument",
   "states": "LA",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "prwi",
   "park_name": "Prince William Forest Park",
   "states": "VA",
   "alert_count": 1,
-  "worst_decision": "no_go"
+  "worst_decision": "go"
  },
  {
   "park_code": "pull",
@@ -1719,7 +1719,7 @@
   "park_name": "Saint Croix Island International Historic Site",
   "states": "ME",
   "alert_count": 1,
-  "worst_decision": "no_go"
+  "worst_decision": "go"
  },
  {
   "park_code": "sapa",
@@ -1768,14 +1768,14 @@
   "park_name": "Star-Spangled Banner National Historic Trail",
   "states": "MD,VA,DC",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "stri",
   "park_name": "Stones River National Battlefield",
   "states": "TN",
   "alert_count": 1,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "sucr",
@@ -1789,7 +1789,7 @@
   "park_name": "Tallgrass Prairie National Preserve",
   "states": "KS",
   "alert_count": 1,
-  "worst_decision": "no_go"
+  "worst_decision": "caution"
  },
  {
   "park_code": "whho",
@@ -1866,7 +1866,7 @@
   "park_name": "Washington Monument",
   "states": "DC",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "go"
  },
  {
   "park_code": "wefa",
@@ -1915,7 +1915,7 @@
   "park_name": "Yosemite National Park",
   "states": "CA",
   "alert_count": 1,
-  "worst_decision": "caution"
+  "worst_decision": "no_go"
  },
  {
   "park_code": "yuch",

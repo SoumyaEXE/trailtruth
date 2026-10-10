@@ -1,2 +1,14 @@
-13:20:39.238 [worker] warming up Tinker sampling client for qwen3.5-4b-trailtruth-lora ...
-13:20:49.205 [worker] ServiceClient initialized for session 0e2796fa-9662-5173-a151-250559abe0c3
+13:23:20.064 [worker] warming up Tinker sampling client for qwen3.5-4b-trailtruth-lora ...
+13:23:24.725 [worker] ServiceClient initialized for session 31ad0f9f-cf7c-5139-9f3e-3c021bbd3303
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+13:23:33.682 [worker] Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+13:23:36.975 [worker] Tinker ready in 16.9s
+13:23:39.640 [worker] worker pid=4384 up: temporal=localhost:7233 queue=trailtruth provider=tinker chaos=off sentry=off
+13:23:40.887 [worker] [fetch_alerts] park=havo attempt=1
+13:23:40.889 [worker] [fetch_alerts] park=chch attempt=1
+13:23:40.893 [worker] [fetch_alerts] park=yell attempt=1
+13:23:40.895 [worker] [fetch_alerts] park=havo OK: 9 alerts (source=cache, attempt 1)
+13:23:40.898 [worker] [fetch_alerts] park=chch OK: 2 alerts (source=cache, attempt 1)
+13:23:40.900 [worker] [fetch_alerts] park=yell OK: 7 alerts (source=cache, attempt 1)
+13:23:53.343 [worker] [compose_card] card_2026-10-10_havo-chch-yell overall=no_go parks=havo:no_go, chch:caution, yell:no_go
+13:23:53.406 [worker] [publish_card] wrote agent/state/cards/card_2026-10-10_havo-chch-yell.json

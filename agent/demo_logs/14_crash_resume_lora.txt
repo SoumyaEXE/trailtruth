@@ -1,0 +1,79 @@
+$ python -m agent.demo_crash      # provider=tinker (real LoRA calls, no simulated latency)
+[demo t+  0.4s] Temporal server: localhost:7233  (event history is the source of truth, not the worker)
+[demo t+  0.4s] model: tinker / qwen3.5-4b-trailtruth-lora
+[demo t+  0.4s] 1) starting worker #1
+    worker#1 | 13:24:06.899 [worker] warming up Tinker sampling client for qwen3.5-4b-trailtruth-lora ...
+[demo t+  3.0s] 2) started TrailCardWorkflow  id=trailcard-2026-10-10-havo-yell-zion-5b7d  parks=['havo', 'yell', 'zion']
+    worker#1 | 13:24:11.492 [worker] ServiceClient initialized for session 7492579e-5313-5e83-843e-38e8a146d92d
+    worker#1 | 13:24:29.678 [worker] Tinker ready in 22.8s
+    worker#1 | 13:24:32.720 [worker] worker pid=11608 up: temporal=localhost:7233 queue=trailtruth-demo-crash-7220 provider=tinker chaos=off sentry=off
+    worker#1 | 13:24:32.832 [worker] [fetch_alerts] park=havo attempt=1
+    worker#1 | 13:24:32.833 [worker] [fetch_alerts] park=yell attempt=1
+    worker#1 | 13:24:32.837 [worker] [fetch_alerts] park=havo OK: 9 alerts (source=cache, attempt 1)
+    worker#1 | 13:24:32.841 [worker] [fetch_alerts] park=yell OK: 7 alerts (source=cache, attempt 1)
+    worker#1 | 13:24:32.842 [worker] [fetch_alerts] park=zion attempt=1
+    worker#1 | 13:24:32.845 [worker] [fetch_alerts] park=zion OK: 5 alerts (source=cache, attempt 1)
+
+[demo t+ 33.1s] 3) progress before crash: classify_alerts 10/21 alerts
+     [OK] fetch_alerts:havo      completed attempt=1  9 alerts, source=cache
+     [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+     [OK] fetch_alerts:zion      completed attempt=1  5 alerts, source=cache
+     [..] classify_alerts        running   attempt=1  10/21 alerts
+     [  ] compose_card           pending   attempt=0
+     [  ] publish_card           pending   attempt=0
+
+[demo t+ 33.1s] 4) [CRASH] hard-killing worker #1 (pid 11608) in the middle of classify_alerts - no graceful shutdown
+[demo t+ 33.2s]    worker #1 is dead. No process is running the agent right now.
+[demo t+ 33.2s]    Temporal says: workflow status=RUNNING, history length=61, 6 classify_alert activities in flight (orphaned)
+[demo t+ 33.2s]    waiting 3.0s of downtime...
+
+[demo t+ 36.2s] 5) starting worker #2 (fresh process, no memory of worker #1)
+[demo t+ 36.2s]    it replays the event history: finished activities are NOT re-run; orphaned in-flight ones are
+[demo t+ 36.2s]    retried once their 5s heartbeat timeout fires.
+    worker#2 | 13:24:42.885 [worker] warming up Tinker sampling client for qwen3.5-4b-trailtruth-lora ...
+    worker#2 | 13:24:47.184 [worker] ServiceClient initialized for session 017af79e-c1b1-5bb8-a577-0fb5a0572428
+    worker#2 | 13:25:01.968 [worker] Tinker ready in 19.1s
+    worker#2 | 13:25:08.023 [worker] worker pid=18648 up: temporal=localhost:7233 queue=trailtruth-demo-crash-7220 provider=tinker chaos=off sentry=off
+    worker#2 | 13:25:11.644 [worker] [classify_alert] 611B580A OK on attempt 2 -> no_go (road)
+    worker#2 | 13:25:11.650 [worker] [classify_alert] 57EFE369 OK on attempt 2 -> go (road)
+    worker#2 | 13:25:11.651 [worker] [classify_alert] 00D47802 OK on attempt 2 -> no_go (construction)
+    worker#2 | 13:25:11.655 [worker] [classify_alert] 75EAC129 OK on attempt 2 -> no_go (geologic)
+    worker#2 | 13:25:11.689 [worker] [classify_alert] 67146540 OK on attempt 2 -> caution (wildlife)
+    worker#2 | 13:25:12.267 [worker] [classify_alert] 68BF1AEF OK on attempt 2 -> go (other)
+    worker#2 | 13:25:14.605 [worker] [compose_card] card_2026-10-10_havo-yell-zion overall=no_go parks=havo:no_go, yell:no_go, zion:no_go
+    worker#2 | 13:25:14.636 [worker] [publish_card] wrote agent/state/cards/card_2026-10-10_havo-yell-zion.json
+
+[demo t+ 69.5s] 6) workflow COMPLETED after the crash:
+     [OK] fetch_alerts:havo      completed attempt=1  9 alerts, source=cache
+     [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+     [OK] fetch_alerts:zion      completed attempt=1  5 alerts, source=cache
+     [OK] classify_alerts        completed attempt=2  21/21 alerts
+            -> 6 alert(s) needed retries
+     [OK] compose_card           completed attempt=1
+     [OK] publish_card           completed attempt=1  card_2026-10-10_havo-yell-zion
+
+[demo t+ 69.5s] 7) proof from Temporal event history:
+[demo t+ 69.5s]    classify_alert activities scheduled : 21 (one per alert - none scheduled twice)
+[demo t+ 69.5s]    completed before the crash          : 10  (kept; not re-run by worker #2)
+[demo t+ 69.5s]    completed after restart             : 11
+[demo t+ 69.5s]    activities that needed attempt >= 2  : 6  (in flight when worker #1 died)
+[demo t+ 69.5s]    total history events                : 113
+   
+   === TRAIL CARD card_2026-10-10_havo-yell-zion  (week of 2026-10-10)  OVERALL: NO_GO ===
+     Hawaiʻi Volcanoes National Park [NO_GO]
+       Go — but skip Halemaʻumaʻu Trail & Byron Ledge Trail
+       closed: Halemaʻumaʻu Trail, Byron Ledge Trail, Crater Rim Trail, Kīpukapuaulu Trail, Sulphur Banks Trail
+       watch for: Protect Yourself from Volcanic Tephra
+       watch for: Closed: old Crater Rim Drive, Mauna Loa Road, Sulphur Banks Bridge
+     Yellowstone National Park [NO_GO]
+       Go — but skip Biscuit Basin & West Thumb Geyser Basin Boardwalk
+       closed: Biscuit Basin, West Thumb Geyser Basin Boardwalk
+       watch for: Stay Away From Bull Elk
+       watch for: Closed: Beartooth Highway, Dunraven Pass
+     Zion National Park [NO_GO]
+       Go — but skip Watchman Trail
+       closed: Watchman Trail
+       watch for: Toxic cyanobacteria in rivers, streams, and pools
+       watch for: Large vehicle restrictions on Zion-Mt. Carmel Highway
+     model: qwen3.5-4b-trailtruth-lora   workflow: trailcard-2026-10-10-havo-yell-zion-5b7d
+[demo t+ 69.7s] done.

@@ -1,0 +1,56 @@
+# Render Blueprint for TrailTruth: New → Blueprint → pick this repo.
+#
+#   trailtruth-api  Python web service: Temporal dev server + worker + FastAPI in one container,
+#                   classifying alerts with the Qwen3.5-4B + TrailTruth LoRA on Tinker.
+#   trailtruth-web  Static Next.js export of the dashboard, pointed at the API. If the API is asleep
+#                   or down, the dashboard falls back to the bundled real-data fixtures.
+#
+# Secrets (TINKER_API_KEY, NPS_API_KEY) are `sync: false`: Render asks for them on first deploy.
+# The LoRA path is read from ml/results/model_path.txt (committed; it is not a secret).
+#
+# Honest tradeoff: the Temporal dev server keeps its SQLite DB on the container's ephemeral disk, so
+# workflows survive a *worker* crash (the demo) but not a redeploy/restart of the container. For real
+# durability point TEMPORAL_ADDRESS / TEMPORAL_NAMESPACE / TEMPORAL_API_KEY at Temporal Cloud and change
+# the startCommand to `python -m agent.dev --no-server --host 0.0.0.0 --api-port $PORT`.
+services:
+  - type: web
+    name: trailtruth-api
+    runtime: python
+    plan: starter   # dev server + worker + API + tokenizer fit in 512 MB but tightly; bump to standard if it OOMs
+    region: oregon
+    buildCommand: >-
+      pip install --upgrade pip &&
+      pip install --extra-index-url https://download.pytorch.org/whl/cpu -r agent/requirements-tinker.txt
+    # --refresh re-classifies all live NPS alerts with the LoRA on boot (~1 min, ~$0.10 of Tinker sampling).
+    startCommand: python -m agent.dev --host 0.0.0.0 --api-port $PORT --refresh
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.7
+      - key: TINKER_API_KEY
+        sync: false
+      - key: NPS_API_KEY
+        sync: false
+      # Unset = tinker when TINKER_API_KEY + model path exist, else the keyword heuristic.
+      # Set to "heuristic" to run with no Tinker spend.
+      - key: TRAILTRUTH_MODEL_PROVIDER
+        value: tinker
+      # *.onrender.com origins are already allowed; add exact extra origins here if needed.
+      - key: TRAILTRUTH_CORS_ORIGINS
+        value: ""
+
+  - type: web
+    name: trailtruth-web
+    runtime: static
+    buildCommand: >-
+      cd web && npm ci &&
+      STATIC_EXPORT=1 NEXT_PUBLIC_API_URL=https://$API_HOST npm run build
+    staticPublishPath: web/out
+    envVars:
+      - key: API_HOST
+        fromService:
+          type: web
+          name: trailtruth-api
+          property: host
+      - key: NODE_VERSION
+        value: 24.18.0

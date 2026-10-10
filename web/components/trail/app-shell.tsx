@@ -139,11 +139,23 @@ function useUsageClock() {
   }, []);
 }
 
+function useCleanMode() {
+  // ?clean=1 hides chrome that doesn't belong in marketing screenshots (data-source chip).
+  useEffect(() => {
+    try {
+      if (new URLSearchParams(window.location.search).get("clean") === "1") document.documentElement.classList.add("tt-clean");
+    } catch {
+      /* ignore */
+    }
+  }, []);
+}
+
 export function AppShell({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   useGlobalShortcuts();
   useUsageClock();
+  useCleanMode();
 
   useEffect(() => {
     if (!open) return;
@@ -272,7 +284,7 @@ export function Panel({
             {title && <h2 className="text-headline-semibold text-text-primary">{title}</h2>}
             {description && <p className="text-body-2-regular text-text-secondary">{description}</p>}
           </div>
-          {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
+          {actions && <div className="flex flex-wrap items-center gap-2 max-sm:w-full">{actions}</div>}
         </div>
       )}
       <div className={cx(padded && "p-4")}>{children}</div>

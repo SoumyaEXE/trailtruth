@@ -87,7 +87,7 @@ function JsonView({ value }: { value: unknown }) {
     });
   return (
     <pre
-      className="overflow-x-auto rounded-xl bg-background-secondary-default p-3 font-mono text-caption-1-regular leading-5 text-text-primary"
+      className="overflow-x-auto rounded-xl bg-background-secondary-default p-3 font-mono text-caption-1-regular leading-5 whitespace-pre-wrap break-words text-text-primary"
       dangerouslySetInnerHTML={{ __html: html }}
     />
   );
@@ -121,14 +121,14 @@ function ExpandedRow({ a }: { a: ProcessedAlert }) {
           <DecisionBadge decision={a.verdict.decision} size="sm" />
         </div>
         <JsonView value={a.verdict} />
-        <dl className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+        <dl className="grid grid-cols-2 gap-2 sm:grid-cols-[1.6fr_1fr_1fr]">
           <div className="rounded-xl bg-background-secondary-default px-3 py-2">
             <dt className="text-caption-1-medium text-text-tertiary">Model</dt>
             <dd className="truncate font-mono text-caption-1-medium text-text-primary" title={a.model}>{a.model}</dd>
           </div>
           <div className="rounded-xl bg-background-secondary-default px-3 py-2">
             <dt className="text-caption-1-medium text-text-tertiary">Latency</dt>
-            <dd className="font-mono text-caption-1-medium text-text-primary tt-num">{a.latency_ms} ms</dd>
+            <dd className="font-mono text-caption-1-medium text-text-primary tt-num">{a.latency_ms.toLocaleString()} ms</dd>
           </div>
           <div className={cx("col-span-2 rounded-xl px-3 py-2 sm:col-span-1", ok ? "bg-go-surface" : "bg-caution-surface")}>
             <dt className="text-caption-1-medium text-text-tertiary">vs. NPS label</dt>
@@ -280,7 +280,7 @@ export function AlertsView() {
         id: "latency",
         header: "Latency",
         accessorFn: (a) => a.latency_ms,
-        cell: ({ row }) => <span className="font-mono text-caption-1-medium text-text-secondary tt-num">{row.original.latency_ms} ms</span>,
+        cell: ({ row }) => <span className="font-mono text-caption-1-medium text-text-secondary tt-num">{row.original.latency_ms.toLocaleString()} ms</span>,
       },
       {
         id: "indexed",
@@ -344,7 +344,7 @@ export function AlertsView() {
           { label: "Alerts classified", value: loading ? "…" : stats.total.toLocaleString() },
           { label: "Agreement with NPS label", value: loading ? "…" : `${Math.round(stats.agreement * 100)}%` },
           { label: "Closures detected", value: loading ? "…" : stats.closed.toLocaleString() },
-          { label: "p50 latency", value: loading ? "…" : `${stats.p50} ms`, sub: stats.models.join(", ") },
+          { label: "p50 latency", value: loading ? "…" : `${stats.p50.toLocaleString()} ms`, sub: stats.models.join(", ") },
         ].map((s) => (
           <div key={s.label} className="flex min-w-0 flex-col gap-1 rounded-2xl border border-border-button-default bg-background-primary-default px-4 py-3">
             <span className="text-caption-1-medium text-text-tertiary">{s.label}</span>
@@ -547,7 +547,7 @@ export function AlertsView() {
                   </tr>
                   {row.getIsExpanded() && (
                     <tr className="bg-background-secondary-default/60">
-                      <td colSpan={columns.length} className="!p-0">
+                      <td colSpan={columns.length} className="p-0!">
                         <ExpandedRow a={row.original} />
                       </td>
                     </tr>

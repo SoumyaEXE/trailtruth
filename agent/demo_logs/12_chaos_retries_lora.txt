@@ -1,0 +1,202 @@
+$ TRAILTRUTH_CHAOS=1 python -m agent.worker      # other terminal; provider=tinker; fake NPS 503s, model hangs + invalid JSON
+$ python -m agent.run_card havo chch yell zion
+started TrailCardWorkflow id=trailcard-2026-10-10-havo-chch-yell-zion-2904 parks=['havo', 'chch', 'yell', 'zion']
+--- t+  0.1s  workflow=running
+  [..] fetch_alerts:havo      running   attempt=1
+  [..] fetch_alerts:chch      running   attempt=1
+  [..] fetch_alerts:yell      running   attempt=1
+  [..] fetch_alerts:zion      running   attempt=1
+  [  ] classify_alerts        pending   attempt=0
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  0.6s  workflow=running
+  [!!] fetch_alerts:havo      retrying  attempt=2
+         -> NPS API HTTP 503 Service Unavailable (chaos)
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [!!] fetch_alerts:zion      retrying  attempt=2
+         -> NPS API HTTP 503 Service Unavailable (chaos)
+  [  ] classify_alerts        pending   attempt=0
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  1.7s  workflow=running
+  [!!] fetch_alerts:havo      retrying  attempt=3
+         -> NPS API HTTP 503 Service Unavailable (chaos)
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2
+  [  ] classify_alerts        pending   attempt=0
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  3.8s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) (+1 more) -> succeeded on attempt 3
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2
+  [!!] classify_alerts        retrying  attempt=2  0/23 alerts
+         -> model returned invalid JSON: '{"hazard_type": "wildlife", "sev' (chaos)
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  7.4s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) (+1 more) -> succeeded on attempt 3
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2
+  [..] classify_alerts        running   attempt=2  2/23 alerts
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  8.9s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) (+1 more) -> succeeded on attempt 3
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2
+  [!!] classify_alerts        retrying  attempt=2  2/23 alerts
+         -> activity Heartbeat timeout
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  9.4s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) (+1 more) -> succeeded on attempt 3
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2
+  [!!] classify_alerts        retrying  attempt=2  4/23 alerts
+         -> activity Heartbeat timeout
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+ 12.1s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) (+1 more) -> succeeded on attempt 3
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2
+  [!!] classify_alerts        retrying  attempt=2  5/23 alerts
+         -> activity Heartbeat timeout
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+ 12.6s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) (+1 more) -> succeeded on attempt 3
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2
+  [!!] classify_alerts        retrying  attempt=2  9/23 alerts
+         -> activity Heartbeat timeout
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+ 13.1s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) (+1 more) -> succeeded on attempt 3
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2
+  [..] classify_alerts        running   attempt=2  10/23 alerts
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+ 15.2s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) (+1 more) -> succeeded on attempt 3
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2
+  [..] classify_alerts        running   attempt=2  13/23 alerts
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+ 15.7s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) (+1 more) -> succeeded on attempt 3
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2
+  [..] classify_alerts        running   attempt=2  15/23 alerts
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+ 17.2s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) (+1 more) -> succeeded on attempt 3
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2
+  [!!] classify_alerts        retrying  attempt=2  15/23 alerts
+         -> activity Heartbeat timeout
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+ 17.8s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) (+1 more) -> succeeded on attempt 3
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2
+  [!!] classify_alerts        retrying  attempt=2  20/23 alerts
+         -> activity Heartbeat timeout
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+ 19.9s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) (+1 more) -> succeeded on attempt 3
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2
+  [!!] classify_alerts        retrying  attempt=2  21/23 alerts
+         -> activity Heartbeat timeout
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+ 21.4s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) (+1 more) -> succeeded on attempt 3
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2
+  [..] classify_alerts        running   attempt=2  22/23 alerts
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+ 26.1s  workflow=completed
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) (+1 more) -> succeeded on attempt 3
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=cache
+         -> attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2
+  [OK] classify_alerts        completed attempt=2  23/23 alerts
+         -> 3 alert(s) needed retries
+  [OK] compose_card           completed attempt=1
+  [OK] publish_card           completed attempt=1  card_2026-10-10_havo-chch-yell-zion
+
+=== TRAIL CARD card_2026-10-10_havo-chch-yell-zion  (week of 2026-10-10)  OVERALL: NO_GO ===
+  Hawaiʻi Volcanoes National Park [NO_GO]
+    Go — but skip Halemaʻumaʻu Trail & Byron Ledge Trail
+    closed: Halemaʻumaʻu Trail, Byron Ledge Trail, Crater Rim Trail, Kīpukapuaulu Trail, Sulphur Banks Trail
+    watch for: Protect Yourself from Volcanic Tephra
+    watch for: Closed: old Crater Rim Drive, Mauna Loa Road, Sulphur Banks Bridge
+  Chickamauga & Chattanooga National Military Park [CAUTION]
+    Go with care — Use Caution When Hiking Bluff Trail on Lookout Mountain
+    watch for: Use Caution When Hiking Bluff Trail on Lookout Mountain
+    watch for: Closed: East Brotherton Road
+  Yellowstone National Park [NO_GO]
+    Go — but skip Biscuit Basin & West Thumb Geyser Basin Boardwalk
+    closed: Biscuit Basin, West Thumb Geyser Basin Boardwalk
+    watch for: Stay Away From Bull Elk
+    watch for: Closed: Beartooth Highway, Dunraven Pass
+  Zion National Park [NO_GO]
+    Go — but skip Watchman Trail
+    closed: Watchman Trail
+    watch for: Toxic cyanobacteria in rivers, streams, and pools
+    watch for: Large vehicle restrictions on Zion-Mt. Carmel Highway
+  model: qwen3.5-4b-trailtruth-lora   workflow: trailcard-2026-10-10-havo-chch-yell-zion-2904

@@ -19,6 +19,7 @@ import {
   MOCK_RUNS,
 } from "./mock";
 import type {
+  TrailCard,
   CardStatus,
   DataSource,
   EvalResults,
@@ -247,21 +248,26 @@ export async function getCardStatus(id: string): Promise<Sourced<CardStatus>> {
   return load<CardStatus>(`/api/cards/${encodeURIComponent(id)}`, "card_status.json", MOCK_CARD_STATUS);
 }
 
-/** The most recent finished card: newest completed run (live or simulated) → fixture card. */
+/** The most recent finished card: GET /api/cards/latest → newest simulated run → fixture card. */
 export async function getLatestCard(): Promise<Sourced<CardStatus>> {
-  const runs = await getRuns();
-  const latest = runs.data
-    .filter((r) => r.status === "completed")
-    .sort((a, b) => (b.started_at ?? "").localeCompare(a.started_at ?? ""))[0];
-  if (latest && (runs.source === "live" || findSim(latest.workflow_id))) {
-    try {
-      const status = await getCardStatus(latest.workflow_id);
-      if (status.data.card) return status;
-    } catch {
-      /* fall through to fixture */
+  const toStatus = (raw: unknown): CardStatus => {
+    const r = raw as Partial<CardStatus> & Partial<TrailCard>;
+    if (r && Array.isArray(r.parks)) return { status: "completed", card: r as TrailCard, steps: [], workflow_id: r.workflow_id };
+    return raw as CardStatus;
+  };
+  try {
+    const raw = await fromApi<unknown>("/api/cards/latest");
+    const status = toStatus(raw);
+    if (status.card) {
+      report("live");
+      return { data: status, source: "live" };
     }
+  } catch {
+    /* fall through */
   }
-  return load<CardStatus>(null, "card_status.json", MOCK_CARD_STATUS);
+  const sims = readSims().filter((s) => stepsAt(s, Date.now()).done);
+  if (sims[0]) return { data: await simulateStatus(sims[0]), source: lastSource ?? "fixture" };
+  return load<CardStatus>(null, "card_status.json", MOCK_CARD_STATUS, toStatus);
 }
 
 /* ----- workflow simulation -------------------------------------------------- */

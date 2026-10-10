@@ -39,13 +39,19 @@ const roleColor = (role: string) => `var(--tt-m-${ROLE_ORDER.includes(role) ? ro
 const ready = (m?: EvalModel): m is EvalModel => !!m && !m.pending && m.decision_acc != null;
 const cleanName = (n: string) => n.replace(/\s*\[placeholder\]/i, "");
 
-type Metric = "json_valid" | "decision_acc" | "closure_f1" | "hazard_acc";
-const QUALITY: { key: Metric; label: string; hint: string }[] = [
+type Metric = "json_valid" | "decision_acc" | "closure_f1" | "hazard_acc" | "decision_macro_f1" | "decision_agree_teacher";
+const ALL_QUALITY: { key: Metric; label: string; hint: string }[] = [
   { key: "decision_acc", label: "Decision accuracy", hint: "go / caution / no_go vs. the NPS category label" },
   { key: "json_valid", label: "Valid JSON", hint: "Parses and matches the TrailVerdict schema" },
   { key: "closure_f1", label: "Closure F1", hint: "is_closed vs. gold closure label" },
   { key: "hazard_acc", label: "Hazard accuracy", hint: "hazard_type agreement with the teacher" },
+  { key: "decision_macro_f1", label: "Decision macro-F1", hint: "Balanced across go / caution / no_go" },
+  { key: "decision_agree_teacher", label: "Agreement with teacher", hint: "Same decision as the teacher's label" },
 ];
+const metricOf = (m: EvalModel, k: Metric): number | null => m[k] ?? null;
+function qualityFor(models: EvalModel[]) {
+  return ALL_QUALITY.filter((q) => models.some((m) => typeof m[q.key] === "number"));
+}
 
 function sortModels(models: EvalModel[]) {
   const idx = (r: string) => (ROLE_ORDER.indexOf(r) < 0 ? 99 : ROLE_ORDER.indexOf(r));
@@ -130,17 +136,18 @@ function BarList({
 const fmtPct = (v: number | null) => (v == null ? "—" : pct(v));
 
 function QualityTable({ models }: { models: EvalModel[] }) {
+  const QUALITY = qualityFor(models);
   return (
     <div className="overflow-x-auto">
-      <table className="bui-table bui-table-sm min-w-[720px]">
+      <table className="bui-table bui-table-sm min-w-180">
         <thead>
           <tr>
             <th>Model</th>
             {QUALITY.map((q) => (
-              <th key={q.key} className="!text-end">{q.label}</th>
+              <th key={q.key} className="text-end!">{q.label}</th>
             ))}
-            <th className="!text-end">p50 latency</th>
-            <th className="!text-end">$ / 1k alerts</th>
+            <th className="text-end!">p50 latency</th>
+            <th className="text-end!">$ / 1k alerts</th>
           </tr>
         </thead>
         <tbody>
@@ -154,7 +161,7 @@ function QualityTable({ models }: { models: EvalModel[] }) {
                 </span>
               </td>
               {QUALITY.map((q) => (
-                <td key={q.key} className="text-end font-mono tt-num">{fmtPct(m[q.key])}</td>
+                <td key={q.key} className="text-end font-mono tt-num">{fmtPct(metricOf(m, q.key))}</td>
               ))}
               <td className="text-end font-mono tt-num">{m.p50_latency_ms == null ? "—" : `${Math.round(m.p50_latency_ms).toLocaleString()} ms`}</td>
               <td className="text-end font-mono tt-num">{m.cost_per_1k_alerts_usd == null ? "—" : usd(m.cost_per_1k_alerts_usd)}</td>
@@ -179,6 +186,31 @@ function Kpi({ icon: Icon, label, value, sub, pending }: { icon: typeof RiFlaskL
   );
 }
 
+function ParityDeltas({ student, teacher }: { student?: EvalModel; teacher?: EvalModel }) {
+  if (!student || !teacher || !ready(student)) return null;
+  const rows = ALL_QUALITY.filter((q) => q.key !== "decision_agree_teacher" && typeof student[q.key] === "number" && typeof teacher[q.key] === "number");
+  return (
+    <dl className="mt-2 flex w-full flex-col divide-y divide-separator-border border-t border-separator-border">
+      {rows.map((q) => {
+        const d = (metricOf(student, q.key)! - metricOf(teacher, q.key)!) * 100;
+        return (
+          <div key={q.key} className="flex items-center justify-between gap-2 py-2">
+            <dt className="text-caption-1-medium text-text-secondary">{q.label}</dt>
+            <dd className="flex items-center gap-2 font-mono text-caption-1-medium tt-num">
+              <span className="text-text-tertiary">{fmtPct(metricOf(teacher, q.key))} →</span>
+              <span className="text-text-primary">{fmtPct(metricOf(student, q.key))}</span>
+              <span className={cx("w-12 text-end", d >= 0 ? "text-go-text" : "text-caution-text")}>
+                {d >= 0 ? "+" : ""}
+                {d.toFixed(0)} pt
+              </span>
+            </dd>
+          </div>
+        );
+      })}
+    </dl>
+  );
+}
+
 function ParityRadial({ student, teacher }: { student?: EvalModel; teacher?: EvalModel }) {
   const s = student?.decision_acc ?? null;
   const t = teacher?.decision_acc ?? null;
@@ -186,7 +218,7 @@ function ParityRadial({ student, teacher }: { student?: EvalModel; teacher?: Eva
   const data = [{ name: "parity", value: Math.min(100, Math.round(parity * 100)), fill: student ? roleColor(student.role) : "var(--tt-m-lora)" }];
   return (
     <div className="flex flex-col items-center gap-3">
-      <div className="relative size-[180px]">
+      <div className="relative size-45">
         <ResponsiveContainer width="100%" height="100%">
           <RadialBarChart data={data} innerRadius="74%" outerRadius="100%" startAngle={90} endAngle={-270} barSize={14}>
             <PolarAngleAxis type="number" domain={[0, 100]} tick={false} axisLine={false} />
@@ -198,8 +230,8 @@ function ParityRadial({ student, teacher }: { student?: EvalModel; teacher?: Eva
           <span className="text-caption-1-medium text-text-tertiary">{parity > 1 ? "beats teacher" : "of teacher"}</span>
         </div>
       </div>
-      <p className="max-w-[260px] text-center text-body-2-regular text-text-secondary">
-        Decision accuracy of the <span className="font-medium text-text-primary">{student ? roleLabel(student.role).toLowerCase() : "student"}</span> relative to the
+      <p className="max-w-65 text-center text-body-2-regular text-text-secondary">
+        Decision accuracy of the <span className="font-medium text-text-primary">{student ? roleLabel(student.role) : "student"}</span> relative to the
         teacher{student?.role !== "lora" ? ". The LoRA student replaces it once training lands" : ""}.
       </p>
     </div>
@@ -209,7 +241,7 @@ function ParityRadial({ student, teacher }: { student?: EvalModel; teacher?: Eva
 function LossCurve({ curve }: { curve: [number, number][] }) {
   const data = curve.map(([step, loss]) => ({ step, loss }));
   return (
-    <div className="h-[240px] w-full">
+    <div className="h-60 w-full">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -12 }}>
           <defs>
@@ -232,7 +264,7 @@ function LossCurve({ curve }: { curve: [number, number][] }) {
               ) : null
             }
           />
-          <Area type="monotone" dataKey="loss" stroke="var(--tt-m-lora)" strokeWidth={2} fill="url(#lossFill)" activeDot={{ r: 4, strokeWidth: 2, stroke: "var(--color-background-primary-default)" }} />
+          <Area type="monotone" dataKey="loss" isAnimationActive={false} stroke="var(--tt-m-lora)" strokeWidth={2} fill="url(#lossFill)" activeDot={{ r: 4, strokeWidth: 2, stroke: "var(--color-background-primary-default)" }} />
         </AreaChart>
       </ResponsiveContainer>
     </div>
@@ -313,7 +345,7 @@ function OutputBlock({ label, role, output, expected }: { label: string; role: s
           <Swatch role={role} pending />
           {label}
         </span>
-        <div className="flex min-h-[132px] flex-col items-center justify-center gap-1.5 rounded-xl border border-dashed border-border-button-hover px-3 text-center">
+        <div className="flex min-h-33 flex-col items-center justify-center gap-1.5 rounded-xl border border-dashed border-border-button-hover px-3 text-center">
           <RiHourglassLine className="size-4 text-foreground-icon-tertiary" aria-hidden />
           <span className="text-caption-1-medium text-text-tertiary">Awaiting training run</span>
         </div>
@@ -343,7 +375,7 @@ function OutputBlock({ label, role, output, expected }: { label: string; role: s
       </div>
       <pre
         className={cx(
-          "min-h-[132px] overflow-x-auto rounded-xl border p-3 font-mono text-caption-1-regular leading-5 whitespace-pre-wrap break-words",
+          "min-h-33 overflow-x-auto rounded-xl border p-3 font-mono text-caption-1-regular leading-5 whitespace-pre-wrap break-words",
           v ? "border-border-button-default bg-background-secondary-default text-text-primary" : "border-nogo-border bg-nogo-surface text-nogo-text",
         )}
       >
@@ -363,7 +395,7 @@ function PendingState({ onPreview }: { onPreview: () => void }) {
         </span>
         <div className="flex flex-col gap-2">
           <h2 className="font-sign text-[28px] leading-9 font-semibold text-text-primary">Awaiting training run</h2>
-          <p className="max-w-[480px] text-body-regular text-text-secondary">
+          <p className="max-w-120 text-body-regular text-text-secondary">
             No evaluation results yet. They will appear here as soon as <code className="rounded bg-background-secondary-default px-1 font-mono text-caption-1-medium">ml/results/eval.json</code> lands.
           </p>
         </div>
@@ -453,7 +485,7 @@ export function LabView() {
       {loading ? (
         <div className="grid gap-4 lg:grid-cols-4">
           {Array.from({ length: 4 }, (_, i) => (
-            <div key={i} className="h-[120px] animate-pulse rounded-2xl bg-background-secondary-default" />
+            <div key={i} className="h-30 animate-pulse rounded-2xl bg-background-secondary-default" />
           ))}
         </div>
       ) : !evalData || (allPending && !preview) ? (
@@ -510,7 +542,7 @@ export function LabView() {
           <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_340px]">
             <Panel
               title="Quality on held-out alerts"
-              description="Higher is better. Hatched bars are still training."
+              description={models.some((m) => !ready(m)) ? "Higher is better. Hatched bars are still training." : `Higher is better. Same ${evalData.test_size} held-out alerts for every model.`}
               actions={
                 <SegmentedControl
                   aria-label="View"
@@ -529,13 +561,13 @@ export function LabView() {
                 <div className="flex flex-col gap-5">
                   <Legend models={models} />
                   <div className="grid gap-x-8 gap-y-6 md:grid-cols-2">
-                    {QUALITY.map((q) => (
+                    {qualityFor(models).map((q) => (
                       <div key={q.key} className="flex flex-col gap-2.5">
                         <div className="flex flex-col">
                           <span className="text-body-2-semibold text-text-primary">{q.label}</span>
                           <span className="text-caption-1-regular text-text-tertiary">{q.hint}</span>
                         </div>
-                        <BarList models={models} value={(m) => m[q.key]} format={(v) => pct(v)} max={1} />
+                        <BarList models={models} value={(m) => metricOf(m, q.key)} format={(v) => pct(v)} max={1} />
                       </div>
                     ))}
                   </div>
@@ -544,8 +576,11 @@ export function LabView() {
                 <QualityTable models={models} />
               )}
             </Panel>
-            <Panel title="Teacher parity">
-              <ParityRadial student={student} teacher={teacher} />
+            <Panel title="Teacher parity" description={student && teacher ? `${roleLabel(student.role)} vs. teacher` : undefined}>
+              <div className="flex flex-col items-center gap-2">
+                <ParityRadial student={student} teacher={teacher} />
+                <ParityDeltas student={student} teacher={teacher} />
+              </div>
             </Panel>
           </div>
 
@@ -575,7 +610,7 @@ export function LabView() {
               {evalData.training?.loss_curve?.length ? (
                 <LossCurve curve={evalData.training.loss_curve} />
               ) : (
-                <div className="relative flex h-[240px] flex-col items-center justify-center gap-3 overflow-hidden rounded-xl border border-dashed border-border-button-hover">
+                <div className="relative flex h-60 flex-col items-center justify-center gap-3 overflow-hidden rounded-xl border border-dashed border-border-button-hover">
                   <svg viewBox="0 0 300 100" className="absolute inset-x-6 top-8 h-[60%] w-[calc(100%-48px)] opacity-25" preserveAspectRatio="none" aria-hidden>
                     <path d="M0 8 C 40 40, 80 70, 140 82 S 240 92, 300 94" fill="none" stroke="var(--color-text-tertiary)" strokeWidth="2" strokeDasharray="5 6" vectorEffect="non-scaling-stroke" />
                   </svg>
@@ -614,6 +649,19 @@ export function LabView() {
                 <p className="text-body-2-regular text-text-tertiary">Not available.</p>
               )}
             </Panel>
+            {evalData.notes?.length ? (
+              <Panel title="Methodology">
+                <ul className="flex flex-col gap-2">
+                  {evalData.notes.map((n, i) => (
+                    <li key={i} className="flex gap-2 text-body-2-regular text-text-secondary">
+                      <span className="mt-1.75 size-1.5 shrink-0 rotate-45 bg-foreground-icon-tertiary" aria-hidden />
+                      <span>{n}</span>
+                    </li>
+                  ))}
+                </ul>
+              </Panel>
+            ) : null}
+          </div>
 
             <Panel
               title="Side by side"
@@ -625,8 +673,8 @@ export function LabView() {
                     size="sm"
                     selectedKey={String(Math.min(example, examples.length - 1))}
                     onSelectionChange={(k) => setExample(Number(k))}
-                    triggerClassName="max-w-[220px]"
-                    popoverClassName="min-w-[300px]"
+                    triggerClassName="max-w-55"
+                    popoverClassName="min-w-75"
                   >
                     {examples.map((e, i) => (
                       <SelectItem key={i} id={String(i)} textValue={e.title}>
@@ -648,34 +696,20 @@ export function LabView() {
                     </div>
                     {ex.description && <p className="line-clamp-3 text-body-2-regular text-text-secondary">{ex.description}</p>}
                   </div>
-                  <div className="grid gap-3 md:grid-cols-3">
+                  <div className={cx("grid gap-3", ex.teacher_output != null || ex.heuristic_output != null ? "lg:grid-cols-3" : "md:grid-cols-2")}>
                     <OutputBlock label="Base student" role="base" output={ex.base_output} expected={ex.expected_decision} />
                     <OutputBlock label="LoRA student" role="lora" output={ex.lora_output} expected={ex.expected_decision} />
-                    {"teacher_output" in ex ? (
+                    {ex.teacher_output != null ? (
                       <OutputBlock label="Teacher" role="teacher" output={ex.teacher_output} expected={ex.expected_decision} />
-                    ) : (
+                    ) : ex.heuristic_output != null ? (
                       <OutputBlock label="Heuristic" role="heuristic" output={ex.heuristic_output} expected={ex.expected_decision} />
-                    )}
+                    ) : null}
                   </div>
                 </div>
               ) : (
                 <p className="text-body-2-regular text-text-tertiary">No examples recorded.</p>
               )}
             </Panel>
-          </div>
-
-          {evalData.notes?.length ? (
-            <Panel title="Methodology">
-              <ul className="grid gap-x-8 gap-y-2 md:grid-cols-2">
-                {evalData.notes.map((n, i) => (
-                  <li key={i} className="flex gap-2 text-body-2-regular text-text-secondary">
-                    <span className="mt-[7px] size-1.5 shrink-0 rotate-45 bg-foreground-icon-tertiary" aria-hidden />
-                    <span>{n}</span>
-                  </li>
-                ))}
-              </ul>
-            </Panel>
-          ) : null}
         </div>
       )}
     </Page>
