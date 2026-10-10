@@ -1,0 +1,12 @@
+13:03:04.569 [worker] worker pid=13356 up: temporal=localhost:7233 queue=trailtruth provider=heuristic chaos=off sentry=off
+13:03:07.358 [worker] [fetch_alerts] park=havo attempt=1
+13:03:07.362 [worker] [fetch_alerts] park=grca attempt=1
+13:03:07.367 [worker] [fetch_alerts] park=olym attempt=1
+13:03:08.775 [worker] [fetch_alerts] park=grca live NPS unavailable -> degraded to snapshot (NPS 429, Retry-After 16.4h)
+13:03:08.775 [worker] [fetch_alerts] park=grca OK: 4 alerts (source=snapshot (NPS 429, Retry-After 16.4h), attempt 1)
+13:03:08.779 [worker] [fetch_alerts] park=havo live NPS unavailable -> degraded to stale-cache (NPS 429)
+13:03:08.779 [worker] [fetch_alerts] park=havo OK: 9 alerts (source=stale-cache (NPS 429), attempt 1)
+13:03:08.782 [worker] [fetch_alerts] park=olym live NPS unavailable -> degraded to snapshot (NPS 429, Retry-After 16.4h)
+13:03:08.783 [worker] [fetch_alerts] park=olym OK: 5 alerts (source=snapshot (NPS 429, Retry-After 16.4h), attempt 1)
+13:03:09.748 [worker] [compose_card] card_2026-10-10_havo-grca-olym overall=no_go parks=havo:no_go, grca:no_go, olym:no_go
+13:03:09.803 [worker] [publish_card] wrote agent/state/cards/card_2026-10-10_havo-grca-olym.json

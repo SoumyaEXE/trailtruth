@@ -1,0 +1,73 @@
+$ python -m agent.demo_crash
+[demo t+  0.5s] Temporal server: localhost:7233  (event history is the source of truth, not the worker)
+[demo t+  0.5s] 1) starting worker #1 (simulated model latency 1.2s/alert)
+    worker#1 | 13:09:48.043 [worker] worker pid=6140 up: temporal=localhost:7233 queue=trailtruth-demo-crash-19668 provider=heuristic chaos=off sentry=off
+[demo t+  3.0s] 2) started TrailCardWorkflow  id=trailcard-2026-10-10-havo-yell-zion-16cf  parks=['havo', 'yell', 'zion']
+    worker#1 | 13:09:49.649 [worker] [fetch_alerts] park=havo attempt=1
+    worker#1 | 13:09:49.652 [worker] [fetch_alerts] park=yell attempt=1
+    worker#1 | 13:09:49.654 [worker] [fetch_alerts] park=havo OK: 9 alerts (source=cache, attempt 1)
+    worker#1 | 13:09:49.656 [worker] [fetch_alerts] park=yell OK: 7 alerts (source=cache, attempt 1)
+    worker#1 | 13:09:49.658 [worker] [fetch_alerts] park=zion attempt=1
+    worker#1 | 13:09:49.659 [worker] [fetch_alerts] park=zion OK: 5 alerts (source=cache, attempt 1)
+
+[demo t+  6.0s] 3) progress before crash: classify_alerts 8/21 alerts
+     [OK] fetch_alerts:havo      completed attempt=1  9 alerts, source=cache
+     [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+     [OK] fetch_alerts:zion      completed attempt=1  5 alerts, source=cache
+     [..] classify_alerts        running   attempt=1  8/21 alerts
+     [  ] compose_card           pending   attempt=0
+     [  ] publish_card           pending   attempt=0
+
+[demo t+  6.0s] 4) [CRASH] hard-killing worker #1 (pid 6140) in the middle of classify_alerts - no graceful shutdown
+[demo t+  6.1s]    worker #1 is dead. No process is running the agent right now.
+[demo t+  6.1s]    Temporal says: workflow status=RUNNING, history length=68, 4 classify_alert activities in flight (orphaned)
+[demo t+  6.1s]    waiting 3.0s of downtime...
+
+[demo t+  9.1s] 5) starting worker #2 (fresh process, no memory of worker #1)
+[demo t+  9.1s]    it replays the event history: finished activities are NOT re-run; orphaned in-flight ones are
+[demo t+  9.1s]    retried once their 5s heartbeat timeout fires.
+    worker#2 | 13:09:56.705 [worker] worker pid=21292 up: temporal=localhost:7233 queue=trailtruth-demo-crash-19668 provider=heuristic chaos=off sentry=off
+    worker#2 | 13:09:58.162 [worker] [classify_alert] 37CFEFAB OK on attempt 2 -> caution (geologic)
+    worker#2 | 13:09:59.258 [worker] [classify_alert] 330C1B7C OK on attempt 2 -> caution (road)
+    worker#2 | 13:10:00.446 [worker] [classify_alert] 3A28F80C OK on attempt 2 -> caution (road)
+    worker#2 | 13:10:00.493 [worker] [classify_alert] 00D47802 OK on attempt 2 -> no_go (closure)
+    worker#2 | 13:10:03.689 [worker] [compose_card] card_2026-10-10_havo-yell-zion overall=no_go parks=havo:no_go, yell:no_go, zion:no_go
+    worker#2 | 13:10:03.749 [worker] [publish_card] wrote agent/state/cards/card_2026-10-10_havo-yell-zion.json
+
+[demo t+ 18.0s] 6) workflow COMPLETED after the crash:
+     [OK] fetch_alerts:havo      completed attempt=1  9 alerts, source=cache
+     [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+     [OK] fetch_alerts:zion      completed attempt=1  5 alerts, source=cache
+     [OK] classify_alerts        completed attempt=2  21/21 alerts
+            -> 4 alert(s) needed retries
+     [OK] compose_card           completed attempt=1
+     [OK] publish_card           completed attempt=1  card_2026-10-10_havo-yell-zion
+
+[demo t+ 18.0s] 7) proof from Temporal event history:
+[demo t+ 18.0s]    classify_alert activities scheduled : 21 (one per alert - none scheduled twice)
+[demo t+ 18.0s]    completed before the crash          : 8  (kept; not re-run by worker #2)
+[demo t+ 18.0s]    completed after restart             : 13
+[demo t+ 18.0s]    activities that needed attempt >= 2  : 4  (in flight when worker #1 died)
+[demo t+ 18.0s]    total history events                : 154
+   
+   === TRAIL CARD card_2026-10-10_havo-yell-zion  (week of 2026-10-10)  OVERALL: NO_GO ===
+     Hawaiʻi Volcanoes National Park [NO_GO]
+       Go — but skip Halemaʻumaʻu Trail & Byron Ledge Trail
+       closed: Halemaʻumaʻu Trail, Byron Ledge Trail, Crater Rim Trail, Kīpukapuaulu Trail
+       watch for: Kīlauea eruption
+       watch for: Protect Yourself from Volcanic Tephra
+       watch for: Closed: Hilina Pali Road, Mauna Loa Road, Sulphur Banks Bridge
+     Yellowstone National Park [NO_GO]
+       Go — but skip Biscuit Basin & West Thumb Geyser Basin
+       closed: Biscuit Basin, West Thumb Geyser Basin
+       watch for: Stay Away From Bull Elk
+       watch for: Traffic Delays - Gardner River High Bridge
+       watch for: Closed: Beartooth Highway, Dunraven Pass
+     Zion National Park [NO_GO]
+       Go — but skip Watchman Trail
+       closed: Watchman Trail
+       watch for: Toxic cyanobacteria in rivers, streams, and pools
+       watch for: Large vehicle restrictions on Zion-Mt. Carmel Highway
+       watch for: Please park legally and responsibly
+     model: heuristic-keywords-v1   workflow: trailcard-2026-10-10-havo-yell-zion-16cf
+[demo t+ 18.2s] done.

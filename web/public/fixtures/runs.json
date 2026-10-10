@@ -1,0 +1,374 @@
+[
+ {
+  "workflow_id": "trailcard-2026-10-10-havo-chch-yell-zion-5c0e",
+  "status": "completed",
+  "parks": [
+   "havo",
+   "chch",
+   "yell",
+   "zion"
+  ],
+  "started_at": "2026-10-10T07:32:24Z",
+  "ended_at": "2026-10-10T07:32:39Z",
+  "steps": [
+   {
+    "name": "fetch_alerts:havo",
+    "status": "completed",
+    "attempt": 3,
+    "started_at": "2026-10-10T07:32:24.559Z",
+    "ended_at": "2026-10-10T07:32:29.674Z",
+    "error": "attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) (+1 more) -> succeeded on attempt 3",
+    "detail": "9 alerts, source=nps-live",
+    "attempt_errors": [
+     "attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos)",
+     "attempt 2: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos)"
+    ]
+   },
+   {
+    "name": "fetch_alerts:chch",
+    "status": "completed",
+    "attempt": 2,
+    "started_at": "2026-10-10T07:32:24.559Z",
+    "ended_at": "2026-10-10T07:32:27.490Z",
+    "error": "attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2",
+    "detail": "2 alerts, source=nps-live",
+    "attempt_errors": [
+     "attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos)"
+    ]
+   },
+   {
+    "name": "fetch_alerts:yell",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:32:24.559Z",
+    "ended_at": "2026-10-10T07:32:26.324Z",
+    "error": null,
+    "detail": "7 alerts, source=nps-live"
+   },
+   {
+    "name": "fetch_alerts:zion",
+    "status": "completed",
+    "attempt": 2,
+    "started_at": "2026-10-10T07:32:24.559Z",
+    "ended_at": "2026-10-10T07:32:27.605Z",
+    "error": "attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2",
+    "detail": "5 alerts, source=nps-live",
+    "attempt_errors": [
+     "attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos)"
+    ]
+   },
+   {
+    "name": "classify_alerts",
+    "status": "completed",
+    "attempt": 2,
+    "started_at": "2026-10-10T07:32:29.674Z",
+    "ended_at": "2026-10-10T07:32:39.124Z",
+    "error": "4 alert(s) needed retries",
+    "detail": "23/23 alerts",
+    "attempt_errors": [
+     "attempt 1: model call hung; heartbeat timeout (chaos)",
+     "attempt 1: InvalidModelJSON: model returned invalid JSON: '{\"hazard_type\": \"wildlife\", \"sev' (chaos)",
+     "attempt 1: model call hung; heartbeat timeout (chaos)",
+     "attempt 1: model call hung; heartbeat timeout (chaos)"
+    ]
+   },
+   {
+    "name": "compose_card",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:32:39.124Z",
+    "ended_at": "2026-10-10T07:32:39.205Z",
+    "error": null,
+    "detail": null
+   },
+   {
+    "name": "publish_card",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:32:39.205Z",
+    "ended_at": "2026-10-10T07:32:39.256Z",
+    "error": null,
+    "detail": "card_2026-10-10_havo-chch-yell-zion"
+   }
+  ],
+  "label": "chaos: NPS 503s + model timeouts/invalid JSON, retried by Temporal",
+  "fixture": true,
+  "source": "captured from a real Temporal dev-server run"
+ },
+ {
+  "workflow_id": "trailcard-2026-10-10-havo-yell-zion-16cf",
+  "status": "completed",
+  "parks": [
+   "havo",
+   "yell",
+   "zion"
+  ],
+  "started_at": "2026-10-10T07:39:49Z",
+  "ended_at": "2026-10-10T07:40:03Z",
+  "steps": [
+   {
+    "name": "fetch_alerts:havo",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:39:49.579Z",
+    "ended_at": "2026-10-10T07:39:49.703Z",
+    "error": null,
+    "detail": "9 alerts, source=cache"
+   },
+   {
+    "name": "fetch_alerts:yell",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:39:49.579Z",
+    "ended_at": "2026-10-10T07:39:49.703Z",
+    "error": null,
+    "detail": "7 alerts, source=cache"
+   },
+   {
+    "name": "fetch_alerts:zion",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:39:49.579Z",
+    "ended_at": "2026-10-10T07:39:49.703Z",
+    "error": null,
+    "detail": "5 alerts, source=cache"
+   },
+   {
+    "name": "classify_alerts",
+    "status": "completed",
+    "attempt": 2,
+    "started_at": "2026-10-10T07:39:49.703Z",
+    "ended_at": "2026-10-10T07:40:03.658Z",
+    "error": "4 alert(s) needed retries",
+    "detail": "21/21 alerts"
+   },
+   {
+    "name": "compose_card",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:40:03.658Z",
+    "ended_at": "2026-10-10T07:40:03.710Z",
+    "error": null,
+    "detail": null
+   },
+   {
+    "name": "publish_card",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:40:03.710Z",
+    "ended_at": "2026-10-10T07:40:03.765Z",
+    "error": null,
+    "detail": "card_2026-10-10_havo-yell-zion"
+   }
+  ],
+  "resumed_after_crash": true,
+  "history_events": 154,
+  "label": "worker process killed mid-run; resumed on a new worker from event history",
+  "fixture": true,
+  "source": "captured from a real Temporal dev-server run"
+ },
+ {
+  "workflow_id": "weekly-trailcard-havo-chch-2026-10-10T07:41:22Z",
+  "status": "completed",
+  "parks": [
+   "havo",
+   "chch"
+  ],
+  "started_at": "2026-10-10T07:41:22Z",
+  "ended_at": "2026-10-10T07:41:23Z",
+  "steps": [
+   {
+    "name": "fetch_alerts:havo",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:41:22.733Z",
+    "ended_at": "2026-10-10T07:41:22.844Z",
+    "error": null,
+    "detail": "9 alerts, source=cache"
+   },
+   {
+    "name": "fetch_alerts:chch",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:41:22.733Z",
+    "ended_at": "2026-10-10T07:41:22.844Z",
+    "error": null,
+    "detail": "2 alerts, source=cache"
+   },
+   {
+    "name": "classify_alerts",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:41:22.844Z",
+    "ended_at": "2026-10-10T07:41:23.204Z",
+    "error": null,
+    "detail": "11/11 alerts"
+   },
+   {
+    "name": "compose_card",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:41:23.204Z",
+    "ended_at": "2026-10-10T07:41:23.248Z",
+    "error": null,
+    "detail": null
+   },
+   {
+    "name": "publish_card",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:41:23.248Z",
+    "ended_at": "2026-10-10T07:41:23.300Z",
+    "error": null,
+    "detail": "card_2026-10-10_havo-chch"
+   }
+  ],
+  "resumed_after_crash": false,
+  "history_events": 68,
+  "label": "started by Temporal Schedule (Fridays 07:00 America/Los_Angeles)",
+  "fixture": true,
+  "source": "captured from a real Temporal dev-server run"
+ },
+ {
+  "workflow_id": "trailcard-2026-10-10-havo-grca-olym-2375",
+  "status": "completed",
+  "parks": [
+   "havo",
+   "grca",
+   "olym"
+  ],
+  "started_at": "2026-10-10T07:33:07Z",
+  "ended_at": "2026-10-10T07:33:09Z",
+  "steps": [
+   {
+    "name": "fetch_alerts:havo",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:33:07.309Z",
+    "ended_at": "2026-10-10T07:33:08.862Z",
+    "error": null,
+    "detail": "9 alerts, source=stale-cache (NPS 429)"
+   },
+   {
+    "name": "fetch_alerts:grca",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:33:07.309Z",
+    "ended_at": "2026-10-10T07:33:08.862Z",
+    "error": null,
+    "detail": "4 alerts, source=snapshot (NPS 429, Retry-After 16.4h)"
+   },
+   {
+    "name": "fetch_alerts:olym",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:33:07.309Z",
+    "ended_at": "2026-10-10T07:33:08.862Z",
+    "error": null,
+    "detail": "5 alerts, source=snapshot (NPS 429, Retry-After 16.4h)"
+   },
+   {
+    "name": "classify_alerts",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:33:08.862Z",
+    "ended_at": "2026-10-10T07:33:09.715Z",
+    "error": null,
+    "detail": "18/18 alerts"
+   },
+   {
+    "name": "compose_card",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:33:09.715Z",
+    "ended_at": "2026-10-10T07:33:09.764Z",
+    "error": null,
+    "detail": null
+   },
+   {
+    "name": "publish_card",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:33:09.764Z",
+    "ended_at": "2026-10-10T07:33:09.819Z",
+    "error": null,
+    "detail": "card_2026-10-10_havo-grca-olym"
+   }
+  ],
+  "label": "NPS API rate-limited (HTTP 429) -> served disk cache / snapshot",
+  "fixture": true,
+  "source": "captured from a real Temporal dev-server run"
+ },
+ {
+  "workflow_id": "trailcard-2026-10-10-havo-chch-yell-fd8e",
+  "status": "completed",
+  "parks": [
+   "havo",
+   "chch",
+   "yell"
+  ],
+  "started_at": "2026-10-10T07:37:13Z",
+  "ended_at": "2026-10-10T07:37:16Z",
+  "steps": [
+   {
+    "name": "fetch_alerts:havo",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:37:13.876Z",
+    "ended_at": "2026-10-10T07:37:14.528Z",
+    "error": null,
+    "detail": "9 alerts, source=cache"
+   },
+   {
+    "name": "fetch_alerts:chch",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:37:13.876Z",
+    "ended_at": "2026-10-10T07:37:14.528Z",
+    "error": null,
+    "detail": "2 alerts, source=cache"
+   },
+   {
+    "name": "fetch_alerts:yell",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:37:13.876Z",
+    "ended_at": "2026-10-10T07:37:14.528Z",
+    "error": null,
+    "detail": "7 alerts, source=cache"
+   },
+   {
+    "name": "classify_alerts",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:37:14.528Z",
+    "ended_at": "2026-10-10T07:37:15.709Z",
+    "error": null,
+    "detail": "18/18 alerts"
+   },
+   {
+    "name": "compose_card",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:37:15.709Z",
+    "ended_at": "2026-10-10T07:37:15.781Z",
+    "error": null,
+    "detail": null
+   },
+   {
+    "name": "publish_card",
+    "status": "completed",
+    "attempt": 1,
+    "started_at": "2026-10-10T07:37:15.781Z",
+    "ended_at": "2026-10-10T07:37:16.123Z",
+    "error": null,
+    "detail": "card_2026-10-10_havo-chch-yell"
+   }
+  ],
+  "resumed_after_crash": false,
+  "history_events": 98,
+  "label": "clean run",
+  "fixture": true,
+  "source": "captured from a real Temporal dev-server run"
+ }
+]

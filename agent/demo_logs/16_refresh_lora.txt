@@ -1,0 +1,18 @@
+$ python -m agent.refresh      # provider auto-detected: TINKER_API_KEY + ml/results/model_path.txt -> tinker LoRA
+13:19:19.975 [refresh] fetched 627 alerts (source=cache)
+13:19:19.982 [refresh] model: {'provider': 'tinker', 'explicit': False, 'model': 'qwen3.5-4b-trailtruth-lora', 'model_path': 'tinker://10ec237…n3.5-4b-lora', 'ml_infer': True}
+13:19:19.982 [refresh] warming up Tinker sampling client (cold start)...
+13:19:25.531 [refresh] ServiceClient initialized for session 400464f1-20f4-5304-bc6a-36171043fb28
+13:19:36.711 [refresh] Tinker ready in 16.7s
+13:19:45.121 [refresh]   classified 64/627 (8.4s)
+13:19:48.757 [refresh]   classified 128/627 (12.0s)
+13:19:51.902 [refresh]   classified 192/627 (15.2s)
+13:19:54.731 [refresh]   classified 256/627 (18.0s)
+13:19:57.803 [refresh]   classified 320/627 (21.1s)
+13:20:00.623 [refresh]   classified 384/627 (23.9s)
+13:20:03.312 [refresh]   classified 448/627 (26.6s)
+13:20:06.056 [refresh]   classified 512/627 (29.3s)
+13:20:08.957 [refresh]   classified 576/627 (32.2s)
+13:20:11.675 [refresh]   classified 627/627 (35.0s)
+13:20:11.676 [refresh] classified 627 alerts in 51.7s; models={'qwen3.5-4b-trailtruth-lora': 627} decisions={'go': 247, 'no_go': 227, 'caution': 153}
+13:20:11.694 [refresh] wrote state/processed/alerts.json, state/processed/parks.json, state/processed/meta.json

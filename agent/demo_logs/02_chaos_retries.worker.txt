@@ -1,0 +1,27 @@
+13:02:21.814 [worker] worker pid=18060 up: temporal=localhost:7233 queue=trailtruth provider=heuristic chaos=ON sentry=off
+13:02:24.641 [worker] [fetch_alerts] park=havo attempt=1
+13:02:24.642 [worker] [fetch_alerts] park=chch attempt=1
+13:02:24.648 [worker] [fetch_alerts] park=yell attempt=1
+13:02:24.843 [worker] [fetch_alerts] park=havo attempt=1 FAILED: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> Temporal will retry with backoff
+13:02:24.847 [worker] [fetch_alerts] park=chch attempt=1 FAILED: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> Temporal will retry with backoff
+13:02:24.945 [worker] [fetch_alerts] park=zion attempt=1
+13:02:25.152 [worker] [fetch_alerts] park=zion attempt=1 FAILED: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> Temporal will retry with backoff
+13:02:25.937 [worker] [fetch_alerts] park=havo attempt=2
+13:02:25.996 [worker] [fetch_alerts] park=chch attempt=2
+13:02:26.133 [worker] [fetch_alerts] park=havo attempt=2 FAILED: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> Temporal will retry with backoff
+13:02:26.178 [worker] [fetch_alerts] park=zion attempt=2
+13:02:26.268 [worker] [fetch_alerts] park=yell OK: 7 alerts (source=nps-live, attempt 1)
+13:02:27.443 [worker] [fetch_alerts] park=chch OK: 2 alerts (source=nps-live, attempt 2)
+13:02:27.528 [worker] [fetch_alerts] park=zion OK: 5 alerts (source=nps-live, attempt 2)
+13:02:28.169 [worker] [fetch_alerts] park=havo attempt=3
+13:02:29.599 [worker] [fetch_alerts] park=havo OK: 9 alerts (source=nps-live, attempt 3)
+13:02:31.562 [worker] [classify_alert] 67146540 attempt=1 model hung (chaos) - no heartbeat -> heartbeat timeout
+13:02:31.860 [worker] [classify_alert] 57EFE369 attempt=1 FAILED: InvalidModelJSON: model returned invalid JSON: '{"hazard_type": "wildlife", "sev' (chaos) -> retry
+13:02:33.072 [worker] [classify_alert] 09699C7F attempt=1 model hung (chaos) - no heartbeat -> heartbeat timeout
+13:02:33.074 [worker] [classify_alert] F093B239 attempt=1 model hung (chaos) - no heartbeat -> heartbeat timeout
+13:02:33.428 [worker] [classify_alert] 57EFE369 OK on attempt 2 -> caution (road)
+13:02:37.326 [worker] [classify_alert] 67146540 OK on attempt 2 -> caution (wildlife)
+13:02:39.102 [worker] [classify_alert] F093B239 OK on attempt 2 -> go (facility)
+13:02:39.103 [worker] [classify_alert] 09699C7F OK on attempt 2 -> caution (water)
+13:02:39.193 [worker] [compose_card] card_2026-10-10_havo-chch-yell-zion overall=no_go parks=havo:no_go, chch:caution, yell:no_go, zion:no_go
+13:02:39.237 [worker] [publish_card] wrote agent/state/cards/card_2026-10-10_havo-chch-yell-zion.json

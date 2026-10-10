@@ -1,0 +1,43 @@
+{
+  "stages": {
+    "teacher_label": {
+      "model": "Qwen/Qwen3.5-397B-A17B",
+      "rows": 627,
+      "prompt_tokens": 346357,
+      "completion_tokens": 49874,
+      "est_usd": 0.9455
+    },
+    "eval_base": {
+      "model": "Qwen/Qwen3.5-4B",
+      "prompt_tokens": 26819,
+      "completion_tokens": 7271,
+      "est_usd": 0.0162
+    },
+    "eval_teacher": {
+      "model": "Qwen/Qwen3.5-397B-A17B",
+      "prompt_tokens": 69407,
+      "completion_tokens": 9900,
+      "est_usd": 0.1888
+    },
+    "eval_base_guided": {
+      "model": "Qwen/Qwen3.5-4B",
+      "prompt_tokens": 69407,
+      "completion_tokens": 7416,
+      "est_usd": 0.0304
+    },
+    "train_tinker": {
+      "model": "Qwen/Qwen3.5-4B",
+      "train_tokens": 413295,
+      "eval_forward_tokens": 137264,
+      "est_usd": 0.4058
+    },
+    "eval_lora": {
+      "model": "Qwen/Qwen3.5-4B",
+      "prompt_tokens": 26819,
+      "completion_tokens": 7665,
+      "est_usd": 0.0166
+    }
+  },
+  "total_est_usd": 1.6033,
+  "note": "Estimates from token counts x Tinker list prices (models.json snapshot 2026-10-10); not an invoice."
+}

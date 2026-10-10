@@ -1,0 +1,206 @@
+$ TRAILTRUTH_CHAOS=1 python -m agent.worker      # other terminal: fake NPS 503s, model hangs + invalid JSON
+$ python -m agent.run_card havo chch yell zion
+started TrailCardWorkflow id=trailcard-2026-10-10-havo-chch-yell-zion-5c0e parks=['havo', 'chch', 'yell', 'zion']
+--- t+  0.3s  workflow=running
+  [..] fetch_alerts:havo      running   attempt=1
+  [..] fetch_alerts:chch      running   attempt=1
+  [..] fetch_alerts:yell      running   attempt=1
+  [..] fetch_alerts:zion      running   attempt=1
+  [  ] classify_alerts        pending   attempt=0
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  0.9s  workflow=running
+  [!!] fetch_alerts:havo      retrying  attempt=2
+         -> NPS API HTTP 503 Service Unavailable (chaos)
+  [!!] fetch_alerts:chch      retrying  attempt=2
+         -> NPS API HTTP 503 Service Unavailable (chaos)
+  [..] fetch_alerts:yell      running   attempt=1
+  [!!] fetch_alerts:zion      retrying  attempt=2
+         -> NPS API HTTP 503 Service Unavailable (chaos)
+  [  ] classify_alerts        pending   attempt=0
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  2.0s  workflow=running
+  [!!] fetch_alerts:havo      retrying  attempt=3
+         -> NPS API HTTP 503 Service Unavailable (chaos)
+  [!!] fetch_alerts:chch      retrying  attempt=2
+         -> NPS API HTTP 503 Service Unavailable (chaos)
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=nps-live
+  [!!] fetch_alerts:zion      retrying  attempt=2
+         -> NPS API HTTP 503 Service Unavailable (chaos)
+  [  ] classify_alerts        pending   attempt=0
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  3.1s  workflow=running
+  [!!] fetch_alerts:havo      retrying  attempt=3
+         -> NPS API HTTP 503 Service Unavailable (chaos)
+  [OK] fetch_alerts:chch      completed attempt=2  2 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=nps-live
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [  ] classify_alerts        pending   attempt=0
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  5.2s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=nps-live
+         -> succeeded on attempt 3 after 2 retries
+  [OK] fetch_alerts:chch      completed attempt=2  2 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=nps-live
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [..] classify_alerts        running   attempt=1  0/23 alerts
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  5.9s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=nps-live
+         -> succeeded on attempt 3 after 2 retries
+  [OK] fetch_alerts:chch      completed attempt=2  2 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=nps-live
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [..] classify_alerts        running   attempt=1  4/23 alerts
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  6.6s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=nps-live
+         -> succeeded on attempt 3 after 2 retries
+  [OK] fetch_alerts:chch      completed attempt=2  2 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=nps-live
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [..] classify_alerts        running   attempt=1  8/23 alerts
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  7.2s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=nps-live
+         -> succeeded on attempt 3 after 2 retries
+  [OK] fetch_alerts:chch      completed attempt=2  2 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=nps-live
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [..] classify_alerts        running   attempt=1  12/23 alerts
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  7.7s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=nps-live
+         -> succeeded on attempt 3 after 2 retries
+  [OK] fetch_alerts:chch      completed attempt=2  2 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=nps-live
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [!!] classify_alerts        retrying  attempt=2  15/23 alerts
+         -> model returned invalid JSON: '{"hazard_type": "wildlife", "sev' (chaos)
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  8.5s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=nps-live
+         -> succeeded on attempt 3 after 2 retries
+  [OK] fetch_alerts:chch      completed attempt=2  2 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=nps-live
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [!!] classify_alerts        retrying  attempt=2  18/23 alerts
+         -> model returned invalid JSON: '{"hazard_type": "wildlife", "sev' (chaos)
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  9.0s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=nps-live
+         -> succeeded on attempt 3 after 2 retries
+  [OK] fetch_alerts:chch      completed attempt=2  2 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=nps-live
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [..] classify_alerts        running   attempt=2  19/23 alerts
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+ 10.1s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=nps-live
+         -> succeeded on attempt 3 after 2 retries
+  [OK] fetch_alerts:chch      completed attempt=2  2 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=nps-live
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [..] classify_alerts        running   attempt=2  20/23 alerts
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+ 12.2s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=nps-live
+         -> succeeded on attempt 3 after 2 retries
+  [OK] fetch_alerts:chch      completed attempt=2  2 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=nps-live
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [!!] classify_alerts        retrying  attempt=2  20/23 alerts
+         -> activity Heartbeat timeout
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+ 13.2s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=nps-live
+         -> succeeded on attempt 3 after 2 retries
+  [OK] fetch_alerts:chch      completed attempt=2  2 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=nps-live
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [..] classify_alerts        running   attempt=2  21/23 alerts
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+ 13.8s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=nps-live
+         -> succeeded on attempt 3 after 2 retries
+  [OK] fetch_alerts:chch      completed attempt=2  2 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=nps-live
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [!!] classify_alerts        retrying  attempt=2  21/23 alerts
+         -> activity Heartbeat timeout
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+ 14.9s  workflow=completed
+  [OK] fetch_alerts:havo      completed attempt=3  9 alerts, source=nps-live
+         -> succeeded on attempt 3 after 2 retries
+  [OK] fetch_alerts:chch      completed attempt=2  2 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=nps-live
+  [OK] fetch_alerts:zion      completed attempt=2  5 alerts, source=nps-live
+         -> succeeded on attempt 2 after 1 retry
+  [OK] classify_alerts        completed attempt=2  23/23 alerts
+         -> 4 alert(s) needed retries
+  [OK] compose_card           completed attempt=1
+  [OK] publish_card           completed attempt=1  card_2026-10-10_havo-chch-yell-zion
+
+=== TRAIL CARD card_2026-10-10_havo-chch-yell-zion  (week of 2026-10-10)  OVERALL: NO_GO ===
+  Hawaiʻi Volcanoes National Park [NO_GO]
+    Go — but skip Halemaʻumaʻu Trail & Byron Ledge Trail
+    closed: Halemaʻumaʻu Trail, Byron Ledge Trail, Crater Rim Trail, Kīpukapuaulu Trail
+    watch for: Kīlauea eruption
+    watch for: Protect Yourself from Volcanic Tephra
+    watch for: Closed: Hilina Pali Road, Mauna Loa Road, Sulphur Banks Bridge
+  Chickamauga & Chattanooga National Military Park [CAUTION]
+    Go with care — Use Caution When Hiking Bluff Trail on Lookout Mountain
+    watch for: Use Caution When Hiking Bluff Trail on Lookout Mountain
+    watch for: Construction Begins on East Brotherton Road in Chickamauga Battlefield
+  Yellowstone National Park [NO_GO]
+    Go — but skip Biscuit Basin & West Thumb Geyser Basin
+    closed: Biscuit Basin, West Thumb Geyser Basin
+    watch for: Stay Away From Bull Elk
+    watch for: Traffic Delays - Gardner River High Bridge
+    watch for: Closed: Beartooth Highway, Dunraven Pass
+  Zion National Park [NO_GO]
+    Go — but skip Watchman Trail
+    closed: Watchman Trail
+    watch for: Toxic cyanobacteria in rivers, streams, and pools
+    watch for: Large vehicle restrictions on Zion-Mt. Carmel Highway
+    watch for: Please park legally and responsibly
+  model: heuristic-keywords-v1   workflow: trailcard-2026-10-10-havo-chch-yell-zion-5c0e

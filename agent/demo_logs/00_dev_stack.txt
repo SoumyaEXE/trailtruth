@@ -1,0 +1,51 @@
+13:06:51.015 [dev] starting Temporal dev server on :7233 (UI http://localhost:8233) - first run downloads the CLI...
+Temporal CLI 1.9.1 (Server 1.32.0, UI 2.54.1)
+
+Temporal Server:      localhost:7233
+Temporal Persistence: C:\Users\Soumya\Desktop\GRASS\agent\state\temporal-dev.db
+Temporal UI:          http://localhost:8233
+Temporal Metrics:     http://localhost:52479/metrics
+13:06:51.654 [dev] Temporal dev server ready on localhost:7233
+13:06:51.655 [dev] spawning worker: -m agent.worker
+13:06:51.661 [dev] spawning api: -m uvicorn agent.api:app --host 0.0.0.0 --port 8000 --log-level warning
+13:06:51.669 [dev] API on http://localhost:8000  (try /api/health, /api/parks, POST /api/cards)
+13:06:53.521 [worker] worker pid=20652 up: temporal=localhost:7233 queue=trailtruth provider=heuristic chaos=off sentry=off
+13:07:04.446 [api] connected to Temporal at localhost:7233
+13:07:13.867 [api] started workflow trailcard-2026-10-10-havo-chch-yell-fd8e parks=['havo', 'chch', 'yell']
+13:07:14.269 [worker] [fetch_alerts] park=havo attempt=1
+13:07:14.283 [worker] [fetch_alerts] park=chch attempt=1
+13:07:14.302 [worker] [fetch_alerts] park=havo OK: 9 alerts (source=cache, attempt 1)
+13:07:14.305 [worker] [fetch_alerts] park=chch OK: 2 alerts (source=cache, attempt 1)
+13:07:14.306 [worker] [fetch_alerts] park=yell attempt=1
+13:07:14.310 [worker] [fetch_alerts] park=yell OK: 7 alerts (source=cache, attempt 1)
+13:07:15.762 [worker] [compose_card] card_2026-10-10_havo-chch-yell overall=no_go parks=havo:no_go, chch:caution, yell:no_go
+13:07:16.059 [worker] [publish_card] wrote agent/state/cards/card_2026-10-10_havo-chch-yell.json
+13:07:56.084 [worker] [fetch_alerts] park=havo attempt=1
+13:07:56.085 [worker] [fetch_alerts] park=chch attempt=1
+13:07:56.088 [worker] [fetch_alerts] park=havo OK: 9 alerts (source=cache, attempt 1)
+13:07:56.093 [worker] [fetch_alerts] park=chch OK: 2 alerts (source=cache, attempt 1)
+13:07:57.142 [worker] [fetch_alerts] park=havo attempt=2
+13:07:57.144 [worker] [fetch_alerts] park=havo OK: 9 alerts (source=cache, attempt 2)
+13:07:57.151 [worker] [fetch_alerts] park=chch attempt=2
+13:07:57.155 [worker] [fetch_alerts] park=chch OK: 2 alerts (source=cache, attempt 2)
+13:07:59.203 [worker] [fetch_alerts] park=havo attempt=3
+13:07:59.205 [worker] [fetch_alerts] park=havo OK: 9 alerts (source=cache, attempt 3)
+13:07:59.214 [worker] [fetch_alerts] park=chch attempt=3
+13:07:59.217 [worker] [fetch_alerts] park=chch OK: 2 alerts (source=cache, attempt 3)
+13:08:03.243 [worker] [fetch_alerts] park=havo attempt=4
+13:08:03.245 [worker] [fetch_alerts] park=havo OK: 9 alerts (source=cache, attempt 4)
+13:08:03.254 [worker] [fetch_alerts] park=chch attempt=4
+13:08:03.256 [worker] [fetch_alerts] park=chch OK: 2 alerts (source=cache, attempt 4)
+13:08:11.303 [worker] [fetch_alerts] park=havo attempt=5
+13:08:11.306 [worker] [fetch_alerts] park=havo OK: 9 alerts (source=cache, attempt 5)
+13:08:11.324 [worker] [fetch_alerts] park=chch attempt=5
+13:08:11.326 [worker] [fetch_alerts] park=chch OK: 2 alerts (source=cache, attempt 5)
+13:08:27.353 [worker] [fetch_alerts] park=havo attempt=6
+13:08:27.355 [worker] [fetch_alerts] park=havo OK: 9 alerts (source=cache, attempt 6)
+13:08:27.360 [worker] [fetch_alerts] park=chch attempt=6
+13:08:27.362 [worker] [fetch_alerts] park=chch OK: 2 alerts (source=cache, attempt 6)
+13:08:27.426 [worker] [compose_card] card_2026-10-10_havo-chch overall=caution parks=havo:caution, chch:caution
+13:08:28.441 [worker] [compose_card] card_2026-10-10_havo-chch overall=caution parks=havo:caution, chch:caution
+13:08:30.462 [worker] [compose_card] card_2026-10-10_havo-chch overall=caution parks=havo:caution, chch:caution
+13:08:34.482 [worker] [compose_card] card_2026-10-10_havo-chch overall=caution parks=havo:caution, chch:caution
+13:08:42.497 [worker] [compose_card] card_2026-10-10_havo-chch overall=caution parks=havo:caution, chch:caution

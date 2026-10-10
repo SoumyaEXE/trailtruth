@@ -1,0 +1,153 @@
+{
+ "fixture": true,
+ "note": "PLACEHOLDER NUMBERS - replaced by ml/results/eval.json once the ML pipeline runs",
+ "test_size": 120,
+ "generated_at": "2026-10-10T07:42:17Z",
+ "models": [
+  {
+   "name": "teacher (Qwen3-235B) [placeholder]",
+   "role": "teacher",
+   "json_valid": 0.99,
+   "decision_acc": 0.88,
+   "closure_f1": 0.9,
+   "hazard_acc": 0.81,
+   "p50_latency_ms": 1800,
+   "cost_per_1k_alerts_usd": 0.9
+  },
+  {
+   "name": "Llama-3.2-1B base [placeholder]",
+   "role": "base",
+   "json_valid": 0.55,
+   "decision_acc": 0.41,
+   "closure_f1": 0.38,
+   "hazard_acc": 0.3,
+   "p50_latency_ms": 240,
+   "cost_per_1k_alerts_usd": 0.02
+  },
+  {
+   "name": "Llama-3.2-1B + TrailTruth LoRA [placeholder]",
+   "role": "lora",
+   "json_valid": 0.98,
+   "decision_acc": 0.8,
+   "closure_f1": 0.84,
+   "hazard_acc": 0.72,
+   "p50_latency_ms": 250,
+   "cost_per_1k_alerts_usd": 0.02
+  },
+  {
+   "name": "heuristic-keywords-v1",
+   "role": "heuristic",
+   "json_valid": 1.0,
+   "decision_acc": 0.5,
+   "closure_f1": 0.6,
+   "hazard_acc": 0.5,
+   "p50_latency_ms": 1,
+   "cost_per_1k_alerts_usd": 0.0
+  }
+ ],
+ "confusion": {
+  "lora": {
+   "labels": [
+    "go",
+    "caution",
+    "no_go"
+   ],
+   "matrix": [
+    [
+     50,
+     6,
+     2
+    ],
+    [
+     5,
+     20,
+     4
+    ],
+    [
+     1,
+     4,
+     28
+    ]
+   ]
+  }
+ },
+ "training": {
+  "steps": 300,
+  "epochs": 3,
+  "lora_rank": 32,
+  "loss_curve": [
+   [
+    0,
+    2.45
+   ],
+   [
+    20,
+    1.876
+   ],
+   [
+    40,
+    1.452
+   ],
+   [
+    60,
+    1.138
+   ],
+   [
+    80,
+    0.907
+   ],
+   [
+    100,
+    0.735
+   ],
+   [
+    120,
+    0.609
+   ],
+   [
+    140,
+    0.515
+   ],
+   [
+    160,
+    0.446
+   ],
+   [
+    180,
+    0.395
+   ],
+   [
+    200,
+    0.357
+   ],
+   [
+    220,
+    0.329
+   ],
+   [
+    240,
+    0.308
+   ],
+   [
+    260,
+    0.293
+   ],
+   [
+    280,
+    0.282
+   ],
+   [
+    300,
+    0.274
+   ]
+  ]
+ },
+ "examples": [
+  {
+   "title": "Use Caution When Hiking Bluff Trail on Lookout Mountain",
+   "base_output": "Sure! Here is the JSON: {hazard: owl, decision: maybe}",
+   "lora_output": "{\"hazard_type\":\"wildlife\",\"severity\":2,\"trails_affected\":[\"Bluff Trail\"],\"is_closed\":false,\"decision\":\"caution\",\"reason\":\"Territorial barred owl on Bluff Trail section; stay alert.\"}",
+   "expected_decision": "caution"
+  }
+ ]
+}

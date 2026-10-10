@@ -1,0 +1,93 @@
+$ curl -X POST localhost:8000/api/cards -d {"parks":["havo","chch","yell"]}
+{"workflow_id":"trailcard-2026-10-10-havo-chch-yell-fd8e","mode":"temporal"}
+$ curl localhost:8000/api/cards/trailcard-2026-10-10-havo-chch-yell-fd8e   (while running)
+{"status":"running","steps":[{"name":"fetch_alerts:havo","status":"completed","attempt":1,"started_at":"2026-10-10T07:37:13.876Z","ended_at":"2026-10-10T07:37:14.528Z","error":null,"detail":"9 alerts, source=cache"},{"name":"fetch_alerts:chch","status":"completed","attempt":1,"started_at":"2026-10-10T07:37:13.876Z","ended_at":"2026-10-10T07:37:14.528Z","error":null,"detail":"2 alerts, source=cache"},{"name":"fetch_alerts:yell","status":"completed","attempt":1,"started_at":"2026-10-10T07:37:13.876Z","ended_at":"2026-10-10T07:37:14.528Z","error":null,"detail":"7 alerts, source=cache"},{"name":"c
+$ curl localhost:8000/api/cards/trailcard-2026-10-10-havo-chch-yell-fd8e   (done)
+{
+ "status": "completed",
+ "steps": [
+  {
+   "name": "fetch_alerts:havo",
+   "status": "completed",
+   "attempt": 1,
+   "started_at": "2026-10-10T07:37:13.876Z",
+   "ended_at": "2026-10-10T07:37:14.528Z",
+   "error": null,
+   "detail": "9 alerts, source=cache"
+  },
+  {
+   "name": "fetch_alerts:chch",
+   "status": "completed",
+   "attempt": 1,
+   "started_at": "2026-10-10T07:37:13.876Z",
+   "ended_at": "2026-10-10T07:37:14.528Z",
+   "error": null,
+   "detail": "2 alerts, source=cache"
+  },
+  {
+   "name": "fetch_alerts:yell",
+   "status": "completed",
+   "attempt": 1,
+   "started_at": "2026-10-10T07:37:13.876Z",
+   "ended_at": "2026-10-10T07:37:14.528Z",
+   "error": null,
+   "detail": "7 alerts, source=cache"
+  },
+  {
+   "name": "classify_alerts",
+   "status": "completed",
+   "attempt": 1,
+   "started_at": "2026-10-10T07:37:14.528Z",
+   "ended_at": "2026-10-10T07:37:15.709Z",
+   "error": null,
+   "detail": "18/18 alerts"
+  },
+  {
+   "name": "compose_card",
+   "status": "completed",
+   "attempt": 1,
+   "started_at": "2026-10-10T07:37:15.709Z",
+   "ended_at": "2026-10-10T07:37:15.781Z",
+   "error": null,
+   "detail": null
+  },
+  {
+   "name": "publish_card",
+   "status": "completed",
+   "attempt": 1,
+   "started_at": "2026-10-10T07:37:15.781Z",
+   "ended_at": "2026-10-10T07:37:16.123Z",
+   "error": null,
+   "detail": "card_2026-10-10_havo-chch-yell"
+  }
+ ],
+ "workflow_id": "trailcard-2026-10-10-havo-chch-yell-fd8e",
+ "parks": [
+  "havo",
+  "chch",
+  "yell"
+ ],
+ "started_at": "2026-10-10T07:37:13Z",
+ "ended_at": "2026-10-10T07:37:16Z",
+ "card": {
+  "id": "card_2026-10-10_havo-chch-yell",
+  "overall": "no_go",
+  "parks": [
+   [
+    "havo",
+    "no_go",
+    "Go — but skip Halemaʻumaʻu Trail & Byron Ledge Trail"
+   ],
+   [
+    "chch",
+    "caution",
+    "Go with care — Use Caution When Hiking Bluff Trail on Lookout Mountain"
+   ],
+   [
+    "yell",
+    "no_go",
+    "Go — but skip Biscuit Basin & West Thumb Geyser Basin"
+   ]
+  ]
+ }
+}

@@ -1,0 +1,1109 @@
+{
+ "fetched_at": "2026-10-10T07:25:31.923627+00:00",
+ "data": {
+  "acad": {
+   "fullName": "Acadia National Park",
+   "states": "ME"
+  },
+  "adam": {
+   "fullName": "Adams National Historical Park",
+   "states": "MA"
+  },
+  "agfo": {
+   "fullName": "Agate Fossil Beds National Monument",
+   "states": "NE"
+  },
+  "alca": {
+   "fullName": "Alcatraz Island",
+   "states": "CA"
+  },
+  "alfl": {
+   "fullName": "Alibates Flint Quarries National Monument",
+   "states": "TX"
+  },
+  "alpo": {
+   "fullName": "Allegheny Portage Railroad National Historic Site",
+   "states": "PA"
+  },
+  "amch": {
+   "fullName": "Amache National Historic Site",
+   "states": "CO"
+  },
+  "amme": {
+   "fullName": "American Memorial Park",
+   "states": "MP"
+  },
+  "amis": {
+   "fullName": "Amistad National Recreation Area",
+   "states": "TX"
+  },
+  "anjo": {
+   "fullName": "Andrew Johnson National Historic Site",
+   "states": "TN"
+  },
+  "anti": {
+   "fullName": "Antietam National Battlefield",
+   "states": "MD"
+  },
+  "apis": {
+   "fullName": "Apostle Islands National Lakeshore",
+   "states": "WI"
+  },
+  "appa": {
+   "fullName": "Appalachian National Scenic Trail",
+   "states": "CT,GA,MA,MD,ME,NC,NH,NJ,NY,PA,TN,VA,VT,WV"
+  },
+  "apco": {
+   "fullName": "Appomattox Court House National Historical Park",
+   "states": "VA"
+  },
+  "arch": {
+   "fullName": "Arches National Park",
+   "states": "UT"
+  },
+  "arho": {
+   "fullName": "Arlington House, The Robert E. Lee Memorial",
+   "states": "VA"
+  },
+  "asis": {
+   "fullName": "Assateague Island National Seashore",
+   "states": "MD,VA"
+  },
+  "azru": {
+   "fullName": "Aztec Ruins National Monument",
+   "states": "NM"
+  },
+  "badl": {
+   "fullName": "Badlands National Park",
+   "states": "SD"
+  },
+  "band": {
+   "fullName": "Bandelier National Monument",
+   "states": "NM"
+  },
+  "beol": {
+   "fullName": "Bent's Old Fort National Historic Site",
+   "states": "CO"
+  },
+  "bela": {
+   "fullName": "Bering Land Bridge National Preserve",
+   "states": "AK"
+  },
+  "bibe": {
+   "fullName": "Big Bend National Park",
+   "states": "TX"
+  },
+  "bicy": {
+   "fullName": "Big Cypress National Preserve",
+   "states": "FL"
+  },
+  "biso": {
+   "fullName": "Big South Fork National River & Recreation Area",
+   "states": "KY,TN"
+  },
+  "bith": {
+   "fullName": "Big Thicket National Preserve",
+   "states": "TX"
+  },
+  "bica": {
+   "fullName": "Bighorn Canyon National Recreation Area",
+   "states": "MT,WY"
+  },
+  "bicr": {
+   "fullName": "Birmingham Civil Rights National Monument",
+   "states": "AL"
+  },
+  "bisc": {
+   "fullName": "Biscayne National Park",
+   "states": "FL"
+  },
+  "blca": {
+   "fullName": "Black Canyon Of The Gunnison National Park",
+   "states": "CO"
+  },
+  "boha": {
+   "fullName": "Boston Harbor Islands National Recreation Area",
+   "states": "MA"
+  },
+  "bost": {
+   "fullName": "Boston National Historical Park",
+   "states": "MA"
+  },
+  "brvb": {
+   "fullName": "Brown v. Board of Education National Historical Park",
+   "states": "KS"
+  },
+  "brca": {
+   "fullName": "Bryce Canyon National Park",
+   "states": "UT"
+  },
+  "buff": {
+   "fullName": "Buffalo National River",
+   "states": "AR"
+  },
+  "cana": {
+   "fullName": "Canaveral National Seashore",
+   "states": "FL"
+  },
+  "cari": {
+   "fullName": "Cane River Creole National Historical Park",
+   "states": "LA"
+  },
+  "cach": {
+   "fullName": "Canyon de Chelly National Monument",
+   "states": "AZ"
+  },
+  "cany": {
+   "fullName": "Canyonlands National Park",
+   "states": "UT"
+  },
+  "caha": {
+   "fullName": "Cape Hatteras National Seashore",
+   "states": "NC"
+  },
+  "calo": {
+   "fullName": "Cape Lookout National Seashore",
+   "states": "NC"
+  },
+  "care": {
+   "fullName": "Capitol Reef National Park",
+   "states": "UT"
+  },
+  "cavo": {
+   "fullName": "Capulin Volcano National Monument",
+   "states": "NM"
+  },
+  "carl": {
+   "fullName": "Carl Sandburg Home National Historic Site",
+   "states": "NC"
+  },
+  "cave": {
+   "fullName": "Carlsbad Caverns National Park",
+   "states": "NM"
+  },
+  "cawo": {
+   "fullName": "Carter G. Woodson Home National Historic Site",
+   "states": "DC"
+  },
+  "casa": {
+   "fullName": "Castillo de San Marcos National Monument",
+   "states": "FL"
+  },
+  "camo": {
+   "fullName": "Castle Mountains National Monument",
+   "states": "CA"
+  },
+  "chcu": {
+   "fullName": "Chaco Culture National Historical Park",
+   "states": "NM"
+  },
+  "chch": {
+   "fullName": "Chickamauga & Chattanooga National Military Park",
+   "states": "GA,TN"
+  },
+  "cibs": {
+   "fullName": "Carlisle Federal Indian Boarding School National Monument",
+   "states": "PA"
+  },
+  "chis": {
+   "fullName": "Channel Islands National Park",
+   "states": "CA"
+  },
+  "choh": {
+   "fullName": "Chesapeake & Ohio Canal National Historical Park",
+   "states": "DC,MD,WV"
+  },
+  "chic": {
+   "fullName": "Chickasaw National Recreation Area",
+   "states": "OK"
+  },
+  "chir": {
+   "fullName": "Chiricahua National Monument",
+   "states": "AZ"
+  },
+  "chri": {
+   "fullName": "Christiansted National Historic Site",
+   "states": "VI"
+  },
+  "cwdw": {
+   "fullName": "Civil War Defenses of Washington",
+   "states": "DC,MD,VA"
+  },
+  "clba": {
+   "fullName": "Clara Barton National Historic Site",
+   "states": "MD"
+  },
+  "colo": {
+   "fullName": "Colonial National Historical Park",
+   "states": "VA"
+  },
+  "colm": {
+   "fullName": "Colorado National Monument",
+   "states": "CO"
+  },
+  "colt": {
+   "fullName": "Coltsville National Historical Park",
+   "states": "CT"
+  },
+  "cong": {
+   "fullName": "Congaree National Park",
+   "states": "SC"
+  },
+  "coro": {
+   "fullName": "Coronado National Memorial",
+   "states": "AZ"
+  },
+  "cowp": {
+   "fullName": "Cowpens National Battlefield",
+   "states": "SC"
+  },
+  "crla": {
+   "fullName": "Crater Lake National Park",
+   "states": "OR"
+  },
+  "crmo": {
+   "fullName": "Craters Of The Moon National Monument & Preserve",
+   "states": "ID"
+  },
+  "cuga": {
+   "fullName": "Cumberland Gap National Historical Park",
+   "states": "KY,TN,VA"
+  },
+  "cuis": {
+   "fullName": "Cumberland Island National Seashore",
+   "states": "GA"
+  },
+  "cure": {
+   "fullName": "Curecanti National Recreation Area",
+   "states": "CO"
+  },
+  "cuva": {
+   "fullName": "Cuyahoga Valley National Park",
+   "states": "OH"
+  },
+  "deso": {
+   "fullName": "De Soto National Memorial",
+   "states": "FL"
+  },
+  "deva": {
+   "fullName": "Death Valley National Park",
+   "states": "CA,NV"
+  },
+  "dewa": {
+   "fullName": "Delaware Water Gap National Recreation Area",
+   "states": "NJ,PA"
+  },
+  "dena": {
+   "fullName": "Denali National Park & Preserve",
+   "states": "AK"
+  },
+  "depo": {
+   "fullName": "Devils Postpile National Monument",
+   "states": "CA"
+  },
+  "deto": {
+   "fullName": "Devils Tower National Monument",
+   "states": "WY"
+  },
+  "dino": {
+   "fullName": "Dinosaur National Monument",
+   "states": "CO,UT"
+  },
+  "drto": {
+   "fullName": "Dry Tortugas National Park",
+   "states": "FL"
+  },
+  "edal": {
+   "fullName": "Edgar Allan Poe National Historic Site",
+   "states": "PA"
+  },
+  "elma": {
+   "fullName": "El Malpais National Monument",
+   "states": "NM"
+  },
+  "edis": {
+   "fullName": "Thomas Edison National Historical Park",
+   "states": "NJ"
+  },
+  "frst": {
+   "fullName": "First State National Historical Park",
+   "states": "DE,PA"
+  },
+  "foun": {
+   "fullName": "Fort Union National Monument",
+   "states": "NM"
+  },
+  "frpe": {
+   "fullName": "Frances Perkins National Monument",
+   "states": "ME"
+  },
+  "frla": {
+   "fullName": "Frederick Law Olmsted National Historic Site",
+   "states": "MA"
+  },
+  "frsp": {
+   "fullName": "Fredericksburg & Spotsylvania National Military Park",
+   "states": "VA"
+  },
+  "frhi": {
+   "fullName": "Friendship Hill National Historic Site",
+   "states": "PA"
+  },
+  "gaar": {
+   "fullName": "Gates Of The Arctic National Park & Preserve",
+   "states": "AK"
+  },
+  "gate": {
+   "fullName": "Gateway National Recreation Area",
+   "states": "NY,NJ"
+  },
+  "gegr": {
+   "fullName": "General Grant National Memorial",
+   "states": "NY"
+  },
+  "gero": {
+   "fullName": "George Rogers Clark National Historical Park",
+   "states": "IN"
+  },
+  "gewa": {
+   "fullName": "George Washington Birthplace National Monument",
+   "states": "VA"
+  },
+  "gwmp": {
+   "fullName": "George Washington Memorial Parkway",
+   "states": "DC,MD,VA"
+  },
+  "gett": {
+   "fullName": "Gettysburg National Military Park",
+   "states": "PA"
+  },
+  "gicl": {
+   "fullName": "Gila Cliff Dwellings National Monument",
+   "states": "NM"
+  },
+  "glac": {
+   "fullName": "Glacier National Park",
+   "states": "MT"
+  },
+  "glca": {
+   "fullName": "Glen Canyon National Recreation Area",
+   "states": "AZ,UT"
+  },
+  "goga": {
+   "fullName": "Golden Gate National Recreation Area",
+   "states": "CA"
+  },
+  "gois": {
+   "fullName": "Governors Island National Monument",
+   "states": "NY"
+  },
+  "grca": {
+   "fullName": "Grand Canyon National Park",
+   "states": "AZ"
+  },
+  "grte": {
+   "fullName": "Grand Teton National Park",
+   "states": "WY"
+  },
+  "grba": {
+   "fullName": "Great Basin National Park",
+   "states": "NV"
+  },
+  "grfa": {
+   "fullName": "Great Falls Park",
+   "states": "VA"
+  },
+  "grsa": {
+   "fullName": "Great Sand Dunes National Park & Preserve",
+   "states": "CO"
+  },
+  "grsm": {
+   "fullName": "Great Smoky Mountains National Park",
+   "states": "NC,TN"
+  },
+  "gree": {
+   "fullName": "Greenbelt Park",
+   "states": "MD"
+  },
+  "gumo": {
+   "fullName": "Guadalupe Mountains National Park",
+   "states": "TX"
+  },
+  "guis": {
+   "fullName": "Gulf Islands National Seashore",
+   "states": "FL,MS"
+  },
+  "hale": {
+   "fullName": "Haleakal\u0101 National Park",
+   "states": "HI"
+  },
+  "hamp": {
+   "fullName": "Hampton National Historic Site",
+   "states": "MD"
+  },
+  "hafe": {
+   "fullName": "Harpers Ferry National Historical Park",
+   "states": "WV,VA,MD"
+  },
+  "hstr": {
+   "fullName": "Harry S Truman National Historic Site",
+   "states": "MO"
+  },
+  "havo": {
+   "fullName": "Hawai\u02bbi Volcanoes National Park",
+   "states": "HI"
+  },
+  "jame": {
+   "fullName": "Historic Jamestowne Part of Colonial National Historical Park",
+   "states": "VA"
+  },
+  "hofr": {
+   "fullName": "Home Of Franklin D Roosevelt National Historic Site",
+   "states": "NY"
+  },
+  "hofu": {
+   "fullName": "Hopewell Furnace National Historic Site",
+   "states": "PA"
+  },
+  "hobe": {
+   "fullName": "Horseshoe Bend National Military Park",
+   "states": "AL"
+  },
+  "hosp": {
+   "fullName": "Hot Springs National Park",
+   "states": "AR"
+  },
+  "hove": {
+   "fullName": "Hovenweep National Monument",
+   "states": "CO,UT"
+  },
+  "hutr": {
+   "fullName": "Hubbell Trading Post National Historic Site",
+   "states": "AZ"
+  },
+  "iatr": {
+   "fullName": "Ice Age National Scenic Trail",
+   "states": "WI"
+  },
+  "inde": {
+   "fullName": "Independence National Historical Park",
+   "states": "PA"
+  },
+  "indu": {
+   "fullName": "Indiana Dunes National Park",
+   "states": "IN"
+  },
+  "isro": {
+   "fullName": "Isle Royale National Park",
+   "states": "MI"
+  },
+  "jaga": {
+   "fullName": "James A Garfield National Historic Site",
+   "states": "OH"
+  },
+  "jela": {
+   "fullName": "Jean Lafitte National Historical Park and Preserve",
+   "states": "LA"
+  },
+  "jeca": {
+   "fullName": "Jewel Cave National Monument",
+   "states": "SD"
+  },
+  "joda": {
+   "fullName": "John Day Fossil Beds National Monument",
+   "states": "OR"
+  },
+  "jofi": {
+   "fullName": "John Fitzgerald Kennedy National Historic Site",
+   "states": "MA"
+  },
+  "jazz": {
+   "fullName": "New Orleans Jazz National Historical Park",
+   "states": "LA"
+  },
+  "jomu": {
+   "fullName": "John Muir National Historic Site",
+   "states": "CA"
+  },
+  "jotr": {
+   "fullName": "Joshua Tree National Park",
+   "states": "CA"
+  },
+  "kala": {
+   "fullName": "Kalaupapa National Historical Park",
+   "states": "HI"
+  },
+  "kaho": {
+   "fullName": "Kaloko-Honok\u014dhau National Historical Park",
+   "states": "HI"
+  },
+  "kaww": {
+   "fullName": "Katahdin Woods and Waters National Monument",
+   "states": "ME"
+  },
+  "kefj": {
+   "fullName": "Kenai Fjords National Park",
+   "states": "AK"
+  },
+  "keaq": {
+   "fullName": "Kenilworth Park & Aquatic Gardens",
+   "states": "DC"
+  },
+  "kemo": {
+   "fullName": "Kennesaw Mountain National Battlefield Park",
+   "states": "GA"
+  },
+  "kimo": {
+   "fullName": "Kings Mountain National Military Park",
+   "states": "SC"
+  },
+  "lake": {
+   "fullName": "Lake Mead National Recreation Area",
+   "states": "AZ,NV"
+  },
+  "lamr": {
+   "fullName": "Lake Meredith National Recreation Area",
+   "states": "TX"
+  },
+  "laro": {
+   "fullName": "Lake Roosevelt National Recreation Area",
+   "states": "WA"
+  },
+  "lavo": {
+   "fullName": "Lassen Volcanic National Park",
+   "states": "CA"
+  },
+  "labe": {
+   "fullName": "Lava Beds National Monument",
+   "states": "CA"
+  },
+  "libi": {
+   "fullName": "Little Bighorn Battlefield National Monument",
+   "states": "MT"
+  },
+  "liri": {
+   "fullName": "Little River Canyon National Preserve",
+   "states": "AL"
+  },
+  "lowe": {
+   "fullName": "Lowell National Historical Park",
+   "states": "MA"
+  },
+  "loea": {
+   "fullName": "Lower East Side Tenement Museum National Historic Site",
+   "states": "NY"
+  },
+  "lyjo": {
+   "fullName": "Lyndon B Johnson National Historical Park",
+   "states": "TX"
+  },
+  "maca": {
+   "fullName": "Mammoth Cave National Park",
+   "states": "KY"
+  },
+  "manz": {
+   "fullName": "Manzanar National Historic Site",
+   "states": "CA"
+  },
+  "mabi": {
+   "fullName": "Marsh - Billings - Rockefeller National Historical Park",
+   "states": "VT"
+  },
+  "malu": {
+   "fullName": "Martin Luther King, Jr. National Historical Park",
+   "states": "GA"
+  },
+  "mava": {
+   "fullName": "Martin Van Buren National Historic Site",
+   "states": "NY"
+  },
+  "mamc": {
+   "fullName": "Mary McLeod Bethune Council House National Historic Site",
+   "states": "DC"
+  },
+  "meve": {
+   "fullName": "Mesa Verde National Park",
+   "states": "CO"
+  },
+  "mimi": {
+   "fullName": "Minuteman Missile National Historic Site",
+   "states": "SD"
+  },
+  "moja": {
+   "fullName": "Mojave National Preserve",
+   "states": "CA"
+  },
+  "moca": {
+   "fullName": "Montezuma Castle National Monument",
+   "states": "AZ"
+  },
+  "mocr": {
+   "fullName": "Moores Creek National Battlefield",
+   "states": "NC"
+  },
+  "morr": {
+   "fullName": "Morristown National Historical Park",
+   "states": "NJ"
+  },
+  "mora": {
+   "fullName": "Mount Rainier National Park",
+   "states": "WA"
+  },
+  "muwo": {
+   "fullName": "Muir Woods National Monument",
+   "states": "CA"
+  },
+  "natc": {
+   "fullName": "Natchez National Historical Park",
+   "states": "MS"
+  },
+  "natt": {
+   "fullName": "Natchez Trace National Scenic Trail",
+   "states": "AL,MS,TN"
+  },
+  "natr": {
+   "fullName": "Natchez Trace Parkway",
+   "states": "AL,MS,TN"
+  },
+  "nama": {
+   "fullName": "National Mall and Memorial Parks",
+   "states": "DC"
+  },
+  "npsa": {
+   "fullName": "National Park of American Samoa",
+   "states": "AS"
+  },
+  "nabr": {
+   "fullName": "Natural Bridges National Monument",
+   "states": "UT"
+  },
+  "nava": {
+   "fullName": "Navajo National Monument",
+   "states": "AZ"
+  },
+  "neri": {
+   "fullName": "New River Gorge National Park & Preserve",
+   "states": "WV"
+  },
+  "nisi": {
+   "fullName": "Ninety Six National Historic Site",
+   "states": "SC"
+  },
+  "niob": {
+   "fullName": "Niobrara National Scenic River",
+   "states": "NE"
+  },
+  "noca": {
+   "fullName": "North Cascades National Park",
+   "states": "WA"
+  },
+  "noco": {
+   "fullName": "North Country National Scenic Trail",
+   "states": "MI,MN,ND,NY,OH,PA,VT,WI"
+  },
+  "obed": {
+   "fullName": "Obed Wild & Scenic River",
+   "states": "TN"
+  },
+  "ocmu": {
+   "fullName": "Ocmulgee Mounds National Historical Park",
+   "states": "GA"
+  },
+  "okci": {
+   "fullName": "Oklahoma City National Memorial",
+   "states": "OK"
+  },
+  "olym": {
+   "fullName": "Olympic National Park",
+   "states": "WA"
+  },
+  "para": {
+   "fullName": "Grand Canyon-Parashant National Monument",
+   "states": "AZ"
+  },
+  "orca": {
+   "fullName": "Oregon Caves National Monument & Preserve",
+   "states": "OR"
+  },
+  "orpi": {
+   "fullName": "Organ Pipe Cactus National Monument",
+   "states": "AZ"
+  },
+  "ozar": {
+   "fullName": "Ozark National Scenic Riverways",
+   "states": "MO"
+  },
+  "pais": {
+   "fullName": "Padre Island National Seashore",
+   "states": "TX"
+  },
+  "paal": {
+   "fullName": "Palo Alto Battlefield National Historical Park",
+   "states": "TX"
+  },
+  "pagr": {
+   "fullName": "Paterson Great Falls National Historical Park",
+   "states": "NJ"
+  },
+  "peco": {
+   "fullName": "Pecos National Historical Park",
+   "states": "NM"
+  },
+  "pevi": {
+   "fullName": "Perry's Victory & International Peace Memorial",
+   "states": "OH"
+  },
+  "pefo": {
+   "fullName": "Petrified Forest National Park",
+   "states": "AZ"
+  },
+  "petr": {
+   "fullName": "Petroglyph National Monument",
+   "states": "NM"
+  },
+  "piro": {
+   "fullName": "Pictured Rocks National Lakeshore",
+   "states": "MI"
+  },
+  "pinn": {
+   "fullName": "Pinnacles National Park",
+   "states": "CA"
+  },
+  "pipe": {
+   "fullName": "Pipestone National Monument",
+   "states": "MN"
+  },
+  "pisc": {
+   "fullName": "Piscataway Park",
+   "states": "MD"
+  },
+  "popo": {
+   "fullName": "Poverty Point National Monument",
+   "states": "LA"
+  },
+  "prsf": {
+   "fullName": "Presidio of San Francisco",
+   "states": "CA"
+  },
+  "prwi": {
+   "fullName": "Prince William Forest Park",
+   "states": "VA"
+  },
+  "pull": {
+   "fullName": "Pullman National Historical Park",
+   "states": "IL"
+  },
+  "puho": {
+   "fullName": "Pu\u02bbuhonua o H\u014dnaunau National Historical Park",
+   "states": "HI"
+  },
+  "puhe": {
+   "fullName": "Pu\u02bbukohol\u0101 Heiau National Historic Site",
+   "states": "HI"
+  },
+  "rabr": {
+   "fullName": "Rainbow Bridge National Monument",
+   "states": "UT"
+  },
+  "redw": {
+   "fullName": "Redwood National and State Parks",
+   "states": "CA"
+  },
+  "rira": {
+   "fullName": "River Raisin National Battlefield Park",
+   "states": "MI"
+  },
+  "rocr": {
+   "fullName": "Rock Creek Park",
+   "states": "DC"
+  },
+  "roca": {
+   "fullName": "Roosevelt Campobello International Park",
+   "states": "ME"
+  },
+  "ruca": {
+   "fullName": "Russell Cave National Monument",
+   "states": "AL"
+  },
+  "sahi": {
+   "fullName": "Sagamore Hill National Historic Site",
+   "states": "NY"
+  },
+  "sagu": {
+   "fullName": "Saguaro National Park",
+   "states": "AZ"
+  },
+  "sacr": {
+   "fullName": "Saint Croix Island International Historic Site",
+   "states": "ME"
+  },
+  "sacn": {
+   "fullName": "Saint Croix National Scenic Riverway",
+   "states": "WI,MN"
+  },
+  "sapa": {
+   "fullName": "Saint Paul's Church National Historic Site",
+   "states": "NY"
+  },
+  "saga": {
+   "fullName": "Saint-Gaudens National Historical Park",
+   "states": "NH"
+  },
+  "sari": {
+   "fullName": "Salt River Bay National Historical Park and Ecological Preserve",
+   "states": "VI"
+  },
+  "safr": {
+   "fullName": "San Francisco Maritime National Historical Park",
+   "states": "CA"
+  },
+  "sajh": {
+   "fullName": "San Juan Island National Historical Park",
+   "states": "WA"
+  },
+  "saju": {
+   "fullName": "San Juan National Historic Site",
+   "states": "PR"
+  },
+  "sand": {
+   "fullName": "Sand Creek Massacre National Historic Site",
+   "states": "CO"
+  },
+  "semo": {
+   "fullName": "Selma To Montgomery National Historic Trail",
+   "states": "AL"
+  },
+  "seki": {
+   "fullName": "Sequoia & Kings Canyon National Parks",
+   "states": "CA"
+  },
+  "shen": {
+   "fullName": "Shenandoah National Park",
+   "states": "VA"
+  },
+  "slbe": {
+   "fullName": "Sleeping Bear Dunes National Lakeshore",
+   "states": "MI"
+  },
+  "stsp": {
+   "fullName": "Star-Spangled Banner National Historic Trail",
+   "states": "MD,VA,DC"
+  },
+  "stri": {
+   "fullName": "Stones River National Battlefield",
+   "states": "TN"
+  },
+  "sucr": {
+   "fullName": "Sunset Crater Volcano National Monument",
+   "states": "AZ"
+  },
+  "tapr": {
+   "fullName": "Tallgrass Prairie National Preserve",
+   "states": "KS"
+  },
+  "thri": {
+   "fullName": "Theodore Roosevelt Inaugural National Historic Site",
+   "states": "NY"
+  },
+  "thro": {
+   "fullName": "Theodore Roosevelt National Park",
+   "states": "ND"
+  },
+  "thje": {
+   "fullName": "Thomas Jefferson Memorial",
+   "states": "DC"
+  },
+  "tica": {
+   "fullName": "Timpanogos Cave National Monument",
+   "states": "UT"
+  },
+  "whho": {
+   "fullName": "The White House and President's Park",
+   "states": "DC"
+  },
+  "tont": {
+   "fullName": "Tonto National Monument",
+   "states": "AZ"
+  },
+  "tusk": {
+   "fullName": "Tule Springs Fossil Beds National Monument",
+   "states": "NV"
+  },
+  "tuai": {
+   "fullName": "Tuskegee Airmen National Historic Site",
+   "states": "AL"
+  },
+  "tuin": {
+   "fullName": "Tuskegee Institute National Historic Site",
+   "states": "AL"
+  },
+  "tuzi": {
+   "fullName": "Tuzigoot National Monument",
+   "states": "AZ"
+  },
+  "ulsg": {
+   "fullName": "Ulysses S Grant National Historic Site",
+   "states": "MO"
+  },
+  "vall": {
+   "fullName": "Valles Caldera National Preserve",
+   "states": "NM"
+  },
+  "vafo": {
+   "fullName": "Valley Forge National Historical Park",
+   "states": "PA"
+  },
+  "vick": {
+   "fullName": "Vicksburg National Military Park",
+   "states": "MS,LA"
+  },
+  "viis": {
+   "fullName": "Virgin Islands National Park",
+   "states": "VI"
+  },
+  "voya": {
+   "fullName": "Voyageurs National Park",
+   "states": "MN"
+  },
+  "wapa": {
+   "fullName": "War In The Pacific National Historical Park",
+   "states": "GU"
+  },
+  "wamo": {
+   "fullName": "Washington Monument",
+   "states": "DC"
+  },
+  "wefa": {
+   "fullName": "Weir Farm National Historical Park",
+   "states": "CT"
+  },
+  "whis": {
+   "fullName": "Whiskeytown National Recreation Area",
+   "states": "CA"
+  },
+  "whsa": {
+   "fullName": "White Sands National Park",
+   "states": "NM"
+  },
+  "whmi": {
+   "fullName": "Whitman Mission National Historic Site",
+   "states": "WA"
+  },
+  "wiho": {
+   "fullName": "William Howard Taft National Historic Site",
+   "states": "OH"
+  },
+  "wicr": {
+   "fullName": "Wilson's Creek National Battlefield",
+   "states": "MO"
+  },
+  "wica": {
+   "fullName": "Wind Cave National Park",
+   "states": "SD"
+  },
+  "wori": {
+   "fullName": "Women's Rights National Historical Park",
+   "states": "NY"
+  },
+  "wupa": {
+   "fullName": "Wupatki National Monument",
+   "states": "AZ"
+  },
+  "yell": {
+   "fullName": "Yellowstone National Park",
+   "states": "ID,MT,WY"
+  },
+  "york": {
+   "fullName": "Yorktown Battlefield Part of Colonial National Historical Park",
+   "states": "VA"
+  },
+  "yose": {
+   "fullName": "Yosemite National Park",
+   "states": "CA"
+  },
+  "yuch": {
+   "fullName": "Yukon - Charley Rivers National Preserve",
+   "states": "AK"
+  },
+  "zion": {
+   "fullName": "Zion National Park",
+   "states": "UT"
+  },
+  "cham": {
+   "fullName": "Chamizal National Memorial",
+   "states": "TX"
+  },
+  "elmo": {
+   "fullName": "El Morro National Monument",
+   "states": "NM"
+  },
+  "ever": {
+   "fullName": "Everglades National Park",
+   "states": "FL"
+  },
+  "feha": {
+   "fullName": "Federal Hall National Memorial",
+   "states": "NY"
+  },
+  "fiis": {
+   "fullName": "Fire Island National Seashore",
+   "states": "NY"
+  },
+  "flni": {
+   "fullName": "Flight 93 National Memorial",
+   "states": "PA"
+  },
+  "flfo": {
+   "fullName": "Florissant Fossil Beds National Monument",
+   "states": "CO"
+  },
+  "fobo": {
+   "fullName": "Fort Bowie National Historic Site",
+   "states": "AZ"
+  },
+  "foda": {
+   "fullName": "Fort Davis National Historic Site",
+   "states": "TX"
+  },
+  "fodo": {
+   "fullName": "Fort Donelson National Battlefield",
+   "states": "KY,TN"
+  },
+  "fofo": {
+   "fullName": "Fort Foote Park",
+   "states": "MD"
+  },
+  "foma": {
+   "fullName": "Fort Matanzas National Monument",
+   "states": "FL"
+  },
+  "fomc": {
+   "fullName": "Fort McHenry National Monument and Historic Shrine",
+   "states": "MD"
+  },
+  "fomr": {
+   "fullName": "Fort Monroe National Monument",
+   "states": "VA"
+  },
+  "fone": {
+   "fullName": "Fort Necessity National Battlefield",
+   "states": "PA"
+  },
+  "fopo": {
+   "fullName": "Fort Point National Historic Site",
+   "states": "CA"
+  },
+  "fopu": {
+   "fullName": "Fort Pulaski National Monument",
+   "states": "GA"
+  },
+  "fosu": {
+   "fullName": "Fort Sumter and Fort Moultrie National Historical Park",
+   "states": "SC"
+  },
+  "fobu": {
+   "fullName": "Fossil Butte National Monument",
+   "states": "WY"
+  }
+ }
+}

@@ -1,0 +1,304 @@
+/* ---------------------------------------------------------------------------
+ * TrailTruth outdoor palette — layered on top of BoardUI's theme.css.
+ *
+ *   granite  → warm neutral ramp (every BoardUI semantic token inherits it)
+ *   pine     → accent ramp (CTAs, focus ring, selected nav)
+ *   go / caution / nogo → decision signals (always paired with a shape)
+ *   sandstone, sky, clay → secondary data hues
+ * --------------------------------------------------------------------------- */
+
+@theme {
+  /* Granite — warm neutrals replacing BoardUI's cool neutral ramp */
+  --color-neutral-50: #faf9f6;
+  --color-neutral-100: #f4f2ed;
+  --color-neutral-200: #e7e3db;
+  --color-neutral-300: #d5cfc4;
+  --color-neutral-400: #a8a094;
+  --color-neutral-500: #786f64;
+  --color-neutral-600: #5b544b;
+  --color-neutral-700: #433e37;
+  --color-neutral-800: #2b2824;
+  --color-neutral-900: #1e1c19;
+  --color-neutral-925: #161512;
+  --color-neutral-950: #100f0d;
+
+  /* Pine — accent ramp */
+  --color-accent-50: #eef6f1;
+  --color-accent-100: #d6eadd;
+  --color-accent-200: #aed5bc;
+  --color-accent-300: #7dba95;
+  --color-accent-400: #4e9c70;
+  --color-accent-500: #2f7f56;
+  --color-accent-600: #236747;
+  --color-accent-700: #1c5239;
+  --color-accent-800: #17412e;
+  --color-accent-900: #123426;
+  --color-accent-950: #0a1f16;
+
+  --font-sign: var(--font-zilla), "Rockwell", "Roboto Slab", Georgia, serif;
+}
+
+:root {
+  --tt-go-solid: #22804f;
+  --tt-go-surface: #e4f2e8;
+  --tt-go-text: #145233;
+  --tt-go-border: #a9d4b8;
+
+  --tt-caution-solid: #c27c00;
+  --tt-caution-surface: #fcf0d4;
+  --tt-caution-text: #74470a;
+  --tt-caution-border: #ecca7f;
+
+  --tt-nogo-solid: #b42318;
+  --tt-nogo-surface: #fbe6e2;
+  --tt-nogo-text: #7a1c14;
+  --tt-nogo-border: #f0b5ab;
+
+  --tt-sandstone: #c49a6c;
+  --tt-sandstone-surface: #f6ece0;
+  --tt-sky: #3f7fb0;
+  --tt-sky-surface: #e3eef7;
+  --tt-clay: #b0603a;
+  --tt-pine: #2f7f56;
+  --tt-topo: #8f857a;
+  --tt-overbar: #1f3d2c;
+  --tt-overbar-text: #f1ede4;
+  --tt-paper: #fbfaf6;
+
+  /* Charts follow the earth palette (validated: CVD ΔE ≥ 19, light surface) */
+  --tt-m-lora: #2f8a5b;
+  --tt-m-teacher: #3a6fc4;
+  --tt-m-base: #c98516;
+  --tt-m-base_guided: #8a5fb0;
+  --tt-m-heuristic: #d0485f;
+  --color-chart-1: #2f8a5b;
+  --color-chart-1-active: #23704a;
+  --color-chart-2: #3a6fc4;
+  --color-chart-2-active: #2c5aa6;
+  --color-chart-3: #c98516;
+  --color-chart-3-active: #a86e10;
+  --color-chart-4: #9a5aa8;
+  --color-chart-4-active: #7f478c;
+  --color-chart-5: #a8a094;
+  --color-chart-5-active: #786f64;
+}
+
+.dark {
+  --tt-go-solid: #44b27a;
+  --tt-go-surface: rgb(68 178 122 / 0.13);
+  --tt-go-text: #92dcb2;
+  --tt-go-border: rgb(68 178 122 / 0.38);
+
+  --tt-caution-solid: #e3a72c;
+  --tt-caution-surface: rgb(227 167 44 / 0.13);
+  --tt-caution-text: #f3cf80;
+  --tt-caution-border: rgb(227 167 44 / 0.38);
+
+  --tt-nogo-solid: #f0604f;
+  --tt-nogo-surface: rgb(240 96 79 / 0.13);
+  --tt-nogo-text: #fbab9f;
+  --tt-nogo-border: rgb(240 96 79 / 0.4);
+
+  --tt-sandstone: #d9b68e;
+  --tt-sandstone-surface: rgb(217 182 142 / 0.12);
+  --tt-sky: #7db2dc;
+  --tt-sky-surface: rgb(125 178 220 / 0.12);
+  --tt-clay: #dc8a63;
+  --tt-pine: #5fbf8b;
+  --tt-topo: #8f857a;
+  --tt-overbar: #183326;
+  --tt-overbar-text: #efeadf;
+  --tt-paper: #1e1c19;
+
+  --tt-m-lora: #3fa36f;
+  --tt-m-teacher: #5b8fe0;
+  --tt-m-base: #b07a12;
+  --tt-m-base_guided: #a77fd0;
+  --tt-m-heuristic: #e0606f;
+  --color-chart-1: #3fa36f;
+  --color-chart-1-active: #5cbf8a;
+  --color-chart-2: #5b8fe0;
+  --color-chart-2-active: #7ba8ec;
+  --color-chart-3: #b07a12;
+  --color-chart-3-active: #c9921f;
+  --color-chart-4: #b277c2;
+  --color-chart-4-active: #c693d3;
+  --color-chart-5: #6f675d;
+  --color-chart-5-active: #9a9286;
+}
+
+@theme inline {
+  --color-go-solid: var(--tt-go-solid);
+  --color-go-surface: var(--tt-go-surface);
+  --color-go-text: var(--tt-go-text);
+  --color-go-border: var(--tt-go-border);
+  --color-caution-solid: var(--tt-caution-solid);
+  --color-caution-surface: var(--tt-caution-surface);
+  --color-caution-text: var(--tt-caution-text);
+  --color-caution-border: var(--tt-caution-border);
+  --color-nogo-solid: var(--tt-nogo-solid);
+  --color-nogo-surface: var(--tt-nogo-surface);
+  --color-nogo-text: var(--tt-nogo-text);
+  --color-nogo-border: var(--tt-nogo-border);
+  --color-sandstone: var(--tt-sandstone);
+  --color-sandstone-surface: var(--tt-sandstone-surface);
+  --color-sky: var(--tt-sky);
+  --color-sky-surface: var(--tt-sky-surface);
+  --color-clay: var(--tt-clay);
+  --color-pine: var(--tt-pine);
+  --color-topo: var(--tt-topo);
+  --color-overbar: var(--tt-overbar);
+  --color-overbar-text: var(--tt-overbar-text);
+  --color-paper: var(--tt-paper);
+}
+
+/* ----- Small helpers ------------------------------------------------------ */
+.tt-num {
+  font-variant-numeric: tabular-nums;
+}
+
+.tt-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+@keyframes tt-pulse-ring {
+  0% { transform: scale(0.8); opacity: 0.7; }
+  100% { transform: scale(2.1); opacity: 0; }
+}
+.tt-pulse::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: currentColor;
+  animation: tt-pulse-ring 1.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tt-pulse::after { animation: none; opacity: 0; }
+}
+
+@keyframes tt-rise {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+.tt-rise {
+  animation: tt-rise 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tt-rise { animation: none; }
+}
+
+/* ----- Print: the trail card becomes a single black-on-white sheet --------- */
+@media print {
+  @page {
+    size: letter portrait;
+    margin: 0.45in;
+  }
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+  .tt-no-print {
+    display: none !important;
+  }
+  .tt-print-root {
+    padding: 0 !important;
+    margin: 0 !important;
+    max-width: none !important;
+    width: 100% !important;
+  }
+  .tt-print-card {
+    box-shadow: none !important;
+    border: 1.5px solid #000 !important;
+    border-radius: 10px !important;
+    background: #fff !important;
+    color: #000 !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+    max-width: none !important;
+    width: 100% !important;
+  }
+  .tt-print-card * {
+    color: #000 !important;
+    border-color: #000 !important;
+    box-shadow: none !important;
+  }
+  .tt-print-card .tt-print-invert {
+    background: #000 !important;
+    color: #fff !important;
+  }
+  .tt-print-card .tt-print-invert * {
+    color: #fff !important;
+  }
+  .tt-print-card .tt-print-plain {
+    background: transparent !important;
+  }
+  .tt-print-card .tt-topo {
+    display: none !important;
+  }
+  .tt-print-card svg [data-print-fill] {
+    fill: #000 !important;
+  }
+  .tt-print-card svg [data-print-stroke] {
+    stroke: #000 !important;
+  }
+  .tt-print-card svg [data-print-glyph] {
+    fill: #fff !important;
+    stroke: #fff !important;
+  }
+}
+
+/* ----- Paper scope: the trail card is a physical artifact, so it stays
+ * light (ink on paper) even when the app is in dark mode. ------------------ */
+.tt-paper-scope,
+.dark .tt-paper-scope {
+  --tt-go-solid: #1f7a4a;
+  --tt-go-surface: #e4f2e8;
+  --tt-go-text: #145233;
+  --tt-go-border: #a9d4b8;
+  --tt-caution-solid: #b87400;
+  --tt-caution-surface: #fcf0d4;
+  --tt-caution-text: #6b4108;
+  --tt-caution-border: #e9c677;
+  --tt-nogo-solid: #b42318;
+  --tt-nogo-surface: #fbe6e2;
+  --tt-nogo-text: #7a1c14;
+  --tt-nogo-border: #f0b5ab;
+  --tt-sandstone: #c49a6c;
+  --tt-overbar: #1f3d2c;
+  --tt-overbar-text: #f3efe5;
+  --tt-paper: #fbf9f3;
+  --tt-topo: #8f857a;
+  --tt-ink: #16140f;
+  --tt-ink-2: #4a443b;
+  --tt-ink-3: #847b6f;
+  --tt-rule: #e3ddd1;
+  color: var(--tt-ink);
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-ink: var(--tt-ink, var(--color-text-primary));
+  --color-ink-2: var(--tt-ink-2, var(--color-text-secondary));
+  --color-ink-3: var(--tt-ink-3, var(--color-text-tertiary));
+  --color-rule: var(--tt-rule, var(--color-separator-border));
+}
+
+/* Big numerals: Inter, tight, tabular (the slab face is for words only). */
+.tt-figure {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Dark-mode tertiary text needs more contrast on granite. */
+.dark {
+  --color-text-tertiary: #8d8478;
+  --color-text-placeholder: #8d8478;
+}

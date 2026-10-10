@@ -1,0 +1,35 @@
+$ python -m agent.run_card havo chch yell      # heuristic provider, live NPS API
+started TrailCardWorkflow id=trailcard-2026-10-10-havo-chch-yell-a8f2 parks=['havo', 'chch', 'yell']
+--- t+  0.0s  workflow=running
+  [..] fetch_alerts:havo      running   attempt=1
+  [..] fetch_alerts:chch      running   attempt=1
+  [..] fetch_alerts:yell      running   attempt=1
+  [  ] classify_alerts        pending   attempt=0
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  0.6s  workflow=completed
+  [OK] fetch_alerts:havo      completed attempt=1  9 alerts, source=cache
+  [OK] fetch_alerts:chch      completed attempt=1  2 alerts, source=cache
+  [OK] fetch_alerts:yell      completed attempt=1  7 alerts, source=cache
+  [OK] classify_alerts        completed attempt=1  18/18 alerts
+  [OK] compose_card           completed attempt=1
+  [OK] publish_card           completed attempt=1  card_2026-10-10_havo-chch-yell
+
+=== TRAIL CARD card_2026-10-10_havo-chch-yell  (week of 2026-10-10)  OVERALL: NO_GO ===
+  Hawaiʻi Volcanoes National Park [NO_GO]
+    Go — but skip Halemaʻumaʻu Trail & Byron Ledge Trail
+    closed: Halemaʻumaʻu Trail, Byron Ledge Trail, Crater Rim Trail, Kīpukapuaulu Trail
+    watch for: Kīlauea eruption
+    watch for: Protect Yourself from Volcanic Tephra
+    watch for: Closed: Hilina Pali Road, Mauna Loa Road, Sulphur Banks Bridge
+  Chickamauga & Chattanooga National Military Park [CAUTION]
+    Go with care — Use Caution When Hiking Bluff Trail on Lookout Mountain
+    watch for: Use Caution When Hiking Bluff Trail on Lookout Mountain
+    watch for: Construction Begins on East Brotherton Road in Chickamauga Battlefield
+  Yellowstone National Park [NO_GO]
+    Go — but skip Biscuit Basin & West Thumb Geyser Basin
+    closed: Biscuit Basin, West Thumb Geyser Basin
+    watch for: Stay Away From Bull Elk
+    watch for: Traffic Delays - Gardner River High Bridge
+    watch for: Closed: Beartooth Highway, Dunraven Pass
+  model: heuristic-keywords-v1   workflow: trailcard-2026-10-10-havo-chch-yell-a8f2

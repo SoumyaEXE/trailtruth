@@ -1,0 +1,50 @@
+$ NPS_API_KEY=DEMO_KEY TRAILTRUTH_NPS_CACHE_TTL=0 python -m agent.worker   # other terminal; DEMO_KEY is rate-limited (HTTP 429, Retry-After ~16h)
+$ python -m agent.run_card havo grca olym
+started TrailCardWorkflow id=trailcard-2026-10-10-havo-grca-olym-2375 parks=['havo', 'grca', 'olym']
+--- t+  0.1s  workflow=running
+  [..] fetch_alerts:havo      running   attempt=1
+  [..] fetch_alerts:grca      running   attempt=1
+  [..] fetch_alerts:olym      running   attempt=1
+  [  ] classify_alerts        pending   attempt=0
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  1.8s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=1  9 alerts, source=stale-cache (NPS 429)
+  [OK] fetch_alerts:grca      completed attempt=1  4 alerts, source=snapshot (NPS 429, Retry-After 16.4h)
+  [OK] fetch_alerts:olym      completed attempt=1  5 alerts, source=snapshot (NPS 429, Retry-After 16.4h)
+  [..] classify_alerts        running   attempt=1  4/18 alerts
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  2.4s  workflow=running
+  [OK] fetch_alerts:havo      completed attempt=1  9 alerts, source=stale-cache (NPS 429)
+  [OK] fetch_alerts:grca      completed attempt=1  4 alerts, source=snapshot (NPS 429, Retry-After 16.4h)
+  [OK] fetch_alerts:olym      completed attempt=1  5 alerts, source=snapshot (NPS 429, Retry-After 16.4h)
+  [..] classify_alerts        running   attempt=1  16/18 alerts
+  [  ] compose_card           pending   attempt=0
+  [  ] publish_card           pending   attempt=0
+--- t+  3.0s  workflow=completed
+  [OK] fetch_alerts:havo      completed attempt=1  9 alerts, source=stale-cache (NPS 429)
+  [OK] fetch_alerts:grca      completed attempt=1  4 alerts, source=snapshot (NPS 429, Retry-After 16.4h)
+  [OK] fetch_alerts:olym      completed attempt=1  5 alerts, source=snapshot (NPS 429, Retry-After 16.4h)
+  [OK] classify_alerts        completed attempt=1  18/18 alerts
+  [OK] compose_card           completed attempt=1
+  [OK] publish_card           completed attempt=1  card_2026-10-10_havo-grca-olym
+
+=== TRAIL CARD card_2026-10-10_havo-grca-olym  (week of 2026-10-10)  OVERALL: NO_GO ===
+  Hawaiʻi Volcanoes National Park [NO_GO]
+    Go — but skip Halemaʻumaʻu Trail & Byron Ledge Trail
+    closed: Halemaʻumaʻu Trail, Byron Ledge Trail, Crater Rim Trail, Kīpukapuaulu Trail
+    watch for: Kīlauea eruption
+    watch for: Protect Yourself from Volcanic Tephra
+    watch for: Closed: Hilina Pali Road, Mauna Loa Road, Sulphur Banks Bridge
+  Grand Canyon National Park [NO_GO]
+    Go — but skip Critical Backcountry Updates/Closures & North Kaibab Trail
+    closed: Critical Backcountry Updates/Closures, North Kaibab Trail, South Kaibab Trail
+    watch for: INNER CANYON WATER SHUTOFFS
+    watch for: Overnight Lodging Suspended and Parkwide Stage 4 Water Restrictions
+  Olympic National Park [NO_GO]
+    No-go — Bat Tests Positive for Rabies, Visitors Urged to…
+    watch for: Bat Tests Positive for Rabies, Visitors Urged to Report…
+    watch for: Staircase Developed Area is Open, Use Caution in Burned…
+    watch for: Closed: Hoh River Bridge, Mora Road, South Shore Quinault Road
+  model: heuristic-keywords-v1   workflow: trailcard-2026-10-10-havo-grca-olym-2375

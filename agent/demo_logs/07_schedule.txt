@@ -1,0 +1,11 @@
+$ python -m agent.schedule describe
+schedule trailtruth-weekly: paused=False actions_taken=1
+next runs: 2026-10-16T14:00:00+00:00, 2026-10-23T14:00:00+00:00, 2026-10-30T14:00:00+00:00
+recent: 2026-10-10T07:37:55.999185+00:00 weekly-trailcard-havo-chch-2026-10-10T07:37:55Z
+$ python -m agent.schedule trigger
+triggered trailtruth-weekly - see `python -m agent.schedule describe` or GET /api/runs
+$ python -m agent.schedule describe
+schedule trailtruth-weekly: paused=False actions_taken=2
+next runs: 2026-10-16T14:00:00+00:00, 2026-10-23T14:00:00+00:00, 2026-10-30T14:00:00+00:00
+recent: 2026-10-10T07:37:55.999185+00:00 weekly-trailcard-havo-chch-2026-10-10T07:37:55Z
+recent: 2026-10-10T07:41:22.729822+00:00 weekly-trailcard-havo-chch-2026-10-10T07:41:22Z

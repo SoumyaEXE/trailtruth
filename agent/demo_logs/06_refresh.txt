@@ -1,0 +1,4 @@
+$ python -m agent.refresh
+13:07:49.111 [refresh] fetched 627 alerts (source=nps-live)
+13:07:49.335 [refresh] classified 627 alerts in 6.0s; models={'heuristic-keywords-v1': 627} decisions={'caution': 286, 'no_go': 145, 'go': 196}
+13:07:49.363 [refresh] wrote state/processed/alerts.json, state/processed/parks.json, state/processed/meta.json

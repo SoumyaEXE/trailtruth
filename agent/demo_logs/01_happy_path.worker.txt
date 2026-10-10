@@ -1,0 +1,9 @@
+13:00:25.920 [worker] worker pid=20460 up: temporal=localhost:7233 queue=trailtruth provider=heuristic chaos=off sentry=off
+13:00:28.638 [worker] [fetch_alerts] park=havo attempt=1
+13:00:28.642 [worker] [fetch_alerts] park=chch attempt=1
+13:00:28.644 [worker] [fetch_alerts] park=havo OK: 9 alerts (source=cache, attempt 1)
+13:00:28.646 [worker] [fetch_alerts] park=chch OK: 2 alerts (source=cache, attempt 1)
+13:00:28.647 [worker] [fetch_alerts] park=yell attempt=1
+13:00:28.649 [worker] [fetch_alerts] park=yell OK: 7 alerts (source=cache, attempt 1)
+13:00:29.065 [worker] [compose_card] card_2026-10-10_havo-chch-yell overall=no_go parks=havo:no_go, chch:caution, yell:no_go
+13:00:29.101 [worker] [publish_card] wrote agent/state/cards/card_2026-10-10_havo-chch-yell.json

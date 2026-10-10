@@ -1,0 +1,29 @@
+{
+  "label_source": "teacher",
+  "seed": 42,
+  "test_frac": 0.2,
+  "train": 501,
+  "test": 126,
+  "skipped_unlabeled": 0,
+  "train_by_category": {
+    "Caution": 110,
+    "Park Closure": 134,
+    "Danger": 10,
+    "Information": 247
+  },
+  "test_by_category": {
+    "Information": 61,
+    "Park Closure": 34,
+    "Danger": 3,
+    "Caution": 28
+  },
+  "decision_overrides_label_to_gold": {
+    "caution->go": 92,
+    "caution->no_go": 56,
+    "go->caution": 37,
+    "no_go->go": 33,
+    "no_go->caution": 9,
+    "go->no_go": 8
+  },
+  "title_groups_shared_across_splits": 0
+}

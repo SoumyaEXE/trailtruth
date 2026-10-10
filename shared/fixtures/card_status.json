@@ -1,0 +1,193 @@
+{
+ "workflow_id": "trailcard-2026-10-10-havo-chch-yell-zion-5c0e",
+ "status": "completed",
+ "parks": [
+  "havo",
+  "chch",
+  "yell",
+  "zion"
+ ],
+ "started_at": "2026-10-10T07:32:24Z",
+ "ended_at": "2026-10-10T07:32:39Z",
+ "steps": [
+  {
+   "name": "fetch_alerts:havo",
+   "status": "completed",
+   "attempt": 3,
+   "started_at": "2026-10-10T07:32:24.559Z",
+   "ended_at": "2026-10-10T07:32:29.674Z",
+   "error": "attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) (+1 more) -> succeeded on attempt 3",
+   "detail": "9 alerts, source=nps-live",
+   "attempt_errors": [
+    "attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos)",
+    "attempt 2: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos)"
+   ]
+  },
+  {
+   "name": "fetch_alerts:chch",
+   "status": "completed",
+   "attempt": 2,
+   "started_at": "2026-10-10T07:32:24.559Z",
+   "ended_at": "2026-10-10T07:32:27.490Z",
+   "error": "attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2",
+   "detail": "2 alerts, source=nps-live",
+   "attempt_errors": [
+    "attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos)"
+   ]
+  },
+  {
+   "name": "fetch_alerts:yell",
+   "status": "completed",
+   "attempt": 1,
+   "started_at": "2026-10-10T07:32:24.559Z",
+   "ended_at": "2026-10-10T07:32:26.324Z",
+   "error": null,
+   "detail": "7 alerts, source=nps-live"
+  },
+  {
+   "name": "fetch_alerts:zion",
+   "status": "completed",
+   "attempt": 2,
+   "started_at": "2026-10-10T07:32:24.559Z",
+   "ended_at": "2026-10-10T07:32:27.605Z",
+   "error": "attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos) -> succeeded on attempt 2",
+   "detail": "5 alerts, source=nps-live",
+   "attempt_errors": [
+    "attempt 1: NpsUnavailable: NPS API HTTP 503 Service Unavailable (chaos)"
+   ]
+  },
+  {
+   "name": "classify_alerts",
+   "status": "completed",
+   "attempt": 2,
+   "started_at": "2026-10-10T07:32:29.674Z",
+   "ended_at": "2026-10-10T07:32:39.124Z",
+   "error": "4 alert(s) needed retries",
+   "detail": "23/23 alerts",
+   "attempt_errors": [
+    "attempt 1: model call hung; heartbeat timeout (chaos)",
+    "attempt 1: InvalidModelJSON: model returned invalid JSON: '{\"hazard_type\": \"wildlife\", \"sev' (chaos)",
+    "attempt 1: model call hung; heartbeat timeout (chaos)",
+    "attempt 1: model call hung; heartbeat timeout (chaos)"
+   ]
+  },
+  {
+   "name": "compose_card",
+   "status": "completed",
+   "attempt": 1,
+   "started_at": "2026-10-10T07:32:39.124Z",
+   "ended_at": "2026-10-10T07:32:39.205Z",
+   "error": null,
+   "detail": null
+  },
+  {
+   "name": "publish_card",
+   "status": "completed",
+   "attempt": 1,
+   "started_at": "2026-10-10T07:32:39.205Z",
+   "ended_at": "2026-10-10T07:32:39.256Z",
+   "error": null,
+   "detail": "card_2026-10-10_havo-chch-yell-zion"
+  }
+ ],
+ "card": {
+  "id": "card_2026-10-10_havo-chch-yell-zion",
+  "generated_at": "2026-10-10T07:32:39.124Z",
+  "week_of": "2026-10-10",
+  "parks": [
+   {
+    "park_code": "havo",
+    "park_name": "Hawaiʻi Volcanoes National Park",
+    "decision": "no_go",
+    "headline": "Go — but skip Halemaʻumaʻu Trail & Byron Ledge Trail",
+    "closed_trails": [
+     "Halemaʻumaʻu Trail",
+     "Byron Ledge Trail",
+     "Crater Rim Trail",
+     "Kīpukapuaulu Trail"
+    ],
+    "watch_for": [
+     "Kīlauea eruption",
+     "Protect Yourself from Volcanic Tephra",
+     "Closed: Hilina Pali Road, Mauna Loa Road, Sulphur Banks Bridge"
+    ],
+    "alert_ids": [
+     "E6380F1D-EB3A-44EC-B206-6A65019B38D5",
+     "C8F694F3-2542-4433-A7E7-B2EFC3BDA48A",
+     "8A75DF70-5B3C-4878-8E33-C3EFBBA3204D",
+     "E184228C-9A0B-4463-9848-44AF5D566030",
+     "031E225F-49AB-4264-9DD6-4402E620DC1B",
+     "611B580A-2CFD-4331-B712-E8E46FC6683D",
+     "37CFEFAB-CC85-4ED3-8850-D1EE86A7F0DF",
+     "372637DA-0B8C-422B-B98B-9ACF44B56C46",
+     "9EA3FC4B-73DA-4CD9-BB0D-6A1F3DFF7407"
+    ]
+   },
+   {
+    "park_code": "chch",
+    "park_name": "Chickamauga & Chattanooga National Military Park",
+    "decision": "caution",
+    "headline": "Go with care — Use Caution When Hiking Bluff Trail on Lookout Mountain",
+    "closed_trails": [],
+    "watch_for": [
+     "Use Caution When Hiking Bluff Trail on Lookout Mountain",
+     "Construction Begins on East Brotherton Road in Chickamauga Battlefield"
+    ],
+    "alert_ids": [
+     "A5793882-6117-4E05-B175-A9FD505FE6FC",
+     "6822FAF9-9E8D-4F41-A8B3-760473B7381A"
+    ]
+   },
+   {
+    "park_code": "yell",
+    "park_name": "Yellowstone National Park",
+    "decision": "no_go",
+    "headline": "Go — but skip Biscuit Basin & West Thumb Geyser Basin",
+    "closed_trails": [
+     "Biscuit Basin",
+     "West Thumb Geyser Basin"
+    ],
+    "watch_for": [
+     "Stay Away From Bull Elk",
+     "Traffic Delays - Gardner River High Bridge",
+     "Closed: Beartooth Highway, Dunraven Pass"
+    ],
+    "alert_ids": [
+     "75EAC129-65A2-4CDA-B29C-413502DD3A35",
+     "00D47802-8E06-4418-80D8-69D37A885146",
+     "3A28F80C-D5A9-4CA7-8169-545AEDCDA941",
+     "330C1B7C-3105-4A40-B679-13E90F8DFA5D",
+     "67146540-50E1-44EE-8D3A-2314B0192DDB",
+     "57EFE369-9186-400A-8F18-0E966993B8A3",
+     "68BF1AEF-79A0-4FE9-B11C-BDFDAD08E15E"
+    ]
+   },
+   {
+    "park_code": "zion",
+    "park_name": "Zion National Park",
+    "decision": "no_go",
+    "headline": "Go — but skip Watchman Trail",
+    "closed_trails": [
+     "Watchman Trail"
+    ],
+    "watch_for": [
+     "Toxic cyanobacteria in rivers, streams, and pools",
+     "Large vehicle restrictions on Zion-Mt. Carmel Highway",
+     "Please park legally and responsibly"
+    ],
+    "alert_ids": [
+     "CDD9D321-49B3-4C74-89AD-A186807220E6",
+     "83AE2DD9-F167-445F-8B00-A4F9E5A993D8",
+     "0EA570B2-2FF0-4B33-AD3A-1313385965A0",
+     "09699C7F-F2CD-4BE9-B8D4-5E19CC89BE7A",
+     "F093B239-D138-4B04-BDFE-745A41F17B04"
+    ]
+   }
+  ],
+  "overall": "no_go",
+  "workflow_id": "trailcard-2026-10-10-havo-chch-yell-zion-5c0e",
+  "model": "heuristic-keywords-v1"
+ },
+ "fixture": true,
+ "source": "captured from a real Temporal dev-server run"
+}
