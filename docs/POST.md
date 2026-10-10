@@ -190,6 +190,8 @@ The NPS API has a free `DEMO_KEY`, and its headers are honest about it: `X-Ratel
 
 From the event history afterwards: **21** `classify_alert` activities were scheduled, and none was scheduled twice. The **8** finished before the crash were kept, not re-run. Only the **4** that were in flight needed a second attempt, once their heartbeat timed out.
 
+Then we ran it again with the real fine-tuned model on Tinker instead of the stand-in. The kill landed with 10 of 21 alerts classified: those 10 were kept, the 6 in flight were retried, nothing ran twice, and the card was published at t+69.5 s. Most of that time is two Tinker cold starts of about 20 s each, one per worker. Transcript: `agent/demo_logs/14_crash_resume_lora.txt`.
+
 ![Timeline of the crash run: worker 1 killed at t+6.0 s after 8 of 21 alerts, no worker for 3 s while the workflow stays RUNNING, worker 2 starts at t+9.1 s, 4 orphaned activities retried on attempt 2, card published at t+17.1 s; 21 scheduled, none twice](https://raw.githubusercontent.com/SoumyaEXE/trailtruth/main/docs/images/crash-resume.png)
 
 ![{{TEMPORAL_UI_SCREENSHOT_ALT}}]({{TEMPORAL_UI_SCREENSHOT_URL}})
