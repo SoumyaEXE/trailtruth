@@ -1,0 +1,1 @@
+<bash-input> powershell -c "irm https://entire.io/install.ps1 | iex"</bash-input>
