@@ -13,3 +13,9 @@ data/raw/cache/
 *.tsbuildinfo
 next-env.d.ts
 docs/.dev_article_id
+
+# Blog drafts and writing notes: local only
+docs/POST*.md
+docs/OUTLINE*.md
+docs/cover-brief.md
+docs/MEDIA*.md
